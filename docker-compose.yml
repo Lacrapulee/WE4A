@@ -12,4 +12,3 @@ services:
     depends_on:
       - db
       
-  # SUPPRIMEZ le bloc "web" (nginx) entièrement
