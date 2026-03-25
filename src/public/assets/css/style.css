@@ -1,0 +1,47 @@
+.main-header {
+    display: flex;
+    align-items: center; /* Aligne verticalement au milieu */
+    justify-content: space-between; /* Espace les 3 blocs */
+    padding: 15px 5%;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Style de la barre de recherche */
+.search-bar form {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Bords arrondis modernes */
+    overflow: hidden;
+    width: 400px; /* Largeur fixe ou max-width */
+}
+
+.search-bar input {
+    border: none;
+    padding: 10px 15px;
+    flex-grow: 1; /* Prend tout l'espace restant dans le form */
+    outline: none;
+}
+
+.search-bar button {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Style des boutons */
+.header-actions a {
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.btn-cart {
+    background-color: #2f3542;
+    color: white !important;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
