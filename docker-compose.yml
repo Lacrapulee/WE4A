@@ -1,14 +1,35 @@
 services:
+  # 1. Ta base de données
   db:
     image: mysql:8.0
-    # ... gardez votre config mysql ...
-
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: WE4ADB
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  
+  # 2. Ton application PHP (Apache + PHP)
   php:
     build: ./docker/php
+    restart: always
     ports:
-      - "8080:80" # On expose directement le port d'Apache
+      - "8000:80" # Ton site sera sur http://localhost:8000
     volumes:
       - ./src:/var/www/html
     depends_on:
       - db
-      
+
+  # 3. L'interface graphique pour gérer la DB
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80" # phpMyAdmin sera sur http://localhost:8080
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    depends_on:
+      - db
