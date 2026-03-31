@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-
+<?php
+    include __DIR__ . '/../templates/header.php';
+?>
+<main class="content">
 <body>
     <div class="card">
         <h1>🚀 Succès !</h1>
@@ -16,4 +19,9 @@
         <p>Dossier actuel : <code><?php echo __DIR__; ?></code></p>
     </div>
 </body>
+</main>
 </html>
+
+<?php
+    include __DIR__ . '/../templates/footer.php';
+?>
