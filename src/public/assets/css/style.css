@@ -48,12 +48,10 @@
 
 /**---------------------------------------------------------------------------**/
 body {
-    background-color: #f0f0f0;
-    font-family: sans-serif;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    flex-direction: column; /* Aligne le header au-dessus du contenu */
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
