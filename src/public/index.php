@@ -1,27 +1,31 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Projet Docker</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
+<?php 
+    require_once '../includes/db.php';
+    require_once '../includes/articles_functions.php'; // On charge nos fonctions
+    
+    // On appelle la fonction pour récupérer les données
+    $articles = getAnnoncesEnLigne($pdo);
 
-<?php
-    include __DIR__ . '/../templates/header.php';
+    include '../templates/header.php'; 
 ?>
-<main class="content">
-<body>
-    <div class="card">
-        <h1>🚀 Succès !</h1>
-        <p>Ton serveur <strong>PHP + Apache</strong> fonctionne sous Docker.</p>
-        <p class="status">Version de PHP : <?php echo phpversion(); ?></p>
-        <p>Dossier actuel : <code><?php echo __DIR__; ?></code></p>
-    </div>
-</body>
+
+<main>
+    <h2>Toutes les annonces</h2>
+    
+    <?php if (empty($articles)): ?>
+        <p>Aucune annonce pour le moment.</p>
+    <?php else: ?>
+        <div class="annonces-grid">
+            <?php foreach ($articles as $article): ?>
+                <div class="annonce-card">
+                    <h3><?= htmlspecialchars($article['titre']) ?></h3>
+                    <p>Prix : <strong><?= $article['prix'] ?> €</strong></p>
+                    <p>Ville : <?= htmlspecialchars($article['ville_nom']) ?></p>
+                    <a href="annonce.php?id=<?= $article['id'] ?>">Voir le détail</a>
+                </div>
+                <hr>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 </main>
-</html>
 
-<?php
-    include __DIR__ . '/../templates/footer.php';
-?>
+<?php include '../templates/footer.php'; ?>

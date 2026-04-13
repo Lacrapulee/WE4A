@@ -16,7 +16,7 @@ services:
     build: ./docker/php
     restart: always
     ports:
-      - "8000:80" # Ton site sera sur http://localhost:8000
+      - "8000:80" # Ton site sera sur http://localhosgit checkout -b developpement-boutiquet:8000
     volumes:
       - ./src:/var/www/html
     depends_on:

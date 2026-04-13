@@ -4,13 +4,13 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Mon Projet Docker</title>
+        <title>LeCoinCarré</title>
         <link rel="stylesheet" href="assets/css/style.css">
     </head>
 
 <header class="main-header">
     <div class="logo">
-        <a href="/index.php">MaBoutique</a>
+        <a href="/index.php">LeCoinCarré</a>
     </div>
 
     <div class="search-bar">
