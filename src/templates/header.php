@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>LeCoinCarré</title>
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="/assets/css/style.css">
     </head>
 
 <header class="main-header">
@@ -21,7 +21,7 @@
     </div>
 
     <nav class="header-actions">
-        <a href="/login.php" class="btn-secondary">Connexion</a>
-        <a href="/panier.php" class="btn-cart">🛒 Panier (0)</a>
+        <a href="login/index.php" class="btn-secondary">Connexion</a>
+        <a href="panier/index.php" class="btn-cart">🛒 Panier (0)</a>
     </nav>
 </header>
