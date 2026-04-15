@@ -1,4 +1,15 @@
 <?php
-require_once '../includes/db.php';
-include '../templates/header.php';
+
+include '../../templates/header.php';
+
 ?>
+
+
+<main>
+
+    <h2>
+        Connexion
+    </h2>
+
+
+</main>
