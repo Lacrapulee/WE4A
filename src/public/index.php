@@ -20,7 +20,7 @@
                     <h3><?= htmlspecialchars($article['titre']) ?></h3>
                     <p>Prix : <strong><?= $article['prix'] ?> €</strong></p>
                     <p>Ville : <?= htmlspecialchars($article['ville_nom']) ?></p>
-                    <a href="annonce.php?id=<?= $article['id'] ?>">Voir le détail</a>
+                    <a href="items/index.php?id=<?= $article['id'] ?>">Voir le détail</a>
                 </div>
                 <hr>
             <?php endforeach; ?>
