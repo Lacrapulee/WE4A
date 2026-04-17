@@ -16,3 +16,9 @@ function getAnnonceById($pdo, $id) {
     $stmt->execute([$id]);
     return $stmt->fetch();
 }
+
+fucntion getImageByAnnonceId($pdo, $id) {
+    $stmt = $pdo->prepare("SELECT url_image FROM article_images WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetchColumn();
+}
