@@ -15,6 +15,9 @@ require_once "../../includes/articles_functions.php";
 
 $product = getAnnonceById($pdo,$productId);
 
+$nom_image = getNomImage($pdo, $productId);
+$dossier = "asset/img/";
+
 if (!$product) {
     echo "Erreur: Produit non trouvé.";
     exit;
@@ -38,6 +41,7 @@ if (!$product) {
     <div class="product-menu">
         <h1><?php echo htmlspecialchars($product['titre']); ?></h1>
         <div class="product-info">
+            <img src="<?php echo $dossier . $nom_image; ?>" alt="Mon Image">
             <p><strong>ID:</strong> <?php echo htmlspecialchars($product['id']); ?></p>
             <p><strong>Prix:</strong> <span class="price"><?php echo htmlspecialchars($product['prix']); ?>€</span></p>
             <p><strong>Description:</strong> <?php echo htmlspecialchars($product['description']); ?></p>
