@@ -6,3 +6,8 @@ function getAnnonceRecherche($pdo, $search) {
     $stmt->execute([$likeSearch, $likeSearch]);
     return $stmt->fetchAll();
 }
+
+function addItem($pdo, $titre, $description, $prix, $categorie_id, $user_id) {
+    $stmt = $pdo->prepare("INSERT INTO articles (titre, description, prix, categorie_id, user_id) VALUES (?, ?, ?, ?, ?)");
+    return $stmt->execute([$titre, $description, $prix, $categorie_id, $user_id]);
+}
