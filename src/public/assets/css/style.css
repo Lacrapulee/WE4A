@@ -1,62 +1,159 @@
-.main-header {
-    display: flex;
-    align-items: center; /* Aligne verticalement au milieu */
-    justify-content: space-between; /* Espace les 3 blocs */
-    padding: 15px 5%;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-/* Style de la barre de recherche */
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 5%;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
 .search-bar form {
     display: flex;
-    border: 1px solid #ccc;
-    border-radius: 20px; /* Bords arrondis modernes */
+    border: 1px solid #e5e7eb;
+    border-radius: 99px;
     overflow: hidden;
-    width: 400px; /* Largeur fixe ou max-width */
+    width: 400px;
+    transition: border-color 0.2s;
+}
+
+.search-bar form:focus-within {
+    border-color: #3b82f6;
 }
 
 .search-bar input {
     border: none;
-    padding: 10px 15px;
-    flex-grow: 1; /* Prend tout l'espace restant dans le form */
+    padding: 10px 20px;
+    flex-grow: 1;
     outline: none;
+    font-size: 0.95rem;
 }
 
 .search-bar button {
     background: #ff4757;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 25px;
     cursor: pointer;
+    font-weight: 600;
 }
 
-/* Style des boutons */
 .header-actions a {
     text-decoration: none;
     margin-left: 20px;
-    font-weight: bold;
-    color: #333;
+    font-weight: 600;
+    color: #374151;
 }
 
 .btn-cart {
-    background-color: #2f3542;
+    background-color: #111827;
     color: white !important;
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    transition: opacity 0.2s;
 }
 
-/**---------------------------------------------------------------------------**/
-body {
+.btn-cart:hover {
+    opacity: 0.9;
+}
+
+/* Footer */
+footer.footer {
+    background-color: #1f2937;
+    color: #e5e7eb;
+    margin-top: 4rem;
+    border-top: 1px solid #374151;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.footer-content {
+    padding: 2.5rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section {
     display: flex;
-    flex-direction: column; /* Aligne le header au-dessus du contenu */
-    margin: 0;
-    padding: 0;
+    flex-direction: column;
 }
 
-h1 {
-    color: #007bff;
-    border: 2px solid #007bff;
-    padding: 20px;
-    border-radius: 10px;
+.footer-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-links li a {
+    color: #d1d5db;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.footer-links li a:hover {
+    color: #ff4757;
+}
+
+.footer-bottom {
+    border-top: 1px solid #374151;
+    padding: 1.5rem 0;
+    text-align: center;
+}
+
+.footer-copyright {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #9ca3af;
+}
+
+.footer-copyright strong {
+    color: #ff4757;
+}
+
+/* Responsive footer */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        padding: 2rem 0;
+    }
+    
+    .footer-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+}
+
+/* Sticky sidebar sur desktop */
+@media (min-width: 1024px) {
+    aside {
+        position: sticky;
+        top: 2rem;
+        height: fit-content;
+    }
 }

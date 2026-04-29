@@ -2,6 +2,7 @@
 session_start();
 include '../../includes/tools.php';
 include '../../includes/db.php';
+require_once '../../includes/articles_functions.php';
 
 $searchQuery = $_GET['search'] ?? '';
 $results = [];
@@ -35,7 +36,8 @@ if ($searchQuery !== '') {
                             <div class="result-item">
                                 <h3><?php echo htmlspecialchars($item['titre']); ?></h3>
                                 <p><?php echo htmlspecialchars($item['description']); ?></p>
-                                <p class="price"><?php echo htmlspecialchars($item['prix']); ?></p>
+                                <p class="price"><?php echo number_format((float) $item['prix'], 2, ',', ' '); ?> €</p>
+                                <a class="detail-link" href="/items/item.php?id=<?php echo htmlspecialchars($item['id']); ?>">Voir le détail</a>
                             </div>
                         <?php endforeach; ?>
                     </div>

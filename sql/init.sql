@@ -167,6 +167,24 @@ CREATE TABLE `promotions` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `ventes`
+--
+
+CREATE TABLE `ventes` (
+  `id` int(11) NOT NULL,
+  `reference` varchar(30) NOT NULL,
+  `article_id` char(36) NOT NULL,
+  `vendeur_id` char(36) NOT NULL,
+  `acheteur_nom` varchar(150) NOT NULL,
+  `acheteur_email` varchar(255) NOT NULL,
+  `montant` decimal(12,2) NOT NULL,
+  `statut_paiement` enum('valide','refuse','rembourse') NOT NULL DEFAULT 'valide',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `users`
 --
 
@@ -263,6 +281,15 @@ ALTER TABLE `promotions`
   ADD KEY `fk_promo_article` (`article_id`);
 
 --
+-- Index pour la table `ventes`
+--
+ALTER TABLE `ventes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uk_ventes_reference` (`reference`),
+  ADD UNIQUE KEY `uk_ventes_article` (`article_id`),
+  ADD KEY `fk_ventes_vendeur` (`vendeur_id`);
+
+--
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
@@ -307,6 +334,12 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT pour la table `promotions`
 --
 ALTER TABLE `promotions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `ventes`
+--
+ALTER TABLE `ventes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -374,6 +407,13 @@ ALTER TABLE `messages`
 --
 ALTER TABLE `promotions`
   ADD CONSTRAINT `fk_promo_article` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `ventes`
+--
+ALTER TABLE `ventes`
+  ADD CONSTRAINT `fk_ventes_article` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`),
+  ADD CONSTRAINT `fk_ventes_vendeur` FOREIGN KEY (`vendeur_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

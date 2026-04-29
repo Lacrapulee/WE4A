@@ -10,13 +10,14 @@ services:
       - "3306:3306"
     volumes:
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql/seed.sql:/docker-entrypoint-initdb.d/seed.sql
   
   # 2. Ton application PHP (Apache + PHP)
   php:
     build: ./docker/php
     restart: always
     ports:
-      - "8000:80" # Ton site sera sur http://localhost git checkout -b developpement-boutiquet:8000
+      - "8000:80" # Ton site sera sur http://localhost:8000
     volumes:
       - ./src:/var/www/html
     depends_on:
