@@ -1,6 +1,6 @@
 <?php
-$page_css = "auth";
 include '../../templates/header.php';
+
 ?>
     <link rel="stylesheet" href="../assets/css/inscription.css">
 
