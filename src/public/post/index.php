@@ -1,37 +1,107 @@
 <?php
+session_start();
+require_once '../../includes/db.php';
+include_once '../../includes/tools.php';
+
+// Sécurité : On vérifie que l'utilisateur est bien connecté
+if (!isset($_SESSION['user_id'])) {
+    echo "<p><a href='../login'>Se connecter</a></p>";
+    die("Vous devez être connecté pour publier un article.");
+
+    // Idéalement : header('Location: /login.php'); exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
     
+    // Récupération des données du formulaire
+    $titre = $_POST['titre'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $prix = $_POST['prix'] ?? 0;
+    $categorie_id = $_POST['categorie_id'] ?? 1;
+    $coordonnees = $_POST['coordonnees'] ?? '';
+    $ville_nom = $_POST['ville_nom'] ?? '';
+    $code_postal = $_POST['code_postal'] ?? '';
+    
+    $vendeur_id = $_SESSION['user_id']; // L'ID de l'utilisateur connecté
+    
     $dossierCible = "../assets/img/";
-    $infosFichier = pathinfo($_FILES["ma_super_image"]["name"]);
-    $extension = strtolower($infosFichier['extension']);
-    
-    // 1. Sécurité Extensions
     $autorise = ['jpg', 'jpeg', 'png', 'webp'];
-    
-    if (in_array($extension, $autorise)) {
-        // 2. Sécurité : Vérification du vrai type d'image
-        if (getimagesize($_FILES["ma_super_image"]["tmp_name"])) {
-            
-            // 3. Nouveau nom unique
-            $nomSecurise = bin2hex(random_bytes(8)) . "." . $extension;
-            $cheminFinal = $dossierCible . $nomSecurise;
+    $nombreDeFichiers = count($_FILES['ma_super_image']['name']);
+    $succes = [];
+    $erreurs = [];
 
-            if (move_uploaded_file($_FILES["ma_super_image"]["tmp_name"], $cheminFinal)) {
-                
-                // C'est ICI que tu appelles ta fonction DB
-                // include_once 'includes/db_functions.php';
-                // ajouterImageDansDb($nomSecurise);
-                
-                echo "Succès ! Image enregistrée sous : " . $nomSecurise;
+    // --- TRAITEMENT DES IMAGES ---
+    for ($i = 0; $i < $nombreDeFichiers; $i++) {
+        if ($_FILES['ma_super_image']['error'][$i] === UPLOAD_ERR_OK) {
+            $nomFichierOriginal = $_FILES['ma_super_image']['name'][$i];
+            $cheminTemporaire = $_FILES['ma_super_image']['tmp_name'][$i];
+            $infosFichier = pathinfo($nomFichierOriginal);
+            $extension = strtolower($infosFichier['extension']);
+            
+            if (in_array($extension, $autorise) && getimagesize($cheminTemporaire)) {
+                $nomSecurise = bin2hex(random_bytes(8)) . "." . $extension;
+                $cheminFinal = $dossierCible . $nomSecurise;
+
+                if (move_uploaded_file($cheminTemporaire, $cheminFinal)) {
+                    array_push($succes, $nomSecurise);
+                } else {
+                    $erreurs[] = "Erreur serveur pour " . htmlspecialchars($nomFichierOriginal);
+                }
+            } else {
+                $erreurs[] = "Fichier invalide ou non autorisé : " . htmlspecialchars($nomFichierOriginal);
             }
+        } elseif ($_FILES['ma_super_image']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
+            $erreurs[] = "Erreur de téléchargement pour l'image " . ($i + 1);
         }
-    } else {
-        echo "Format non autorisé.";
+    }
+
+    // --- INSERTION EN BASE DE DONNÉES ---
+    if (empty($erreurs) && !empty($succes)) {
+        
+        // On crée l'article avec toutes les nouvelles colonnes
+        $nouvelArticleId = addItem($pdo, $vendeur_id, $categorie_id, $titre, $description, $prix, $coordonnees, $ville_nom, $code_postal);
+                
+        // On lie les images
+        foreach ($succes as $nomImage) {
+            addImage($pdo, $nouvelArticleId, $nomImage); 
+        }
+        
+        echo "<p style='color:green;'>Succès ! L'article a été publié avec " . count($succes) . " image(s).</p>";
+        
+    } elseif (!empty($erreurs)) {
+        echo "<div style='color:red;'><strong>Erreurs :</strong><ul>";
+        foreach ($erreurs as $erreur) { echo "<li>$erreur</li>"; }
+        echo "</ul></div>";
+        
+        // Nettoyage des images orphelines si échec
+        foreach ($succes as $imageOrpheline) {
+            @unlink($dossierCible . $imageOrpheline);
+        }
     }
 }
 ?>
 
 <form action="/post/index.php" method="post" enctype="multipart/form-data">
-    <input type="file" name="ma_super_image">
-    <button type="submit">Envoyer</button>
+    <h3>Informations de l'article</h3>
+    <input type="text" name="titre" placeholder="Titre de l'article" required><br><br>
+    
+    <select name="categorie_id" required>
+        <option value="">-- Choisir une catégorie --</option>
+        <option value="1">Électronique</option>
+        <option value="2">Vêtements</option>
+        <option value="3">Meubles</option>
+    </select><br><br>
+
+    <textarea name="description" placeholder="Description de l'article" required></textarea><br><br>
+    <input type="number" step="0.01" name="prix" placeholder="Prix (€)" required><br><br>
+    
+    <h3>Localisation</h3>
+    <input type="text" name="coordonnees" placeholder="Adresse ou coordonnées"><br><br>
+    <input type="text" name="ville_nom" placeholder="Ville" required><br><br>
+    <input type="text" name="code_postal" placeholder="Code Postal" required><br><br>
+
+    <h3>Images</h3>
+    <input type="file" name="ma_super_image[]" multiple accept="image/jpeg, image/png, image/webp" required><br><br>
+    
+    <button type="submit">Publier l'article</button>
 </form>
