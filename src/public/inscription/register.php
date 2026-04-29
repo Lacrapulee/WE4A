@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../../includes/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../public/register/index.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -65,7 +65,7 @@ try {
     $_SESSION['user_id'] = $id;
     $_SESSION['email'] = $email;
 
-    header("Location: ../public/index.php");
+    header("Location: /index.php");
     exit;
 
 } catch (PDOException $e) {
