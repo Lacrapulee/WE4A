@@ -31,7 +31,7 @@ try {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['email'] = $user['email'];
 
-    header("Location: ../public/index.php");
+    header("Location: /public/index.php");
     exit;
 
 } catch (PDOException $e) {
