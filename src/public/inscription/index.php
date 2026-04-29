@@ -8,7 +8,7 @@ include '../../templates/header.php';
         <div class="auth-card">
             <h1 class="auth-title">Créer un compte</h1>
 
-            <form method="POST" action="/includes/register.php" class="auth-form">
+            <form method="POST" action="register.php" class="auth-form">
 
                 <!-- Ligne 1 : Email (Pleine largeur) -->
                 <div class="form-group">
