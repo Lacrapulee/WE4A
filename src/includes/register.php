@@ -4,7 +4,7 @@ session_start();
 require_once __DIR__ . '/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../public/register/index.php");
+    header("Location: ../public/index.php");
     exit;
 }
 
