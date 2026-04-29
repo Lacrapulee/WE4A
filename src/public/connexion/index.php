@@ -1,5 +1,6 @@
 <?php
 include '../../templates/header.php';
+require_once('../../includes/db.php');
 ?>
 
     <main>

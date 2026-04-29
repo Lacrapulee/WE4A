@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once 'db.php';
+require_once __DIR__ . '/db.php';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: ../public/login.php");
@@ -16,7 +16,6 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-    // On cherche l'utilisateur
     $stmt = $pdo->prepare("SELECT id, email, password FROM users WHERE email = :email");
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -25,12 +24,10 @@ try {
         die("Utilisateur introuvable");
     }
 
-    // Vérification du mot de passe hashé
     if (!password_verify($password, $user['password'])) {
         die("Mot de passe incorrect");
     }
 
-    // Connexion OK
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['email'] = $user['email'];
 
