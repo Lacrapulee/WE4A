@@ -21,6 +21,8 @@
     </div>
 
     <nav class="header-actions">
-        <a href="/login/index.php" class="btn-secondary">Connexion</a>
+        <a href="/connexion/index.php" class="btn-secondary">Connexion</a>
+        <a href="/inscription/index.php" class="btn-secondary">Inscription</a>
+        <a href="/panier.php" class="btn-cart">🛒 Panier (0)</a>
     </nav>
 </header>
