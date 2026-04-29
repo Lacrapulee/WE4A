@@ -11,7 +11,9 @@
 
 <header class="main-header">
     <div class="logo">
-        <a href="/index.php">LeCoinCarré</a>
+        <a href="/index.php">
+            <img src="../assets/img/logo.png" alt="Accueil">
+        </a>
     </div>
 
     <div class="search-bar">
@@ -24,6 +26,6 @@
     <nav class="header-actions">
         <a href="/connexion/index.php" class="btn-secondary">Connexion</a>
         <a href="/inscription/index.php" class="btn-secondary">Inscription</a>
-        <a href="/panier.php" class="btn-cart"><i class="fa-solid fa-bag-shopping"></i></a>
+        <a href="/panier.php" class="btn-cart"><i class="fa-solid fa-user"></i></a>
     </nav>
 </header>

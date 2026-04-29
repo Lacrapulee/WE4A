@@ -2,15 +2,14 @@
 
 $page_css = "auth";
 include '../../templates/header.php';
-require_once('../../includes/db.php');
 ?>
-    <link rel="stylesheet" href="/assets/css/connexion.css">
+    <link rel="stylesheet" href="../assets/css/connexion.css">
 
     <main class="auth-container">
         <div class="auth-card">
             <h1 class="auth-title">Se connecter</h1>
 
-            <form method="POST" action="login.php" class="auth-form">
+            <form method="POST" action="../../includes/login.php" class="auth-form">
 
                 <div class="form-group">
                     <input type="email" id="email" name="email" placeholder="Adresse e-mail" required>
@@ -34,7 +33,7 @@ require_once('../../includes/db.php');
                 <button type="submit" class="btn-auth">Se connecter</button>
 
                 <div style="margin-top: 1.5rem; text-align: center;">
-                    <p class="form-help">Pas encore de compte ? <a href="register.php" style="color: #005F83; text-decoration: none; font-weight: 600;">Inscris-toi</a></p>
+                    <p class="form-help">Pas encore de compte ? <a href="../inscription/index.php" style="color: #005F83; text-decoration: none; font-weight: 600;">Inscris-toi</a></p>
                 </div>
             </form>
         </div>

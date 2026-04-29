@@ -103,3 +103,9 @@ footer.footer {
         padding-right: 2rem;
     }
 }
+
+
+img {
+    width: 55px;
+    height: auto;
+}
