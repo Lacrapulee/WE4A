@@ -1,121 +1,82 @@
-<?php
-session_start();
-require_once '../../includes/db.php';
-include_once '../../includes/tools.php';
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publier une annonce</title>
+    <!-- Chemin relatif à partir de /public -->
+    <link rel="stylesheet" href="/assets/css/post.css">
 
-// Sécurité : On vérifie que l'utilisateur est bien connecté
-if (!isset($_SESSION['user_id'])) {
-    echo "<p><a href='../connexion'>Se connecter</a></p>";
-    die("Vous devez être connecté pour publier un article.");
-
-    // Idéalement : header('Location: /login.php'); exit();
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
     
-    // Récupération des données du formulaire
-    $titre = $_POST['titre'] ?? '';
-    $description = $_POST['description'] ?? '';
-    $prix = $_POST['prix'] ?? 0;
-    $categorie_id = $_POST['categorie_id'] ?? 1;
-    $coordonnees = $_POST['coordonnees'] ?? '';
-    $ville_nom = $_POST['ville_nom'] ?? '';
-    $code_postal = $_POST['code_postal'] ?? '';
-    
-    $vendeur_id = $_SESSION['user_id']; // L'ID de l'utilisateur connecté
-    
-    $dossierCible = "../assets/img/";
-    $autorise = ['jpg', 'jpeg', 'png', 'webp'];
-    $nombreDeFichiers = count($_FILES['ma_super_image']['name']);
-    $succes = [];
-    $erreurs = [];
-
-    // --- TRAITEMENT DES IMAGES ---
-    for ($i = 0; $i < $nombreDeFichiers; $i++) {
-        if ($_FILES['ma_super_image']['error'][$i] === UPLOAD_ERR_OK) {
-            $nomFichierOriginal = $_FILES['ma_super_image']['name'][$i];
-            $cheminTemporaire = $_FILES['ma_super_image']['tmp_name'][$i];
-            $infosFichier = pathinfo($nomFichierOriginal);
-            $extension = strtolower($infosFichier['extension']);
+</head>
+<body class="page-post">
+<?php include __DIR__ . '/../../templates/header.php'; ?>
+<main class="page-annonce">
+    <div class="form-container">
+        <h2>Publier une annonce</h2>
+        
+        <!-- On remonte d'un cran pour atteindre le routeur dans /public -->
+        <form action="../routeur.php?action=post" method="post" enctype="multipart/form-data">
             
-            if (in_array($extension, $autorise) && getimagesize($cheminTemporaire)) {
-                $nomSecurise = bin2hex(random_bytes(8)) . "." . $extension;
-                $cheminFinal = $dossierCible . $nomSecurise;
+            <section>
+                <h3>Informations générales</h3>
+                <div class="form-group">
+                    <label for="titre">Titre de l'annonce</label>
+                    <input type="text" id="titre" name="titre" placeholder="Ex: iPhone 13 comme neuf" required>
+                </div>
 
-                if (move_uploaded_file($cheminTemporaire, $cheminFinal)) {
-                    array_push($succes, $nomSecurise);
-                } else {
-                    $erreurs[] = "Erreur serveur pour " . htmlspecialchars($nomFichierOriginal);
-                }
-            } else {
-                $erreurs[] = "Fichier invalide ou non autorisé : " . htmlspecialchars($nomFichierOriginal);
-            }
-        } elseif ($_FILES['ma_super_image']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
-            $erreurs[] = "Erreur de téléchargement pour l'image " . ($i + 1);
-        }
-    }
+                <div class="form-group">
+                    <label for="categorie">Catégorie</label>
+                    <select id="categorie" name="categorie_id" required>
+                        <option value="">-- Choisir --</option>
+                        <option value="1">Électronique</option>
+                        <option value="2">Vêtements</option>
+                        <option value="3">Meubles</option>
+                    </select>
+                </div>
 
-    // --- INSERTION EN BASE DE DONNÉES ---
-    if (empty($erreurs) && !empty($succes)) {
-        
-        // On récupère les coordonnées GPS à partir de l'adresse
-        $coordonnees = getCoordinates($_POST['Adresse'], $_POST['ville_nom'], $_POST['code_postal']);
-        // Si l'API ne trouve rien, on stoppe l'opération pour éviter d'avoir des articles sans coordonnées
-        if (!$coordonnees) {
-            // Nettoyage des images orphelines
-            foreach ($succes as $imageOrpheline) {
-                @unlink($dossierCible . $imageOrpheline);
-            }
-            die("Adresse introuvable. Veuillez vérifier les informations de localisation.");
-        }   
-        
-        
-        // On crée l'article avec toutes les nouvelles colonnes
-        $nouvelArticleId = addItem($pdo, $vendeur_id, $categorie_id, $titre, $description, $prix, $coordonnees, $ville_nom, $code_postal);
-        
-        // On lie les images
-        foreach ($succes as $nomImage) {
-            addImage($pdo, $nouvelArticleId, $nomImage); 
-        }
-        
-        echo "<p style='color:green;'>Succès ! L'article a été publié avec " . count($succes) . " image(s).</p>";
-        
-    } elseif (!empty($erreurs)) {
-        echo "<div style='color:red;'><strong>Erreurs :</strong><ul>";
-        foreach ($erreurs as $erreur) { echo "<li>$erreur</li>"; }
-        echo "</ul></div>";
-        
-        // Nettoyage des images orphelines si échec
-        foreach ($succes as $imageOrpheline) {
-            @unlink($dossierCible . $imageOrpheline);
-        }
-    }
-}
-?>
+                <div class="form-group">
+                    <label for="description">Description détaillée</label>
+                    <textarea id="description" name="description" placeholder="Décrivez l'état, la marque..." required></textarea>
+                </div>
 
-<form action="/post/index.php" method="post" enctype="multipart/form-data">
-    <h3>Informations de l'article</h3>
-    <input type="text" name="titre" placeholder="Titre de l'article" required><br><br>
-    
-    <select name="categorie_id" required>
-        <option value="">-- Choisir une catégorie --</option>
-        <option value="1">Informatique (PC, Consoles, Accessoires)</option>
-        <option value="2">Vehicules (Voitures, Velos, Trottinettes)</option>
-        <option value="3">Immobilier (Ventes et Locations)</option>
-        <option value="4">Maison (Meubles et Deco)</option>
-        <option value="5">Loisirs (Sport, Musique, Jeux)</option>
-    </select><br><br>
+                <div class="form-group">
+                    <label for="prix">Prix (€)</label>
+                    <input type="number" id="prix" step="0.01" name="prix" placeholder="0.00" required>
+                </div>
+            </section>
 
-    <textarea name="description" placeholder="Description de l'article" required></textarea><br><br>
-    <input type="number" step="0.01" name="prix" placeholder="Prix (€)" required><br><br>
-    
-    <h3>Localisation</h3>
-    <input type="text" name="Adresse" placeholder="Adresse ou coordonnées"><br><br>
-    <input type="text" name="ville_nom" placeholder="Ville" required><br><br>
-    <input type="text" name="code_postal" placeholder="Code Postal" required><br><br>
+            <section>
+                <h3>Localisation</h3>
+                <div class="form-group">
+                    <label for="adresse">Adresse</label>
+                    <input type="text" id="adresse" name="coordonnees" placeholder="10 rue de la paix">
+                </div>
+                
+                <div class="grid-local">
+                    <div class="form-group">
+                        <label for="ville">Ville</label>
+                        <input type="text" id="ville" name="ville_nom" placeholder="Paris" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cp">Code Postal</label>
+                        <input type="text" id="cp" name="code_postal" placeholder="75000" required>
+                    </div>
+                </div>
+            </section>
 
-    <h3>Images</h3>
-    <input type="file" name="ma_super_image[]" multiple accept="image/jpeg, image/png, image/webp" required><br><br>
-    
-    <button type="submit">Publier l'article</button>
-</form>
+            <section>
+                <h3>Photos</h3>
+                <div class="form-group file-input-wrapper">
+                    <label for="images">Sélectionnez vos images (Plusieurs possible)</label>
+                    <input type="file" id="images" name="ma_super_image[]" multiple accept="image/jpeg, image/png, image/webp" required>
+                </div>
+            </section>
+
+            <button type="submit" class="btn-submit">Publier</button>
+        </form>
+    </div>
+</main>
+<?php include '../../templates/footer.php'; ?>
+</body>
+</html>
