@@ -27,9 +27,14 @@ function addItem($pdo, $vendeur_id, $categorie_id, $titre, $description, $prix, 
     return $pdo->lastInsertId();
 }
 
-function addImage($pdo, $article_id, $nom_image) {
-    $stmt = $pdo->prepare("INSERT INTO article_images (article_id, url_image, est_principale, ordre) VALUES (?, ?, ?)");
-    return $stmt->execute([$article_id, $nom_image]);
+function addImage($pdo, $article_id, $nom_image, $ordre) {
+    $stmt = $pdo->prepare("INSERT INTO article_images (article_id, url_image, est_principale, ordre) VALUES (?, ?, ?, ?)");
+    if ($ordre == 1) {
+        $resultat = $stmt->execute([$article_id, $nom_image, 1, $ordre]);
+    } else {
+        $resultat = $stmt->execute([$article_id, $nom_image, 0, $ordre]);
+    }
+    return $resultat;
 }
 
 function getCoordinates($adresse, $ville, $cp) {

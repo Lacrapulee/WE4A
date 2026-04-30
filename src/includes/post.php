@@ -18,13 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
     $description = $_POST['description'] ?? '';
     $prix = $_POST['prix'] ?? 0;
     $categorie_id = $_POST['categorie_id'] ?? 1;
-    $coordonnees = $_POST['coordonnees'] ?? '';
+    $addresse = $_POST['addresse'] ?? '';
     $ville_nom = $_POST['ville_nom'] ?? '';
     $code_postal = $_POST['code_postal'] ?? '';
     
     $vendeur_id = $_SESSION['user_id']; // L'ID de l'utilisateur connecté
     
-    $dossierCible = "../assets/img/";
+    $dossierCible = "../public/assets/img/";
     $autorise = ['jpg', 'jpeg', 'png', 'webp'];
     $nombreDeFichiers = count($_FILES['ma_super_image']['name']);
     $succes = [];
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
                 $cheminFinal = $dossierCible . $nomSecurise;
 
                 if (move_uploaded_file($cheminTemporaire, $cheminFinal)) {
-                    array_push($succes, $nomSecurise);
+                    array_push($succes, [$nomSecurise, $i + 1]); // On stocke le nom de l'image et son ordre
                 } else {
                     $erreurs[] = "Erreur serveur pour " . htmlspecialchars($nomFichierOriginal);
                 }
@@ -58,16 +58,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
     // --- INSERTION EN BASE DE DONNÉES ---
     if (empty($erreurs) && !empty($succes)) {
         
+    $coordonnees = getCoordinates($addresse, $ville_nom, $code_postal);
+
         // On crée l'article avec toutes les nouvelles colonnes
         $nouvelArticleId = addItem($pdo, $vendeur_id, $categorie_id, $titre, $description, $prix, $coordonnees, $ville_nom, $code_postal);
-                
         // On lie les images
-        foreach ($succes as $nomImage) {
-            addImage($pdo, $nouvelArticleId, $nomImage); 
+        foreach ($succes as $image) {
+            addImage($pdo, $nouvelArticleId, $image[0], $image[1]); // $image[0] = nom de l'image, $image[1] = ordre
         }
         
         echo "<p style='color:green;'>Succès ! L'article a été publié avec " . count($succes) . " image(s).</p>";
-        
+        echo "<p><a href='/items/item.php?id=$nouvelArticleId'>Voir l'article</a></p>";
+        echo "<p><a href='/post/index.php'>Publier une autre annonce</a></p>";
+        echo "<p><a href='/index.php'>Retour à l'accueil</a></p>";
     } elseif (!empty($erreurs)) {
         echo "<div style='color:red;'><strong>Erreurs :</strong><ul>";
         foreach ($erreurs as $erreur) { echo "<li>$erreur</li>"; }
