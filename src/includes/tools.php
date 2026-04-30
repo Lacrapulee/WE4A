@@ -1,11 +1,5 @@
 <?php
 
-function getAnnonceRecherche($pdo, $search) {
-    $stmt = $pdo->prepare("SELECT * FROM articles WHERE statut = 'en_ligne' AND (titre LIKE ? OR description LIKE ?) ORDER BY created_at DESC");
-    $likeSearch = '%' . $search . '%';
-    $stmt->execute([$likeSearch, $likeSearch]);
-    return $stmt->fetchAll();
-}
 
 function addItem($pdo, $vendeur_id, $categorie_id, $titre, $description, $prix, $coordonnees, $ville_nom, $code_postal) {
     // On sépare la chaîne "47.639,6.853" en deux variables
