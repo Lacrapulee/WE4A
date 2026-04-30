@@ -34,7 +34,7 @@
                         
                         <div class="item-card">
                             <!-- Ici, il faudrait une jointure pour avoir l'image principale -->
-                            <a href="../items?id=<?= $article['id'] ?>"> 
+                            <a href="../routeur.php?action=item&id=<?= $article['id'] ?>"> 
                                 <img src="../assets/img/<?= htmlspecialchars($article['image']) ?>" alt="Item">
                             </a>
                             <div class="item-info">

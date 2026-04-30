@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 
 // Sécurité : Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {

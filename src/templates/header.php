@@ -17,7 +17,7 @@
     </div>
 
     </div class="nav-links">
-        <a href="/post">Vendre</a>
+        <a href="/routeur.php?action=post">Vendre</a>
     </div>
 
     <div class="search-bar">

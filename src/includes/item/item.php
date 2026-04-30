@@ -1,7 +1,7 @@
 <?php
 // includes/item.php
-require_once __DIR__ . '/db.php';
-require_once __DIR__ . '/articles_functions.php';
+require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../articles_functions.php';
 
 // 1. Récupération des données
 $productId = $_GET['id'] ?? null;

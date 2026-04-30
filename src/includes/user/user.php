@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 
 // 1. Récupérer l'ID du profil à afficher
 $profile_id = $_GET['id'] ?? null;
