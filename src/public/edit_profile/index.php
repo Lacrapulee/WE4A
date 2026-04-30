@@ -1,5 +1,4 @@
 
-<?php include '../templates/header.php'; ?>
 
 <div class="edit-container">
     <h2>Modifier mon profil</h2>
