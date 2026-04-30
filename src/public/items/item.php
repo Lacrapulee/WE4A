@@ -84,7 +84,9 @@ if (!$product) {
                 <aside class="space-y-6">
                     <section class="bg-white p-6 rounded-3xl shadow-md border border-gray-100">
                         <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2">Vendeur</p>
-                        <h2 class="text-xl font-bold"><?= htmlspecialchars($product['vendeur_prenom'] . ' ' . $product['vendeur_nom']) ?></h2>
+                        <a href="../routeur.php?action=user&id=<?= $product['vendeur_id'] ?>" method= "get" class="text-xl font-bold hover:text-blue-600 transition-colors">
+                            <?= htmlspecialchars($product['vendeur_prenom'] . ' ' . $product['vendeur_nom']) ?>
+                        </a>
                         <div class="mt-4 space-y-2 text-sm text-gray-600">
                             <?php if ($product['vendeur_telephone']): ?> <p>📞 <?= htmlspecialchars($product['vendeur_telephone']) ?></p> <?php endif; ?>
                             <p>✉️ <?= htmlspecialchars($product['vendeur_email']) ?></p>

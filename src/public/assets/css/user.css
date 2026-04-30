@@ -1,0 +1,27 @@
+.profile-container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+
+/* Header Profil */
+.profile-header { 
+    background: white; padding: 2rem; border-radius: 12px; 
+    display: flex; align-items: center; gap: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+.avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; background: #eee; }
+.profile-info h1 { margin: 0; color: #1e293b; }
+.btn-edit { 
+    background: #2563eb; color: white; padding: 0.5rem 1rem; 
+    border-radius: 6px; text-decoration: none; font-weight: 600; 
+}
+
+/* Sections */
+.profile-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 2rem; }
+.section-title { border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+
+/* Cards Articles */
+.items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+.item-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+.item-card img { width: 100%; height: 150px; object-fit: cover; }
+.item-info { padding: 0.8rem; }
+.status-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; background: #dcfce7; color: #166534; }
+
+/* Commentaires */
+.review-card { background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #cbd5e1; }

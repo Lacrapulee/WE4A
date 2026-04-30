@@ -11,25 +11,25 @@
 
 <header class="main-header">
     <div class="logo">
-        <a href="/index.php">
+        <a href="/">
             <img src="../assets/img/logo.png" alt="Accueil">
         </a>
     </div>
 
     </div class="nav-links">
-        <a href="/post/index.php">Vendre</a>
+        <a href="/post">Vendre</a>
     </div>
 
     <div class="search-bar">
-        <form action="/catalogue/index.php" method="GET">
+        <form action="/catalogue" method="GET">
             <input type="text" name="search" placeholder="Rechercher un produit...">
             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
 
     <nav class="header-actions">
-        <a href="/connexion/index.php" class="btn-secondary">Connexion</a>
-        <a href="/inscription/index.php" class="btn-secondary">Inscription</a>
-        <a href="/panier.php" class="btn-cart"><i class="fa-solid fa-user"></i></a>
+        <a href="/connexion" class="btn-secondary">Connexion</a>
+        <a href="/inscription" class="btn-secondary">Inscription</a>
+        <a href="/routeur.php?action=user&id=<?= $_SESSION['user_id'] ?? '' ?>" method="GET" class="btn-cart"><i class="fa-solid fa-user"></i></a>
     </nav>
 </header>

@@ -10,3 +10,9 @@ Dans php/8.*/php.ini changer les lignes :
 - memory_limit = -1 
 
 PHP My admin : http://localhost:8080
+
+User : création de la page : affichage du profil, 
+
+Deux versions : 
+- version 'viewer' : le profil avec tout les commentaires, les items vendus et à vendre et les informations du vendeur 
+- version 'owner' : le profil avec tout les commentaire, les items vendus et à vendre les infos du owner mais un bouton modification du profil
