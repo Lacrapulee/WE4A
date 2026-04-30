@@ -5,7 +5,7 @@ include_once '../../includes/tools.php';
 
 // Sécurité : On vérifie que l'utilisateur est bien connecté
 if (!isset($_SESSION['user_id'])) {
-    echo "<p><a href='../login'>Se connecter</a></p>";
+    echo "<p><a href='../connexion'>Se connecter</a></p>";
     die("Vous devez être connecté pour publier un article.");
 
     // Idéalement : header('Location: /login.php'); exit();
@@ -58,9 +58,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
     // --- INSERTION EN BASE DE DONNÉES ---
     if (empty($erreurs) && !empty($succes)) {
         
+        // On récupère les coordonnées GPS à partir de l'adresse
+        $coordonnees = getCoordinates($_POST['Adresse'], $_POST['ville_nom'], $_POST['code_postal']);
+        // Si l'API ne trouve rien, on stoppe l'opération pour éviter d'avoir des articles sans coordonnées
+        if (!$coordonnees) {
+            // Nettoyage des images orphelines
+            foreach ($succes as $imageOrpheline) {
+                @unlink($dossierCible . $imageOrpheline);
+            }
+            die("Adresse introuvable. Veuillez vérifier les informations de localisation.");
+        }   
+        
+        
         // On crée l'article avec toutes les nouvelles colonnes
         $nouvelArticleId = addItem($pdo, $vendeur_id, $categorie_id, $titre, $description, $prix, $coordonnees, $ville_nom, $code_postal);
-                
+        
         // On lie les images
         foreach ($succes as $nomImage) {
             addImage($pdo, $nouvelArticleId, $nomImage); 
@@ -87,16 +99,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
     
     <select name="categorie_id" required>
         <option value="">-- Choisir une catégorie --</option>
-        <option value="1">Électronique</option>
-        <option value="2">Vêtements</option>
-        <option value="3">Meubles</option>
+        <option value="1">Informatique (PC, Consoles, Accessoires)</option>
+        <option value="2">Vehicules (Voitures, Velos, Trottinettes)</option>
+        <option value="3">Immobilier (Ventes et Locations)</option>
+        <option value="4">Maison (Meubles et Deco)</option>
+        <option value="5">Loisirs (Sport, Musique, Jeux)</option>
     </select><br><br>
 
     <textarea name="description" placeholder="Description de l'article" required></textarea><br><br>
     <input type="number" step="0.01" name="prix" placeholder="Prix (€)" required><br><br>
     
     <h3>Localisation</h3>
-    <input type="text" name="coordonnees" placeholder="Adresse ou coordonnées"><br><br>
+    <input type="text" name="Adresse" placeholder="Adresse ou coordonnées"><br><br>
     <input type="text" name="ville_nom" placeholder="Ville" required><br><br>
     <input type="text" name="code_postal" placeholder="Code Postal" required><br><br>
 
