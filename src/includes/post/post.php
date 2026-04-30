@@ -1,7 +1,6 @@
 <?php
-session_start();
-require_once 'db.php';
-include_once 'tools.php';
+require_once __DIR__ . '/../db.php';
+include_once __DIR__ . '/../tools.php';
 
 // Sécurité : On vérifie que l'utilisateur est bien connecté
 if (!isset($_SESSION['user_id'])) {
@@ -67,10 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
             addImage($pdo, $nouvelArticleId, $image[0], $image[1]); // $image[0] = nom de l'image, $image[1] = ordre
         }
         
-        echo "<p style='color:green;'>Succès ! L'article a été publié avec " . count($succes) . " image(s).</p>";
-        echo "<p><a href='/items/item.php?id=$nouvelArticleId'>Voir l'article</a></p>";
-        echo "<p><a href='/post/index.php'>Publier une autre annonce</a></p>";
-        echo "<p><a href='/index.php'>Retour à l'accueil</a></p>";
+        
     } elseif (!empty($erreurs)) {
         echo "<div style='color:red;'><strong>Erreurs :</strong><ul>";
         foreach ($erreurs as $erreur) { echo "<li>$erreur</li>"; }

@@ -10,7 +10,7 @@
     
 </head>
 <body class="page-post">
-<?php include __DIR__ . '/../../templates/header.php'; ?>
+
 <main class="page-annonce">
     <div class="form-container">
         <h2>Publier une annonce</h2>
@@ -77,6 +77,5 @@
         </form>
     </div>
 </main>
-<?php include '../../templates/footer.php'; ?>
 </body>
 </html>
