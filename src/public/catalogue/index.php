@@ -1,20 +1,3 @@
-<?php
-session_start();
-include '../../includes/db.php';
-require_once '../../includes/articles_functions.php';
-
-// On récupère tous les filtres depuis l'URL (GET)
-$filters = [
-    'search'    => $_GET['search'] ?? '',
-    'categorie' => $_GET['categorie'] ?? '',
-    'ville'     => $_GET['ville'] ?? '',
-    'prix_max'  => $_GET['prix_max'] ?? ''
-];
-
-$results = getAnnonceRechercheAvancee($pdo, $filters);
-$categories = getCategories($pdo);
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -23,20 +6,22 @@ $categories = getCategories($pdo);
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 flex flex-col min-h-screen">
-    <?php include '../../templates/header.php'; ?>
+    <?php include '../templates/header.php'; ?>
 
     <main class="max-w-7xl mx-auto px-4 py-8 w-full">
         <!-- BARRE DE RECHERCHE AVANCÉE -->
         <section class="bg-white p-6 rounded-2xl shadow-sm mb-8 border border-gray-100">
-            <form action="index.php" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <form action="/routeur.php?action=catalogue" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <!-- Mot-clé -->
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Que cherchez-vous ?</label>
+                    
                     <input type="text" name="search" value="<?= htmlspecialchars($filters['search']) ?>" 
                            placeholder="Ex: Vélo, iPhone..." class="w-full border-gray-200 rounded-lg p-2 bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
 
                 <!-- Catégorie -->
+                <input type="hidden" name="action" value="catalogue">
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Catégorie</label>
                     <select name="categorie" class="w-full border-gray-200 rounded-lg p-2 bg-gray-50 outline-none">
@@ -75,7 +60,7 @@ $categories = getCategories($pdo);
             <?php if (!empty($results)): ?>
                 <?php foreach ($results as $item): ?>
                     <?php $img = getImageByAnnonceId($pdo, $item['id']) ?: 'default.png'; ?>
-                    <a href="/items/item.php?id=<?= $item['id'] ?>" class="group bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all">
+                    <a href="/routeur.php?action=item&id=<?= $item['id'] ?>" class="group bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all">
                         <img src="/assets/img/<?= htmlspecialchars($img) ?>" class="w-full aspect-video object-cover">
                         <div class="p-4">
                             <h3 class="font-bold truncate"><?= htmlspecialchars($item['titre']) ?></h3>
@@ -93,6 +78,6 @@ $categories = getCategories($pdo);
         </div>
     </main>
 
-    <?php include '../../templates/footer.php'; ?>
+    <?php include '../templates/footer.php'; ?>
 </body>
 </html>

@@ -1,4 +1,4 @@
 <?php
-header('Location: /catalogue/');
+header('Location: /routeur.php?action=catalogue');
 exit;
 ?>
