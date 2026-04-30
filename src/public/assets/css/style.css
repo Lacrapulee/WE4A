@@ -17,11 +17,11 @@ body {
     background-color: var(--soft-blue);
     color: var(--text-dark);
 }
+
 html, body {
     height: 100%;
     margin: 0;
 }
-
 
 main {
     flex: 1;

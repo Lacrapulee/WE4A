@@ -1,0 +1,35 @@
+/* post.css */
+
+/* Ce conteneur va centrer le formulaire sans toucher au reste du site */
+.post-annonce-wrapper {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: flex-start; /* Aligne en haut pour éviter les bugs de hauteur */
+    padding: 50px 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 100%;
+    /* On s'assure qu'il n'hérite pas de flottants bizarres */
+    float: none; 
+    margin: 0 auto;
+}
+
+/* On force les titres pour qu'ils ne soient pas écrasés par le header */
+.form-container h2 {
+    color: #2563eb !important;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Le reste de tes styles (inputs, labels, etc.) */
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }

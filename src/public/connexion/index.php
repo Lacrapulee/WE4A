@@ -9,7 +9,7 @@ include '../../templates/header.php';
         <div class="auth-card">
             <h1 class="auth-title">Se connecter</h1>
 
-            <form method="POST" action="login.php" class="auth-form">
+            <form method="POST" action="../routeur.php?action=connexion" class="auth-form">
 
                 <div class="form-group">
                     <input type="email" id="email" name="email" placeholder="Adresse e-mail" required>

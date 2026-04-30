@@ -16,6 +16,10 @@
         </a>
     </div>
 
+    </div class="nav-links">
+        <a href="/post/index.php">Vendre</a>
+    </div>
+
     <div class="search-bar">
         <form action="/catalogue/index.php" method="GET">
             <input type="text" name="search" placeholder="Rechercher un produit...">
