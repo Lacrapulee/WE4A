@@ -16,8 +16,10 @@
         </a>
     </div>
 
-    </div class="nav-links">
+    <div class="nav-links">
         <a href="/routeur.php?action=post">Vendre</a>
+        <a href="/routeur.php?action=myarticle" >Mes annonces</a>
+
     </div>
 
     <div class="search-bar">

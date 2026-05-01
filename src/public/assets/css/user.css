@@ -1,27 +1,180 @@
-.profile-container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
 
-/* Header Profil */
-.profile-header { 
-    background: white; padding: 2rem; border-radius: 12px; 
-    display: flex; align-items: center; gap: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-.avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; background: #eee; }
-.profile-info h1 { margin: 0; color: #1e293b; }
-.btn-edit { 
-    background: #2563eb; color: white; padding: 0.5rem 1rem; 
-    border-radius: 6px; text-decoration: none; font-weight: 600; 
+.profile-container {
+    max-width: 1100px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
 }
 
-/* Sections */
-.profile-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 2rem; }
-.section-title { border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+/* --- HEADER DU PROFIL --- */
+.profile-header {
+    background: white;
+    padding: 3rem;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 95, 131, 0.05);
+    border: 1px solid var(--border-color);
+}
 
-/* Cards Articles */
-.items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
-.item-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
-.item-card img { width: 100%; height: 150px; object-fit: cover; }
-.item-info { padding: 0.8rem; }
-.status-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; background: #dcfce7; color: #166534; }
+.avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--light-gray);
+    border: 4px solid var(--soft-blue);
+}
 
-/* Commentaires */
-.review-card { background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #cbd5e1; }
+.profile-info h1 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-dark);
+    font-size: 2.2rem;
+    font-weight: 800;
+}
+
+.profile-info p {
+    color: #64748b;
+    margin: 0.3rem 0;
+}
+
+.btn-edit {
+    display: inline-block;
+    background: var(--primary-blue);
+    color: white !important;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+    background: var(--primary-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 95, 131, 0.2);
+}
+
+/* --- STRUCTURE GRILLE --- */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2.5rem;
+    margin-top: 3rem;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary-blue);
+    border-bottom: 2px solid var(--soft-blue);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+/* --- GRILLE DES ARTICLES --- */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.item-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.item-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* --- HARMONISATION DU PRIX (STYLE PAGE ITEM) --- */
+.item-info {
+    padding: 1.2rem;
+}
+
+.item-info strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* On utilise le même style que .product-price de la page item */
+.item-info p {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primary-blue); /* Le bleu signature */
+    font-weight: 900; /* Très gras comme sur item */
+    font-size: 1.2rem; /* Légèrement plus grand */
+}
+
+.status-tag {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 99px;
+    background: #dcfce7; /* Fond vert clair */
+    color: #166534; /* Texte vert foncé */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.status-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 99px;
+    background: #dcfce7;
+    color: #166534;
+    text-transform: uppercase;
+}
+
+/* --- COMMENTAIRES --- */
+.user-reviews {
+    background: white;
+    padding: 2rem;
+    border-radius: 2rem;
+    border: 1px solid var(--border-color);
+    align-self: start;
+}
+
+.review-card {
+    background: var(--light-gray);
+    padding: 1.2rem;
+    border-radius: 1rem;
+    margin-bottom: 1.2rem;
+    border-left: 5px solid var(--primary-blue);
+}
+
+.review-card strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+}
+
+.review-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #4b5563;
+    font-style: italic;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 850px) {
+    .profile-grid { grid-template-columns: 1fr; }
+    .profile-header { flex-direction: column; text-align: center; }
+}

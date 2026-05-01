@@ -1,4 +1,6 @@
-<footer class="footer">
+<link rel="stylesheet" href="/assets/css/footer.css">
+
+<footer class="site-footer">
     <div class="footer-container">
         <div class="footer-content">
             <div class="footer-section">
@@ -10,9 +12,11 @@
                 </ul>
             </div>
         </div>
-        
+
         <div class="footer-bottom">
-            <p class="footer-copyright">&copy; <?php echo date('Y'); ?> <strong>LeCoinCarré</strong> - Projet WE4A P26</p>
+            <p>
+                &copy; <?php echo date('Y'); ?> <strong>LeCoinCarré</strong> - Projet WE4A P26
+            </p>
         </div>
     </div>
 </footer>

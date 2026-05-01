@@ -143,3 +143,25 @@ img {
     width: 55px;
     height: auto;
 }
+
+
+.footer-links {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+.footer-links a {
+    text-decoration: none !important;
+    color: #4b5563 !important;
+}
+
+.footer-links a:hover {
+    color: #005F83 !important;
+}
+
+.footer-title {
+    color: #005F83;
+    font-weight: bold;
+}
