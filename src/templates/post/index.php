@@ -29,9 +29,11 @@
                     <label for="categorie">Catégorie</label>
                     <select id="categorie" name="categorie_id" required>
                         <option value="">-- Choisir --</option>
-                        <option value="1">Électronique</option>
-                        <option value="2">Vêtements</option>
-                        <option value="3">Meubles</option>
+                        <option value="1">Informatique (PC, Consoles, Accessoires)</option>
+                        <option value="2">Vehicules (Voitures, Velos, Trottinettes)</option>
+                        <option value="3">Immobilier (Ventes et Locations)</option>
+                        <option value="4">Maison (Meubles et Deco)</option>
+                        <option value="5">Loisirs (Sport, Musique, Jeux)</option>
                     </select>
                 </div>
 
