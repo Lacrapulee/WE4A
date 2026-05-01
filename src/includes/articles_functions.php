@@ -92,7 +92,7 @@ function getAnnonceRechercheAvancee($pdo, $filters = []) {
  */
 function getAnnonceById($pdo, $id) {
     $stmt = $pdo->prepare(
-        "SELECT a.*, c.nom AS categorie_nom, u.nom AS vendeur_nom, u.prenom AS vendeur_prenom, u.email AS vendeur_email, u.telephone AS vendeur_telephone
+        "SELECT a.*, u.id AS vendeur_id, c.nom AS categorie_nom, u.nom AS vendeur_nom, u.prenom AS vendeur_prenom, u.email AS vendeur_email, u.telephone AS vendeur_telephone
          FROM articles a
          LEFT JOIN categories c ON c.id = a.categorie_id
          LEFT JOIN users u ON u.id = a.vendeur_id
@@ -106,7 +106,7 @@ function getAnnonceById($pdo, $id) {
  * Récupère TOUTES les images d'un article (pour le carrousel)
  */
 function getAllImagesByAnnonceId($pdo, $id) {
-    $stmt = $pdo->prepare("SELECT url_image FROM article_images WHERE article_id = ? ORDER BY est_principale DESC, ordre ASC");
+    $stmt = $pdo->prepare("SELECT url_image FROM article_images WHERE article_id = ? ORDER BY ordre ASC");
     $stmt->execute([$id]);
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
@@ -115,7 +115,7 @@ function getAllImagesByAnnonceId($pdo, $id) {
  * Récupère l'image principale uniquement (pour le catalogue)
  */
 function getImageByAnnonceId($pdo, $id) {
-    $stmt = $pdo->prepare("SELECT url_image FROM article_images WHERE article_id = ? ORDER BY est_principale DESC, ordre ASC LIMIT 1");
+    $stmt = $pdo->prepare("SELECT url_image FROM article_images WHERE article_id = ? ORDER BY ordre ASC LIMIT 1");
     $stmt->execute([$id]);
     return $stmt->fetchColumn();
 }
@@ -139,3 +139,4 @@ function getAnnoncesSimilaires($pdo, $categorieId, $articleId, $limit = 3) {
     $stmt->execute([$categorieId, $articleId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+

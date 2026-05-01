@@ -16,3 +16,18 @@ User : création de la page : affichage du profil,
 Deux versions : 
 - version 'viewer' : le profil avec tout les commentaires, les items vendus et à vendre et les informations du vendeur 
 - version 'owner' : le profil avec tout les commentaire, les items vendus et à vendre les infos du owner mais un bouton modification du profil
+
+
+TODO : 
+    
+    methode post ajouter Les bonne catégorie V
+
+    ne pas pouvoir acheter son propre article 
+
+    mode super admin
+
+    Les avis
+
+    Le style
+    
+    "Mes annonces" dans le catalogue
