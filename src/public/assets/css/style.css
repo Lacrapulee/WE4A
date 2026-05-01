@@ -2,6 +2,7 @@
 
 :root {
     --primary-blue: #005F83;
+    --primary-blue-dark: #004a66; /* Une variante plus sombre pour l'hover */
     --soft-blue: #EDFCFD;
     --text-dark: #1e293b;
     --light-gray: #f8fafc;
@@ -16,6 +17,7 @@ body {
     flex-direction: column;
     background-color: var(--soft-blue);
     color: var(--text-dark);
+
 }
 
 html, body {
@@ -24,19 +26,20 @@ html, body {
 }
 
 main {
-    flex: 1;
+    flex: 1 0 auto;
 }
 
-
 .main-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--soft-blue);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 5%;
-    background-color: var(--soft-blue);
     border-bottom: 1px solid var(--border-color);
 }
-
 
 .search-bar form {
     display: flex;
@@ -45,6 +48,12 @@ main {
     border-radius: 99px;
     overflow: hidden;
     width: 450px;
+    transition: border-color 0.3s;
+}
+
+
+.search-bar form:focus-within {
+    border-color: var(--primary-blue);
 }
 
 .search-bar input {
@@ -55,6 +64,7 @@ main {
     outline: none;
 }
 
+/* --- BOUTON RECHERCHE --- */
 .search-bar button {
     background: var(--primary-blue);
     color: white;
@@ -62,21 +72,29 @@ main {
     padding: 0 25px;
     cursor: pointer;
     font-weight: 600;
+    transition: all 0.3s ease;
 }
 
+.search-bar button:hover {
+    background-color: var(--primary-blue-dark);
+    padding: 0 30px;
+}
 
-.header-actions a {
+.header-actions a,
+.nav-links a {
     text-decoration: none;
     margin-left: 20px;
     font-weight: 500;
     color: var(--primary-blue);
-
+    transition: color 0.2s;
 }
 
-.header-actions a i {
-    color: var(--light-gray);
+.header-actions a:hover,
+.nav-links a:hover {
+    color: var(--text-dark);
 }
 
+/* --- BOUTON CART / USER --- */
 .btn-cart {
     background-color: var(--primary-blue) !important;
     border-radius: 50%;
@@ -85,16 +103,33 @@ main {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
 }
 
+.btn-cart:hover {
+    background-color: var(--primary-blue-dark) !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 95, 131, 0.2); /
+}
+
+.btn-cart i {
+    color: var(--light-gray);
+}
 
 footer.footer {
     background-color: #DCEBEC;
     color: var(--text-dark);
-    margin-top: 5rem;
     padding: 4rem 0 2rem 0;
+    width: 100%;
+    clear: both; /
+    position: relative;
+    z-index: 10;
 }
 
+footer {
+    flex-shrink: 0;
+}
 
 @media (min-width: 1024px) {
     aside {
@@ -103,7 +138,6 @@ footer.footer {
         padding-right: 2rem;
     }
 }
-
 
 img {
     width: 55px;
