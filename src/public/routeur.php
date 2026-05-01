@@ -25,6 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             require_once __DIR__ . '/../includes/paiement/paiement.php';
             header('Location: routeur.php?action=item&id=' . $_POST['article_id']); // Redirige vers la page de l'article après paiement
             break;
+        case 'edit_item':
+            require_once __DIR__ . '/../includes/edit_item/edit_item.php'; // Logique de mise à jour de l'article
+            header('Location: routeur.php?action=item&id=' . $_POST['article_id']); // Redirige vers la page de l'article après modification
+            break;
     }
 }
 
