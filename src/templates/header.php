@@ -12,13 +12,16 @@
 <header class="main-header">
     <div class="logo">
         <a href="/">
-            <img src="../assets/img/logo.png" alt="Accueil">
+            <img src="/assets/img/logo.png" alt="Accueil">
         </a>
     </div>
 
     <div class="nav-links">
         <a href="/routeur.php?action=post">Vendre</a>
-        <a href="/routeur.php?action=myarticle" >Mes annonces</a>
+        <a href="<?= isset($_SESSION['user_id']) ? '/routeur.php?action=user&id=' . urlencode($_SESSION['user_id']) : '/routeur.php?action=auth' ?>">Mes annonces</a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="/routeur.php?action=mes_commandes">Mes commandes</a>
+        <?php endif; ?>
 
     </div>
 
@@ -33,6 +36,6 @@
     <nav class="header-actions">
         <a href="/routeur.php?action=auth" class="btn-secondary">Connexion</a>
         <a href="/routeur.php?action=inscription" class="btn-secondary">Inscription</a>
-        <a href="/routeur.php?action=user&id=<?= $_SESSION['user_id'] ?? '' ?>" method="GET" class="btn-cart"><i class="fa-solid fa-user"></i></a>
+        <a href="<?= isset($_SESSION['user_id']) ? '/routeur.php?action=user&id=' . urlencode($_SESSION['user_id']) : '/routeur.php?action=auth' ?>" class="btn-cart"><i class="fa-solid fa-user"></i></a>
     </nav>
 </header>

@@ -1,7 +1,13 @@
--- Utilisation de la base
+-- ==========================================================
+-- FICHIER DE SEEDING : seed.sql
+-- Base de données : WE4ADB
+-- ==========================================================
+
+-- 0. CONFIGURATION DE LA SESSION
+SET NAMES utf8mb4 COLLATE utf8mb4_general_ci;
 USE WE4ADB;
 
--- a decocher si on veut supprimer les anciennes donnees
+-- Décocher si vous voulez supprimer les anciennes données
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- DELETE FROM `article_attributs_valeurs`;
 -- DELETE FROM `article_images`;
@@ -15,7 +21,7 @@ USE WE4ADB;
 -- DELETE FROM `users`;
 -- SET FOREIGN_KEY_CHECKS = 1;
 
--- 1. CRÉATION DES UTILISATEURS (IDs fixes pour faciliter le lien)
+-- 1. CRÉATION DES UTILISATEURS
 INSERT INTO `users` (`id`, `email`, `password`, `nom`, `prenom`, `telephone`) VALUES
 ('u1-uuid-placeholder', 'jean.dupont@gmail.com', 'hash123', 'Dupont', 'Jean', '0611223344'),
 ('u2-uuid-placeholder', 'marie.curie@utbm.fr', 'hash123', 'Curie', 'Marie', '0655443322'),
@@ -23,12 +29,12 @@ INSERT INTO `users` (`id`, `email`, `password`, `nom`, `prenom`, `telephone`) VA
 ('u4-uuid-placeholder', 'sophie.fonfec@yahoo.fr', 'hash123', 'Fonfec', 'Sophie', '0600112233'),
 ('u5-uuid-placeholder', 'admin.boutique@utbm.fr', 'hash123', 'Admin', 'Boutique', '0384001122');
 
--- Variables pour les IDs utilisateurs
-SET @u1 = 'u1-uuid-placeholder';
-SET @u2 = 'u2-uuid-placeholder';
-SET @u3 = 'u3-uuid-placeholder';
-SET @u4 = 'u4-uuid-placeholder';
-SET @u5 = 'u5-uuid-placeholder';
+-- Variables pour les IDs utilisateurs (forcées en general_ci)
+SET @u1 = 'u1-uuid-placeholder' COLLATE utf8mb4_general_ci;
+SET @u2 = 'u2-uuid-placeholder' COLLATE utf8mb4_general_ci;
+SET @u3 = 'u3-uuid-placeholder' COLLATE utf8mb4_general_ci;
+SET @u4 = 'u4-uuid-placeholder' COLLATE utf8mb4_general_ci;
+SET @u5 = 'u5-uuid-placeholder' COLLATE utf8mb4_general_ci;
 
 -- 2. CRÉATION DES CATÉGORIES
 INSERT INTO `categories` (`id`, `nom`, `description`) VALUES 
@@ -38,7 +44,7 @@ INSERT INTO `categories` (`id`, `nom`, `description`) VALUES
 (4, 'Maison', 'Meubles et Deco'),
 (5, 'Loisirs', 'Sport, Musique, Jeux');
 
--- 3. INSERTION DES ARTICLES (Retrait de UUID() car l'id est un INT AUTO_INCREMENT)
+-- 3. INSERTION DES ARTICLES
 INSERT INTO `articles` (`vendeur_id`, `categorie_id`, `titre`, `description`, `prix`, `statut`, `coordonnees`, `ville_nom`, `code_postal`) VALUES
 -- Informatique (Jean @u1)
 (@u1, 1, 'MacBook Pro 14', 'M2, 16Go RAM, comme neuf.', 1800.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
@@ -47,59 +53,48 @@ INSERT INTO `articles` (`vendeur_id`, `categorie_id`, `titre`, `description`, `p
 (@u1, 1, 'Souris MX Master 3S', 'Ideal productivite.', 75.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
 (@u1, 1, 'Casque Bose QC45', 'Reduction de bruit active.', 190.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
 (@u1, 1, 'ecran Dell 27 4K', 'Dalle IPS ultra precise.', 350.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
-(@u1, 1, 'iPad Air 5', 'Puce M1, Bleu.', 550.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
-(@u1, 1, 'Nintendo Switch OLED', 'Avec Mario Kart 8.', 290.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
-(@u1, 1, 'PS5 Standard', 'Avec 2 manettes.', 420.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
-(@u1, 1, 'Carte Graphique RTX 3070', 'Marque ASUS, jamais mine.', 380.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
-
 -- Vehicules (Marie @u2)
 (@u2, 2, 'Peugeot 208', '1.2 PureTech, 50k km.', 11500.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
 (@u2, 2, 'VTT Specialized', 'Tout suspendu, Taille M.', 1200.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u2, 2, 'Trottinette Dualtron', 'Tres puissante.', 900.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u2, 2, 'Casque Shark Carbon', 'Neuf, jamais porte.', 250.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u2, 2, 'Renault Zoe', 'Batterie incluse, 400km autonomie.', 14000.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u2, 2, 'Gants Cuir Furygan', 'Taille L, protection D3O.', 60.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u2, 2, 'Remorque Bagagere', 'Bon etat general.', 300.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u2, 2, 'Vespa 125', 'Revision faite, look retro.', 2800.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u2, 2, 'Porte-Velos Thule', 'Pour 3 velos, sur attelage.', 220.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u2, 2, 'Pneus Neige (x4)', 'Michelin Alpin, 205/55 R16.', 200.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-
 -- Maison (Lucas @u3)
 (@u3, 4, 'Canape d angle convertible', 'Gris fonce, 4 places.', 450.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
 (@u3, 4, 'Table a manger Chene', 'Avec 6 chaises assorties.', 320.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-(@u3, 4, 'Aspirateur Dyson V11', 'Complet avec accessoires.', 300.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-(@u3, 4, 'Machine a laver LG', '9kg, silencieuse.', 280.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-(@u3, 4, 'Robot Patissier KitchenAid', 'Rouge Empire, peu servi.', 400.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-(@u3, 4, 'Bureau assis-debout', 'electrique, blanc.', 250.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-(@u3, 4, 'Lit 160x200', 'Sommier + matelas Emma.', 500.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-(@u3, 4, 'Lot de Luminaires', 'Style industriel.', 80.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-(@u3, 4, 'Refrigerateur Samsung', 'Froid ventile, gris.', 350.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-(@u3, 4, 'Miroir dore ancien', 'Grande taille.', 120.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-
 -- Loisirs (Sophie @u4)
 (@u4, 5, 'Guitare Fender Stratocaster', 'Made in Mexico, Sunburst.', 650.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
 (@u4, 5, 'Halteres 20kg', 'Lot de 2, fonte.', 40.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
-(@u4, 5, 'Livre Harry Potter', 'Collection complete, reliee.', 100.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
-(@u4, 5, 'Piano numerique Yamaha', 'Toucher lourd, 88 touches.', 450.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
-(@u4, 5, 'Raquette de Tennis Wilson', 'Modele Roger Federer.', 110.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
-(@u4, 5, 'Jeu de societe Catan', 'Neuf, sous blister.', 30.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
-(@u4, 5, 'Appareil Photo Canon EOS R6', 'Boitier nu, peu de clics.', 1800.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
-(@u4, 5, 'Objectif 50mm f1.8', 'Parfait etat.', 150.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
-(@u4, 5, 'Lot de Vinyls Rock', '30 albums classiques.', 200.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
-(@u4, 5, 'Tapis de course', 'Pliable, ecran tactile.', 500.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
-
 -- Immobilier (Admin @u5)
 (@u5, 3, 'Studio Centre Belfort', 'Proche gare, 25m2.', 55000.00, 'en_ligne', POINT(47.63, 6.86), 'Belfort', '90000'),
-(@u5, 3, 'T3 Montbeliard', 'Vue sur le chateau, parking.', 125000.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u5, 3, 'Maison de ville', 'Belfort Nord, jardin 200m2.', 210000.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
-(@u5, 3, 'Terrain a batir', 'Sevenans, viabilise.', 85000.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
-(@u5, 3, 'Colocation etudiante', '3 chambres disponibles, Belfort.', 350.00, 'en_ligne', POINT(47.63, 6.86), 'Belfort', '90000'),
-(@u5, 3, 'Garage ferme', 'Quartier Jean Jaures.', 12000.00, 'en_ligne', POINT(47.63, 6.86), 'Belfort', '90000'),
-(@u5, 3, 'Loft industriel', 'Montbeliard, 110m2.', 195000.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
-(@u5, 3, 'Appartement T2', 'Neuf, livraison 2025.', 135000.00, 'en_ligne', POINT(47.63, 6.86), 'Belfort', '90000'),
-(@u5, 3, 'Immeuble de rapport', '3 studios loues, Belfort.', 160000.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
-(@u5, 3, 'Local commercial', 'Rue pietonne, 40m2.', 800.00, 'en_ligne', POINT(47.63, 6.86), 'Belfort', '90000');
+(@u5, 3, 'T3 Montbeliard', 'Vue sur le chateau, parking.', 125000.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200');
 
--- 4. IMAGES (Génération automatique sur les nouveaux IDs INT)
+-- 4. IMAGES
 INSERT INTO `article_images` (`article_id`, `url_image`, `est_principale`)
 SELECT `id`, 'default.png', 1 FROM `articles`;
+
+-- 5. AVIS (Correction Illegal Mix of Collations)
+INSERT INTO `avis` (`article_id`, `expediteur_id`, `destinataire_id`, `note`, `commentaire`, `date_avis`) VALUES
+-- Avis sur Jean (@u1)
+((SELECT id FROM articles WHERE vendeur_id = @u1 LIMIT 1 OFFSET 0), @u2, @u1, 5, 'Excellent vendeur ! MacBook comme neuf.', NOW() - INTERVAL 15 DAY),
+((SELECT id FROM articles WHERE vendeur_id = @u1 LIMIT 1 OFFSET 1), @u3, @u1, 5, 'Très professionnel et réactif.', NOW() - INTERVAL 10 DAY),
+((SELECT id FROM articles WHERE vendeur_id = @u1 LIMIT 1 OFFSET 4), @u3, @u1, 5, 'Casque Bose parfait, Jean est top.', NOW() - INTERVAL 4 DAY),
+((SELECT id FROM articles WHERE vendeur_id = @u1 LIMIT 1 OFFSET 5), @u4, @u1, 3, 'Ecran OK, mais câble manquant.', NOW() - INTERVAL 12 DAY),
+
+-- Avis sur Marie (@u2)
+((SELECT id FROM articles WHERE vendeur_id = @u2 LIMIT 1 OFFSET 0), @u5, @u2, 5, 'La Peugeot est parfaite.', NOW() - INTERVAL 15 DAY),
+((SELECT id FROM articles WHERE vendeur_id = @u2 LIMIT 1 OFFSET 1), @u3, @u2, 4, 'VTT en bon état, merci.', NOW() - INTERVAL 7 DAY),
+
+-- Avis sur Lucas (@u3)
+((SELECT id FROM articles WHERE vendeur_id = @u3 LIMIT 1 OFFSET 0), @u2, @u3, 5, 'Canapé magnifique, livraison facile.', NOW() - INTERVAL 2 DAY),
+((SELECT id FROM articles WHERE vendeur_id = @u3 LIMIT 1 OFFSET 1), @u4, @u3, 2, 'Table avec rayures non mentionnées.', NOW() - INTERVAL 20 DAY),
+
+-- Avis "Profil" (Transactions sans article spécifique)
+(NULL, @u1, @u3, 5, 'Acheteur très poli et ponctuel.', NOW() - INTERVAL 5 DAY),
+(NULL, @u5, @u4, 4, 'Sophie est une acheteuse réactive.', NOW() - INTERVAL 9 DAY);
+
+-- 6. FAVORIS
+INSERT INTO `favoris` (`user_id`, `article_id`) VALUES
+(@u1, (SELECT id FROM articles WHERE titre = 'Peugeot 208' COLLATE utf8mb4_general_ci LIMIT 1)),
+(@u2, (SELECT id FROM articles WHERE titre = 'MacBook Pro 14' COLLATE utf8mb4_general_ci LIMIT 1)),
+(@u3, (SELECT id FROM articles WHERE titre = 'MacBook Pro 14' COLLATE utf8mb4_general_ci LIMIT 1)),
+(@u4, (SELECT id FROM articles WHERE titre = 'iPhone 15' COLLATE utf8mb4_general_ci LIMIT 1));
+
+COMMIT;

@@ -34,6 +34,7 @@ CREATE TABLE `users` (
   `telephone` varchar(20) DEFAULT NULL,
   `date_naissance` date DEFAULT NULL,
   `adresse_postale` text DEFAULT NULL,
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
@@ -164,21 +165,25 @@ CREATE TABLE `promotions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Structure de la table `ventes`
+DROP TABLE IF EXISTS `ventes`;
 CREATE TABLE `ventes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `reference` varchar(30) NOT NULL,
   `article_id` int(11) NOT NULL,
   `vendeur_id` char(36) NOT NULL,
+  `acheteur_id` char(36) DEFAULT NULL,
   `acheteur_nom` varchar(150) NOT NULL,
   `acheteur_email` varchar(255) NOT NULL,
   `montant` decimal(12,2) NOT NULL,
-  `statut_paiement` enum('valide','refuse','rembourse') NOT NULL DEFAULT 'valide',
+  `statut` enum('paye', 'recu') NOT NULL DEFAULT 'paye', 
+  `statut_paiement` enum('valide', 'refuse', 'rembourse') NOT NULL DEFAULT 'valide',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_ventes_ref` (`reference`),
   UNIQUE KEY `uk_ventes_art` (`article_id`),
   CONSTRAINT `fk_ventes_art` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`),
-  CONSTRAINT `fk_ventes_vend` FOREIGN KEY (`vendeur_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `fk_ventes_vend` FOREIGN KEY (`vendeur_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_ventes_acheteur` FOREIGN KEY (`acheteur_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 COMMIT;

@@ -14,7 +14,7 @@
     <div class="form-container">
         <h2 class="form-title">Publier une annonce</h2>
 
-        <form action="../routeur.php?action=post" method="post" enctype="multipart/form-data" class="auth-form">
+        <form action="/routeur.php?action=post" method="post" enctype="multipart/form-data" class="auth-form">
 
             <section>
                 <h3>Informations générales</h3>

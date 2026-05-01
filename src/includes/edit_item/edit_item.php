@@ -5,7 +5,7 @@ require_once __DIR__ . '/../articles_functions.php';
 
 // 1. Vérification de base : l'utilisateur est-il connecté ?
 if (!isset($_SESSION['user_id'])) {
-    header('Location: routeur.php?action=auth');
+    header('Location: /routeur.php?action=auth');
     exit();
 }
 
@@ -22,7 +22,7 @@ $isAdmin = (isset($_SESSION['admin']) && $_SESSION['admin'] == true);
 
 if (!$isOwner && !$isAdmin) {
     // Redirection si l'utilisateur n'a pas le droit d'être ici
-    header('Location: routeur.php?action=item&id=' . $productId);
+    header('Location: /routeur.php?action=item&id=' . $productId);
     exit();
 }
 
@@ -41,6 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_article'])) {
     $stmt->execute([$titre, $description, $prix, $categorie_id, $productId]);
 
     // Redirection après succès
-    header('Location: routeur.php?action=item&id=' . $productId);
+    header('Location: /routeur.php?action=item&id=' . $productId);
     exit();
 }
