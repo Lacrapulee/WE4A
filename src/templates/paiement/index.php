@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,7 +14,7 @@
             <section class="bg-white p-10 rounded-2xl shadow-sm text-center max-w-2xl mx-auto">
                 <h1 class="text-2xl font-bold mb-3">Paiement</h1>
                 <p class="text-gray-600 mb-6"><?php echo htmlspecialchars($viewData['errorMessage']); ?></p>
-                <a href="/index.php" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold">Retour aux annonces</a>
+                <a href="/routeur.php?action=catalogue" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold">Retour aux annonces</a>
             </section>
         <?php elseif ($product): ?>
             <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -36,7 +34,7 @@
                             <p class="font-semibold"><?php echo htmlspecialchars($viewData['successMessage']); ?></p>
                             <p class="text-sm mt-1">Reference: <?php echo htmlspecialchars($viewData['orderReference']); ?></p>
                         </div>
-                        <a href="/index.php" class="inline-block bg-gray-900 text-white px-6 py-3 rounded-xl font-bold">Retour aux annonces</a>
+                        <a href="/routeur.php?action=catalogue" class="inline-block bg-gray-900 text-white px-6 py-3 rounded-xl font-bold">Retour aux annonces</a>
                     <?php else: ?>
                         <?php if ($viewData['errorMessage']): ?>
                             <p class="mb-4 text-sm text-red-600"><?php echo htmlspecialchars($viewData['errorMessage']); ?></p>

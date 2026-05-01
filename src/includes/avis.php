@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/db.php';
-session_start();
 
 // Vérification de la méthode d'envoi et de la connexion utilisateur
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // --- SÉCURITÉ ---
     
     if (!$expediteur_id) {
-        header("Location: /connexion/index.php?error=login_required");
+        header("Location: /routeur.php?action=auth&error=login_required");
         exit();
     }
 
@@ -26,19 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Un utilisateur ne peut pas se noter lui-même
     if ($expediteur_id === $dest_id) {
-        header("Location: /user/index.php?id=$dest_id&error=self_note");
+        header("Location: /routeur.php?action=user&id=$dest_id&error=self_note");
         exit();
     }
 
     // Validation de la note
     if ($note < 1 || $note > 5) {
-        header("Location: /avis/index.php?vendeur_id=$dest_id&error=invalid_note");
+        header("Location: /routeur.php?action=avis&vendeur_id=$dest_id&error=invalid_note");
         exit();
     }
 
     // Validation du commentaire
     if (trim($commentaire) === '') {
-        header("Location: /avis/index.php?vendeur_id=$dest_id&error=empty_comment");
+        header("Location: /routeur.php?action=avis&vendeur_id=$dest_id&error=empty_comment");
         exit();
     }
 
@@ -46,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("SELECT id FROM users WHERE id = ?");
     $stmt->execute([$dest_id]);
     if (!$stmt->fetch()) {
-        header("Location: /avis/index.php?vendeur_id=$dest_id&error=user_not_found");
+        header("Location: /routeur.php?action=avis&vendeur_id=$dest_id&error=user_not_found");
         exit();
     }
 
@@ -54,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("SELECT id FROM avis WHERE expediteur_id = ? AND destinataire_id = ?");
     $stmt->execute([$expediteur_id, $dest_id]);
     if ($stmt->fetch()) {
-        header("Location: /avis/index.php?vendeur_id=$dest_id&error=already_reviewed");
+        header("Location: /routeur.php?action=avis&vendeur_id=$dest_id&error=already_reviewed");
         exit();
     }
 
@@ -89,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error_code = 'user_not_found';
         }
         
-        header("Location: /avis/index.php?vendeur_id=$dest_id&error=$error_code");
+        header("Location: /routeur.php?action=avis&vendeur_id=$dest_id&error=$error_code");
         exit();
     }
 

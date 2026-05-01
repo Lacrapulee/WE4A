@@ -1,6 +1,5 @@
 <?php
-require_once __DIR__ . '/db.php';
-session_start();
+require_once __DIR__ . '/../db.php';
 
 $profile_id = $_GET['id'] ?? null;
 if (!$profile_id) { die("Utilisateur non trouvé."); }

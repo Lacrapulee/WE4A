@@ -1,6 +1,28 @@
 <?php
 
 session_start(); 
+require_once __DIR__ . '/../includes/db.php';
+
+function ensureVentesSchema(PDO $pdo): void {
+    try {
+        $columnCheck = $pdo->prepare(
+            "SELECT COUNT(*)
+             FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = 'ventes'
+               AND COLUMN_NAME = 'acheteur_id'"
+        );
+        $columnCheck->execute();
+
+        if ((int) $columnCheck->fetchColumn() === 0) {
+            $pdo->exec("ALTER TABLE ventes ADD COLUMN acheteur_id char(36) DEFAULT NULL AFTER vendeur_id");
+        }
+    } catch (Throwable $e) {
+        error_log('ensureVentesSchema failed: ' . $e->getMessage());
+    }
+}
+
+ensureVentesSchema($pdo);
 
 $action = $_GET['action'] ?? '';
 
@@ -14,20 +36,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         case 'post':  
             require_once __DIR__ . '/../includes/post/post.php';
-            header('Location: routeur.php?action=item&id=' . $nouvelArticleId); // Redirige vers la page de l'article nouvellement créé
+            header('Location: /routeur.php?action=item&id=' . $nouvelArticleId); // Redirige vers la page de l'article nouvellement créé
             break;
         case 'edit_profile':
             require_once __DIR__ . '/../includes/edit_profile/edit_profile.php';
-            header('Location: routeur.php?action=user&id=' . $_SESSION['user_id']);
+            header('Location: /routeur.php?action=user&id=' . $_SESSION['user_id']);
             break;
         case 'paiement':
-            // Logique de paiement (à implémenter)
+            // Traite le paiement puis affiche le résultat sur la page de paiement
             require_once __DIR__ . '/../includes/paiement/paiement.php';
-            header('Location: routeur.php?action=item&id=' . $_POST['article_id']); // Redirige vers la page de l'article après paiement
+            require_once __DIR__ . '/../templates/header.php';
+            require_once __DIR__ . '/../templates/paiement/index.php';
+            require_once __DIR__ . '/../templates/footer.php';
             break;
         case 'edit_item':
             require_once __DIR__ . '/../includes/edit_item/edit_item.php'; // Logique de mise à jour de l'article
-            header('Location: routeur.php?action=item&id=' . $_POST['article_id']); // Redirige vers la page de l'article après modification
+            header('Location: /routeur.php?action=item&id=' . $_POST['article_id']); // Redirige vers la page de l'article après modification
+            break;
+        case 'avis':
+            require_once __DIR__ . '/../includes/avis.php';
+            break;
+        case 'valider_reception':
+            $venteId = $_POST['vente_id'];
+            $stmt = $pdo->prepare("UPDATE ventes SET statut = 'recu' WHERE id = ?");
+            $stmt->execute([$venteId]);
+            header('Location: /routeur.php?action=mes_commandes&success=recu');
+            exit();
+            break;
+        case 'valider_reception':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vente_id'])) {
+                $venteId = $_POST['vente_id'];
+                
+                $stmt = $pdo->prepare("UPDATE ventes SET statut = 'recu' WHERE id = ? AND acheteur_id = ?");
+                $stmt->execute([$venteId, $_SESSION['user_id']]);
+                
+                // Redirection vers le formulaire d'avis
+                $check = $pdo->prepare("SELECT vendeur_id, article_id FROM ventes WHERE id = ?");
+                $check->execute([$venteId]);
+                $info = $check->fetch();
+                
+                header("Location: /routeur.php?action=avis&vendeur_id=".$info['vendeur_id']."&article_id=".$info['article_id']);
+                exit();
+            }
             break;
     }
 }
@@ -38,6 +88,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             require_once __DIR__ . '/../includes/user/user.php';
             include __DIR__ . '/../templates/user/index.php';
             break;
+        case 'avis':
+            require_once __DIR__ . '/../templates/avis/index.php';
+            break;
+        case 'avis_form':
+            // Alias rétrocompatible pour les anciens liens
+            require_once __DIR__ . '/../templates/avis/index.php';
+            break;
+        case 'myarticle':
+            if (isset($_SESSION['user_id'])) {
+                header('Location: /routeur.php?action=user&id=' . $_SESSION['user_id']);
+            } else {
+                header('Location: /routeur.php?action=auth');
+            }
+            exit();
         case 'catalogue':
             require_once __DIR__ . '/../includes/catalogue/catalogue.php';
             require_once __DIR__ . '/../templates/catalogue/index.php';
@@ -85,6 +149,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             // Logique de paiement (à implémenter)
             require_once __DIR__ . '/../templates/header.php'; // Ton header Tailwind
             require_once __DIR__ . '/../templates/paiement/index.php'; // Le contenu de la page de paiement
+            require_once __DIR__ . '/../templates/footer.php';
+            break;
+        case 'mes_commandes':
+            // Affiche les commandes de l'utilisateur connecté
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: /routeur.php?action=auth');
+                exit();
+            }
+            require_once __DIR__ . '/../includes/db.php';
+            require_once __DIR__ . '/../templates/header.php';
+            require_once __DIR__ . '/../templates/mes_commandes/index.php';
             require_once __DIR__ . '/../templates/footer.php';
             break;
         case 'edit_item':

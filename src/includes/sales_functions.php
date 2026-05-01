@@ -1,6 +1,6 @@
 <?php
 
-function processDirectSale($pdo, $article, $buyerName, $buyerEmail) {
+function processDirectSale($pdo, $article, $buyerId, $buyerName, $buyerEmail) {
     $result = [
         'ok' => false,
         'reference' => null,
@@ -21,20 +21,32 @@ function processDirectSale($pdo, $article, $buyerName, $buyerEmail) {
     try {
         $pdo->beginTransaction();
 
+        // 1. Marquer l'article comme vendu
         $update = $pdo->prepare("UPDATE articles SET statut = 'vendu' WHERE id = ? AND statut = 'en_ligne'");
         $update->execute([$articleId]);
 
         if ($update->rowCount() !== 1) {
             $pdo->rollBack();
-            $result['error'] = 'Cet article vient d\'etre vendu.';
+            $result['error'] = 'Cet article vient d\'être vendu ou n\'est plus disponible.';
             return $result;
         }
 
+        // 2. Insérer la vente avec l'ID de l'acheteur et le statut 'paye'
+        // Vérifie bien que tes colonnes acheteur_id et statut existent en DB
         $insert = $pdo->prepare(
-            "INSERT INTO ventes (reference, article_id, vendeur_id, acheteur_nom, acheteur_email, montant, statut_paiement)
-             VALUES (?, ?, ?, ?, ?, ?, 'valide')"
+            "INSERT INTO ventes (reference, article_id, vendeur_id, acheteur_id, acheteur_nom, acheteur_email, montant, statut, statut_paiement)
+             VALUES (?, ?, ?, ?, ?, ?, ?, 'paye', 'valide')"
         );
-        $insert->execute([$reference, $articleId, $sellerId, $buyerName, $buyerEmail, $amount]);
+        
+        $insert->execute([
+            $reference, 
+            $articleId, 
+            $sellerId, 
+            $buyerId, // L'ID de l'utilisateur connecté
+            $buyerName, 
+            $buyerEmail, 
+            $amount
+        ]);
 
         $pdo->commit();
 
@@ -45,7 +57,7 @@ function processDirectSale($pdo, $article, $buyerName, $buyerEmail) {
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
-
+        error_log('Erreur processDirectSale : ' . $e->getMessage());
         $result['error'] = 'Erreur technique pendant la validation du paiement.';
         return $result;
     }

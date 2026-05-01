@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Profil de <?= htmlspecialchars($nom . ' ' . $prenom) ?></title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/user.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/user.css">
 </head>
 <body>
     <?php include __DIR__ . '/../../templates/header.php'; ?>
@@ -25,7 +25,7 @@
                 <?php if ($is_owner): ?>
                     <a href="../routeur.php?action=edit_profile" class="btn-edit"> Modifier mon profil</a>
                 <?php else: ?>
-                    <a href="../contact.php?to=<?= $profile_id ?>" class="btn-edit">✉️ Contacter le vendeur</a>
+                    <a href="mailto:<?= htmlspecialchars($email) ?>" class="btn-edit">✉️ Contacter le vendeur</a>
                 <?php endif; ?>
             </div>
         </header>
@@ -37,7 +37,7 @@
                     <?php foreach ($articles as $article): ?>
                         <div class="item-card">
                             <!-- Ici, il faudrait une jointure pour avoir l'image principale -->
-                            <a href="../items?id=<?= $article['id'] ?>"> 
+                            <a href="/routeur.php?action=item&id=<?= $article['id'] ?>"> 
                                 <img src="../assets/img/<?= htmlspecialchars($article['image']) ?>" alt="Item">
                             </a>
                             <div class="item-info">
@@ -53,7 +53,7 @@
                 <div class="reviews-header">
                     <h2 class="section-title">Avis clients</h2>
                     <?php if (!$is_owner && isset($_SESSION['user_id'])): ?>
-                        <a href="../avis/index.php?vendeur_id=<?= htmlspecialchars($profile_id) ?>" class="btn-add-review">+ Ajouter un avis</a>
+                        <a href="/routeur.php?action=avis&vendeur_id=<?= htmlspecialchars($profile_id) ?>" class="btn-add-review">+ Ajouter un avis</a>
                     <?php endif; ?>
                 </div>
                 <?php if (empty($reviews)): ?>
