@@ -1,35 +1,32 @@
-/* post.css */
-
-/* Ce conteneur va centrer le formulaire sans toucher au reste du site */
-.post-annonce-wrapper {
-    display: flex;
-    justify-content: center; /* Centre horizontalement */
-    align-items: flex-start; /* Aligne en haut pour éviter les bugs de hauteur */
-    padding: 50px 20px;
+/* Style spécifique pour garder le look "Auth" avec les lignes */
+.auth-form input,
+.auth-form select,
+.auth-form textarea {
     width: 100%;
-    box-sizing: border-box;
+    border: none !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    padding: 12px 0 !important;
+    font-size: 1rem;
+    color: #374151;
+    outline: none !important;
+    background: transparent !important;
+    transition: border-color 0.3s ease;
 }
 
-.form-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    max-width: 600px;
-    width: 100%;
-    /* On s'assure qu'il n'hérite pas de flottants bizarres */
-    float: none; 
-    margin: 0 auto;
+/* Effet au focus */
+.auth-form input:focus,
+.auth-form select:focus,
+.auth-form textarea:focus {
+    border-bottom: 2px solid #005F83 !important;
 }
 
-/* On force les titres pour qu'ils ne soient pas écrasés par le header */
-.form-container h2 {
-    color: #2563eb !important;
-    text-align: center;
-    margin-bottom: 20px;
+/* On ajuste la hauteur du textarea */
+.auth-form textarea {
+    height: 60px;
+    resize: none;
 }
 
-/* Le reste de tes styles (inputs, labels, etc.) */
-.form-group { margin-bottom: 1.5rem; }
-.form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+/* Harmonisation du bouton (si tu ne veux pas tout mettre en Tailwind) */
+.btn-auth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
