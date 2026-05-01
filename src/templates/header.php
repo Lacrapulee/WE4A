@@ -16,20 +16,23 @@
         </a>
     </div>
 
-    </div class="nav-links">
-        <a href="/post">Vendre</a>
+    <div class="nav-links">
+        <a href="/routeur.php?action=post">Vendre</a>
+        <a href="/routeur.php?action=myarticle" >Mes annonces</a>
+
     </div>
 
     <div class="search-bar">
-        <form action="/catalogue" method="GET">
+        <form action="/routeur.php?action=catalogue" method="GET">
+            <input type="hidden" name="action" value="catalogue">
             <input type="text" name="search" placeholder="Rechercher un produit...">
             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
 
     <nav class="header-actions">
-        <a href="/connexion" class="btn-secondary">Connexion</a>
-        <a href="/inscription" class="btn-secondary">Inscription</a>
+        <a href="/routeur.php?action=auth" class="btn-secondary">Connexion</a>
+        <a href="/routeur.php?action=inscription" class="btn-secondary">Inscription</a>
         <a href="/routeur.php?action=user&id=<?= $_SESSION['user_id'] ?? '' ?>" method="GET" class="btn-cart"><i class="fa-solid fa-user"></i></a>
     </nav>
 </header>

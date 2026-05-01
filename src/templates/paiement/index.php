@@ -1,14 +1,4 @@
-<?php
-require_once __DIR__ . '/../../includes/db.php';
-require_once __DIR__ . '/../../includes/articles_functions.php';
-require_once __DIR__ . '/../../includes/payment_page_functions.php';
 
-$articleId = $_GET['id'] ?? ($_POST['article_id'] ?? null);
-$viewData = buildPaymentPageViewData($pdo, $articleId, $_SERVER['REQUEST_METHOD'], $_POST);
-http_response_code($viewData['statusCode']);
-
-$product = $viewData['product'];
-?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -20,7 +10,6 @@ $product = $viewData['product'];
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body class="bg-[#f5f7fb] text-gray-900 font-sans">
-    <?php include __DIR__ . '/../../templates/header.php'; ?>
 
     <main class="max-w-5xl mx-auto px-4 py-8">
         <?php if ($viewData['errorMessage'] && !$product): ?>
@@ -76,6 +65,5 @@ $product = $viewData['product'];
         <?php endif; ?>
     </main>
 
-    <?php include __DIR__ . '/../../templates/footer.php'; ?>
 </body>
 </html>

@@ -1,7 +1,4 @@
-<?php
-include '../../templates/header.php';
 
-?>
     <link rel="stylesheet" href="../assets/css/inscription.css">
 
     <main class="auth-container">
@@ -72,6 +69,3 @@ include '../../templates/header.php';
         });
     </script>
 
-<?php
-include '../../templates/footer.php';
-?>

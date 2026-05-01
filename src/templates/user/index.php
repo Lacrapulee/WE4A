@@ -36,6 +36,7 @@
                 <div class="items-grid">
                     <?php foreach ($articles as $article): ?>
                         <div class="item-card">
+                            <!-- Ici, il faudrait une jointure pour avoir l'image principale -->
                             <a href="../items?id=<?= $article['id'] ?>"> 
                                 <img src="../assets/img/<?= htmlspecialchars($article['image']) ?>" alt="Item">
                             </a>
