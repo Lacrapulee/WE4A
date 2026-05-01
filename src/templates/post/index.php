@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publier une annonce</title>
-    <!-- Chemin relatif à partir de /public -->
+    <title>Publier une annonce - LeCoinCarré</title>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <link rel="stylesheet" href="/assets/css/post.css">
-
-    
 </head>
 <body class="page-post">
 
+
 <main class="page-annonce">
     <div class="form-container">
-        <h2>Publier une annonce</h2>
-        
-        <!-- On remonte d'un cran pour atteindre le routeur dans /public -->
-        <form action="../routeur.php?action=post" method="post" enctype="multipart/form-data">
-            
+        <h2 class="form-title">Publier une annonce</h2>
+
+        <form action="../routeur.php?action=post" method="post" enctype="multipart/form-data" class="auth-form">
+
             <section>
                 <h3>Informations générales</h3>
                 <div class="form-group">
@@ -54,7 +52,7 @@
                     <label for="adresse">Adresse</label>
                     <input type="text" id="adresse" name="coordonnees" placeholder="10 rue de la paix">
                 </div>
-                
+
                 <div class="grid-local">
                     <div class="form-group">
                         <label for="ville">Ville</label>
@@ -70,14 +68,17 @@
             <section>
                 <h3>Photos</h3>
                 <div class="form-group file-input-wrapper">
-                    <label for="images">Sélectionnez vos images (Plusieurs possible)</label>
+                    <label for="images">Sélectionnez vos images</label>
                     <input type="file" id="images" name="ma_super_image[]" multiple accept="image/jpeg, image/png, image/webp" required>
                 </div>
             </section>
 
-            <button type="submit" class="btn-submit">Publier</button>
+            <button type="submit" class="btn-auth">Publier l'annonce</button>
         </form>
     </div>
 </main>
+
+<?php include '../templates/footer.php'; ?>
+
 </body>
 </html>

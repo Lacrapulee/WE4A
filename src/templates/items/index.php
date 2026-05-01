@@ -22,7 +22,7 @@
         <div class="product-grid">
             <!-- COLONNE GAUCHE (Image + Description) -->
             <div class="lg:col-span-2 space-y-6">
-                
+
                 <!-- CARROUSEL -->
                 <div class="carousel-card">
                     <div class="carousel-viewport">
@@ -112,6 +112,7 @@
     let currentIndex = 0;
     const track = document.getElementById('carousel-track');
     const total = <?= count($allImages ?? []) ?>;
+
     function moveCarousel(dir) {
         if (total <= 1) return;
         currentIndex = (currentIndex + dir + total) % total;
