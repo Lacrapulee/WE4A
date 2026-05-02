@@ -59,11 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'messages':
             require_once __DIR__ . '/../includes/messages/messages.php';
             break;
-        case 'deconnexion':
-            session_destroy();
-            header('Location: /routeur.php?action=catalogue');
-            exit();
-            break;
+
         case 'valider_reception':
             $venteId = $_POST['vente_id'];
             $stmt = $pdo->prepare("UPDATE ventes SET statut = 'recu' WHERE id = ?");
@@ -114,7 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             require_once __DIR__ . '/../includes/catalogue/catalogue.php';
             require_once __DIR__ . '/../templates/catalogue/index.php';
             break;
-        
+
+        case 'deconnexion':
+            session_destroy();
+            header('Location: /routeur.php?action=catalogue');
+            exit();
+            break;
+
         case 'edit_profile':
             require_once __DIR__ . '/../includes/edit_profile/edit_profile.php';
             

@@ -5,7 +5,7 @@
     padding: 0 1.5rem;
 }
 
-/* --- HEADER DU PROFIL --- */
+
 .profile-header {
     background: white;
     padding: 3rem;
@@ -56,7 +56,7 @@
     box-shadow: 0 5px 15px rgba(0, 95, 131, 0.2);
 }
 
-/* --- STRUCTURE GRILLE --- */
+
 .profile-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -73,7 +73,7 @@
     margin-bottom: 1.5rem;
 }
 
-/* --- GRILLE DES ARTICLES --- */
+
 .items-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -99,7 +99,7 @@
     object-fit: cover;
 }
 
-/* --- HARMONISATION DU PRIX (STYLE PAGE ITEM) --- */
+
 .item-info {
     padding: 1.2rem;
 }
@@ -112,15 +112,15 @@
     font-weight: 700;
 }
 
-/* On utilise le même style que .product-price de la page item */
+
 .item-info p {
     margin: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--primary-blue); /* Le bleu signature */
-    font-weight: 900; /* Très gras comme sur item */
-    font-size: 1.2rem; /* Légèrement plus grand */
+    color: var(--primary-blue);
+    font-weight: 900;
+    font-size: 1.2rem;
 }
 
 .status-tag {
@@ -128,8 +128,8 @@
     font-weight: 800;
     padding: 3px 8px;
     border-radius: 99px;
-    background: #dcfce7; /* Fond vert clair */
-    color: #166534; /* Texte vert foncé */
+    background: #dcfce7;
+    color: #166534;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -143,7 +143,7 @@
     text-transform: uppercase;
 }
 
-/* --- COMMENTAIRES --- */
+
 .user-reviews {
     background: white;
     padding: 2rem;
@@ -173,7 +173,7 @@
     font-style: italic;
 }
 
-/* --- RESPONSIVE --- */
+
 @media (max-width: 850px) {
     .profile-grid { grid-template-columns: 1fr; }
     .profile-header { flex-direction: column; text-align: center; }

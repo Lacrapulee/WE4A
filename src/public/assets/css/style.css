@@ -2,7 +2,7 @@
 
 :root {
     --primary-blue: #005F83;
-    --primary-blue-dark: #004a66; /* Une variante plus sombre pour l'hover */
+    --primary-blue-dark: #004a66;
     --soft-blue: #EDFCFD;
     --text-dark: #1e293b;
     --light-gray: #f8fafc;
@@ -18,6 +18,15 @@ body {
     background-color: var(--soft-blue);
     color: var(--text-dark);
 
+}
+
+body, a, p, h1, h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 500;
 }
 
 html, body {
@@ -64,7 +73,7 @@ main {
     outline: none;
 }
 
-/* --- BOUTON RECHERCHE --- */
+
 .search-bar button {
     background: var(--primary-blue);
     color: white;
@@ -111,7 +120,7 @@ main {
     color: var(--text-dark);
 }
 
-/* --- BOUTON CART / USER --- */
+
 .btn-cart {
     background-color: var(--primary-blue) !important;
     border-radius: 50%;
