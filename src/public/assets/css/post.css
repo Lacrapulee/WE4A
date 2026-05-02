@@ -84,14 +84,14 @@
     resize: vertical;
 }
 
-/* Grille pour Ville et Code Postal */
+
 .grid-local {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 20px;
 }
 
-/* Style spécifique pour le champ photo */
+
 .auth-form input[type="file"] {
     border-bottom: none !important;
     font-size: 0.9rem;
@@ -120,10 +120,7 @@
     box-shadow: 0 10px 20px rgba(0, 95, 131, 0.2);
 }
 
-/* ==========================================================================
-   5. CORRECTIF FOOTER (ANTI-BAVURE)
-   ========================================================================== */
-/* On force le footer à ignorer les styles de listes par défaut du navigateur */
+
 footer ul, footer li {
     list-style: none !important;
     margin: 0 !important;

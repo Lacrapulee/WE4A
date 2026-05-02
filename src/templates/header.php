@@ -55,9 +55,7 @@
 
     <nav class="header-actions">
         <?php if (isset($_SESSION['user_id'])): ?>
-            <form action="/routeur.php?action=deconnexion" method="POST" style="display: inline;">
-                <button type="submit" class="btn-secondary">Déconnexion</button>
-            </form>
+            <a href="/routeur.php?action=deconnexion" class="btn-secondary">Déconnexion</a>
         <?php else: ?>
             <a href="/routeur.php?action=auth" class="btn-secondary">Connexion</a>
             <a href="/routeur.php?action=inscription" class="btn-secondary">Inscription</a>

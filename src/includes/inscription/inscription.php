@@ -1,72 +1,67 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 require_once __DIR__ . '/../db.php';
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: index.php");
-    exit;
-}
+$response = ['success' => false, 'message' => 'Une erreur est survenue'];
 
-// Récupération
-$email = isset($_POST['email']) ? $_POST['email'] : '';
-$password = isset($_POST['password']) ? $_POST['password'] : '';
-$confirm = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $confirm = $_POST['confirm_password'] ?? '';
+    $nom = $_POST['nom'] ?? null;
+    $prenom = $_POST['prenom'] ?? null;
+    $telephone = $_POST['telephone'] ?? null;
+    $date_naissance = $_POST['date_naissance'] ?? null;
+    $adresse = $_POST['adresse_postale'] ?? null;
 
-$nom = isset($_POST['nom']) ? $_POST['nom'] : null;
-$prenom = isset($_POST['prenom']) ? $_POST['prenom'] : null;
-$telephone = isset($_POST['telephone']) ? $_POST['telephone'] : null;
-$date_naissance = isset($_POST['date_naissance']) ? $_POST['date_naissance'] : null;
-$adresse = isset($_POST['adresse_postale']) ? $_POST['adresse_postale'] : null;
+    if (empty($email) || empty($password) || empty($confirm)) {
+        $response['message'] = "Champs obligatoires manquants";
+    } elseif ($password !== $confirm) {
+        $response['message'] = "Les mots de passe ne correspondent pas";
+    } else {
+        try {
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
+            $stmt->execute(['email' => $email]);
 
-if (empty($email) || empty($password) || empty($confirm)) {
-    die("Champs obligatoires manquants");
-}
+            if ($stmt->fetch()) {
+                $response['message'] = "Cet email est déjà utilisé par un autre compte.";
+            } else {
+                $id = bin2hex(random_bytes(16));
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-if ($password !== $confirm) {
-    die("Les mots de passe ne correspondent pas");
-}
+                $stmt = $pdo->prepare("
+                    INSERT INTO users 
+                    (id, email, password, nom, prenom, telephone, date_naissance, adresse_postale)
+                    VALUES 
+                    (:id, :email, :password, :nom, :prenom, :telephone, :date_naissance, :adresse)
+                ");
 
-try {
-    // Vérifier si email existe
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
-    $stmt->execute(['email' => $email]);
+                $stmt->execute([
+                    'id' => $id,
+                    'email' => $email,
+                    'password' => $hashedPassword,
+                    'nom' => $nom,
+                    'prenom' => $prenom,
+                    'telephone' => $telephone,
+                    'date_naissance' => $date_naissance ?: null,
+                    'adresse' => $adresse
+                ]);
 
-    if ($stmt->fetch()) {
-        die("Email déjà utilisé");
+                $_SESSION['user_id'] = $id;
+                $_SESSION['email'] = $email;
+
+                $response['success'] = true;
+                $response['message'] = "Bienvenue ! Redirection en cours...";
+            }
+        } catch (PDOException $e) {
+            $response['message'] = "Erreur SQL : " . $e->getMessage();
+        }
     }
-
-    // UUID génération
-    $id = bin2hex(random_bytes(16)); // simple unique (32 chars)
-
-    // Hash mot de passe
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-    // Insertion
-    $stmt = $pdo->prepare("
-        INSERT INTO users 
-        (id, email, password, nom, prenom, telephone, date_naissance, adresse_postale)
-        VALUES 
-        (:id, :email, :password, :nom, :prenom, :telephone, :date_naissance, :adresse)
-    ");
-
-    $stmt->execute([
-        'id' => $id,
-        'email' => $email,
-        'password' => $hashedPassword,
-        'nom' => $nom,
-        'prenom' => $prenom,
-        'telephone' => $telephone,
-        'date_naissance' => $date_naissance ?: null,
-        'adresse' => $adresse
-    ]);
-
-    // Connexion auto
-    $_SESSION['user_id'] = $id;
-    $_SESSION['email'] = $email;
-
-    header("Location: /index.php");
-    exit;
-
-} catch (PDOException $e) {
-    die("Erreur SQL : " . $e->getMessage());
 }
+
+header('Content-Type: application/json');
+echo json_encode($response);
+exit;

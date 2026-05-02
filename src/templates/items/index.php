@@ -18,9 +18,9 @@
             <a href="routeur.php?action=catalogue" class="btn-back">Retour au catalogue</a>
         </div>
     <?php else: ?>
-        
+
         <div class="product-grid">
-            <!-- COLONNE GAUCHE (Image + Description) -->
+            <!-- COLONNE GAUCHE -->
             <div class="lg:col-span-2 space-y-6">
 
                 <!-- CARROUSEL -->
@@ -40,8 +40,8 @@
                 </div>
 
                 <!-- TITRE & PRIX -->
-                <div class="flex justify-between items-baseline px-2">
-                    <h1 class="text-3xl font-extrabold"><?= htmlspecialchars($product['titre']) ?></h1>
+                <div class="flex justify-between items-center px-4">
+                    <h1 class="text-3xl font-extrabold tracking-tight text-gray-900"><?= htmlspecialchars($product['titre']) ?></h1>
                     <p class="product-price"><?= number_format($product['prix'], 2, ',', ' ') ?> €</p>
                 </div>
 
@@ -52,74 +52,69 @@
                         <p><?= nl2br(htmlspecialchars($product['description'])) ?></p>
                     </div>
 
-                    <div class="info-block">
-                        <h2>Localisation</h2>
-                        <p><?= htmlspecialchars($product['ville_nom'] . ' (' . $product['code_postal'] . ')') ?></p>
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="info-block">
+                            <h2>Localisation</h2>
+                            <p><?= htmlspecialchars(($product['ville_nom'] ?? 'Ville inconnue') . ' (' . ($product['code_postal'] ?? '') . ')') ?></p>
+                        </div>
 
-                    <div class="info-block">
-                        <h2>Catégorie</h2>
-                        <p><?= htmlspecialchars($product['categorie_nom']) ?></p>
-                    </div>
+                        <div class="info-block">
+                            <h2>Catégorie</h2>
+                            <p><?= htmlspecialchars($product['categorie_nom'] ?? 'Non classé') ?></p>
+                        </div>
 
-                    <div class="info-block">
-                        <h2>Publié le</h2>
-                        <p><?= date('d/m/Y', strtotime($product['created_at'])) ?></p>
+                        <div class="info-block">
+                            <h2>Publié le</h2>
+                            <p><?= date('d/m/Y', strtotime($product['created_at'])) ?></p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- COLONNE DROITE (Vendeur + Similaires) -->
+            <!-- COLONNE DROITE -->
             <aside class="space-y-6">
                 <section class="aside-card">
                     <p class="meta-label">Vendeur</p>
-                    <a href="routeur.php?action=user&id=<?= $product['vendeur_id'] ?>" class="vendeur-link">
+                    <a href="routeur.php?action=user&id=<?= $product['vendeur_id'] ?>" class="vendeur-link flex items-center gap-2">
+                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-sm">👤</span>
                         <?= htmlspecialchars($product['vendeur_prenom'] . ' ' . $product['vendeur_nom']) ?>
                     </a>
                 </section>
 
-                <!-- BOUTON D'ACHAT / MODIFICATION -->
-                <?php if ($_SESSION['admin'] ?? false): ?>
-                    <a href="routeur.php?action=paiement&id=<?= $product['id'] ?>" class="btn-buy">Acheter l'article</a>
-                    <a href="routeur.php?action=edit_item&id=<?= $product['id'] ?>" class="btn-buy">Modifier l'article</a>
-                <?php elseif (!$isOwner && $product['statut'] === 'en_ligne'): ?>
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="routeur.php?action=paiement&id=<?= $product['id'] ?>" class="btn-buy">Acheter l'article</a>
-                    <?php else: ?>
-                        <a href="routeur.php?action=auth" class="btn-buy">Se connecter pour acheter</a>
+                <div class="actions-container">
+                    <?php if (!$isOwner && ($product['statut'] ?? '') === 'en_ligne'): ?>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <a href="routeur.php?action=paiement&id=<?= $product['id'] ?>" class="btn-buy" style="background-color: #005F83;">Acheter l'article</a>
+                            <button onclick="openContactModal(<?= $product['id'] ?>)" class="btn-buy" style="background-color: #004a66;">Contacter le vendeur</button>
+                        <?php else: ?>
+                            <a href="routeur.php?action=auth" class="btn-buy" style="background-color: #005F83;">Se connecter pour acheter</a>
+                            <a href="routeur.php?action=auth" class="btn-buy" style="background-color: #004a66;">Contacter le vendeur</a>
+                        <?php endif; ?>
+                    <?php elseif ($isOwner): ?>
+                        <a href="routeur.php?action=edit_item&id=<?= $product['id'] ?>" class="btn-buy">Modifier mon annonce</a>
                     <?php endif; ?>
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <button onclick="openContactModal(<?= $product['id'] ?>)" class="btn-buy" style="background-color: #6366f1;">
-                            Contacter le vendeur
-                        </button>
-                    <?php else: ?>
-                        <a href="routeur.php?action=connexion" class="btn-buy" style="background-color: #6366f1;">
-                            Contacter le vendeur
-                        </a>
-                    <?php endif; ?>
-                <?php elseif ($isOwner): ?>
-                    <a href="routeur.php?action=edit_item&id=<?= $product['id'] ?>" class="btn-buy">Modifier l'article</a>
-                <?php endif; ?>
-            
-                
+                </div>
 
                 <!-- SIMILAIRES -->
                 <section class="aside-card">
                     <p class="meta-label">Annonces similaires</p>
-                    <?php foreach ($similarAds as $ad): ?>
-                        <a href="routeur.php?action=item&id=<?= $ad['id'] ?>" class="similar-item group">
-                            <img src="/assets/img/<?= getImageByAnnonceId($pdo, $ad['id']) ?: 'default.png' ?>" alt="Thumbnail">
-                            <div>
-                                <h4 class="group-hover:text-blue-600"><?= htmlspecialchars($ad['titre']) ?></h4>
-                                <p><?= number_format($ad['prix'], 2, ',', ' ') ?> €</p>
-                            </div>
-                        </a>
-                    <?php endforeach; ?>
+                    <div class="space-y-2">
+                        <?php foreach ($similarAds as $ad): ?>
+                            <a href="routeur.php?action=item&id=<?= $ad['id'] ?>" class="similar-item">
+                                <img src="/assets/img/<?= getImageByAnnonceId($pdo, $ad['id']) ?: 'default.png' ?>" alt="Thumbnail">
+                                <div>
+                                    <h4><?= htmlspecialchars($ad['titre']) ?></h4>
+                                    <p><?= number_format($ad['prix'], 2, ',', ' ') ?> €</p>
+                                </div>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
                 </section>
             </aside>
         </div>
     <?php endif; ?>
 </main>
+
 
 <script>
     let currentIndex = 0;
@@ -171,7 +166,7 @@
         <form id="contactForm" method="POST" action="/routeur.php?action=messages">
             <input type="hidden" name="contact_vendeur" value="1">
             <input type="hidden" name="article_id" id="modalArticleId" value="">
-            
+
             <div style="margin-bottom: 15px;">
                 <label for="contenu" style="display: block; margin-bottom: 5px; font-weight: bold;">Votre message:</label>
                 <textarea id="contenu" name="contenu" rows="5" required style="
@@ -183,7 +178,7 @@
                     font-size: 14px;
                 " placeholder="Écrivez votre message ici..."></textarea>
             </div>
-            
+
             <div style="text-align: right;">
                 <button type="button" onclick="closeContactModal()" style="
                     margin-right: 10px;

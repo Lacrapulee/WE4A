@@ -1,13 +1,13 @@
-/* --- STYLE DU CATALOGUE --- */
 
-/* Style de la barre de recherche / filtres */
+
+
 section.bg-white {
     border: none;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 95, 131, 0.05);
 }
 
-/* Customisation des inputs de filtre */
+
 input, select {
     border: 1px solid #e2e8f0 !important;
     transition: all 0.2s ease;
@@ -17,10 +17,10 @@ input, select {
 input:focus, select:focus {
     border-color: #005F83 !important;
     background-color: #fff !important;
-    box-shadow: 0 0 0 3px rgba(0, 95, 131, 0.1); /* Petit halo bleu au focus */
+    box-shadow: 0 0 0 3px rgba(0, 95, 131, 0.1);
 }
 
-/* LE BOUTON FILTRER */
+
 button[type="submit"] {
     background-color: #005F83 !important;
     color: white;
@@ -42,7 +42,7 @@ button[type="submit"]:active {
     transform: translateY(0);
 }
 
-/* LES CARTES ARTICLES */
+
 .group {
     background: #ffffff;
     border: none !important;
@@ -59,14 +59,14 @@ button[type="submit"]:active {
     box-shadow: 0 12px 30px rgba(0, 95, 131, 0.1) !important;
 }
 
-/* Image de l'article */
+
 .group img {
     aspect-ratio: 4/3;
     object-fit: cover;
     width: 100%;
 }
 
-/* Titre et Prix */
+
 .group h3 {
     font-size: 1.1rem;
     color: #005F83;
@@ -79,7 +79,7 @@ button[type="submit"]:active {
     font-weight: 800;
 }
 
-/* Badge Catégorie / Ville en bas */
+
 .group .text-gray-400 {
     background-color: #f8fafc;
     padding: 4px 8px;

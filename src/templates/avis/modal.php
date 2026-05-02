@@ -81,8 +81,8 @@ $reviewError = $_GET['error'] ?? null;
             <textarea name="commentaire" id="commentaire" required placeholder="Décrivez votre expérience..." style="width:100%; min-height:120px; padding:10px; border:1px solid #ddd; border-radius:6px; resize:vertical;"></textarea>
 
             <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:18px;">
-                <button type="button" onclick="closeReviewModal()" style="padding:10px 18px; background:#e5e7eb; color:#111827; border:none; border-radius:6px; cursor:pointer;">Annuler</button>
-                <button type="submit" style="padding:10px 18px; background:#6366f1; color:white; border:none; border-radius:6px; cursor:pointer;"><?= htmlspecialchars($reviewButtonLabel) ?></button>
+                <button type="button" onclick="closeReviewModal()" style="padding:10px 18px; background:#e5e7eb; color:#1e293b; border:none; border-radius:6px; cursor:pointer;">Annuler</button>
+                <button type="submit" style="padding:10px 18px; background:#005f83; color:white; border:none; border-radius:6px; cursor:pointer;"><?= htmlspecialchars($reviewButtonLabel) ?></button>
             </div>
         </form>
     </div>
