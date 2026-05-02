@@ -83,7 +83,20 @@
                     <a href="routeur.php?action=paiement&id=<?= $product['id'] ?>" class="btn-buy">Acheter l'article</a>
                     <a href="routeur.php?action=edit_item&id=<?= $product['id'] ?>" class="btn-buy">Modifier l'article</a>
                 <?php elseif (!$isOwner && $product['statut'] === 'en_ligne'): ?>
-                    <a href="routeur.php?action=paiement&id=<?= $product['id'] ?>" class="btn-buy">Acheter l'article</a>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <a href="routeur.php?action=paiement&id=<?= $product['id'] ?>" class="btn-buy">Acheter l'article</a>
+                    <?php else: ?>
+                        <a href="routeur.php?action=auth" class="btn-buy">Se connecter pour acheter</a>
+                    <?php endif; ?>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <button onclick="openContactModal(<?= $product['id'] ?>)" class="btn-buy" style="background-color: #6366f1;">
+                            Contacter le vendeur
+                        </button>
+                    <?php else: ?>
+                        <a href="routeur.php?action=connexion" class="btn-buy" style="background-color: #6366f1;">
+                            Contacter le vendeur
+                        </a>
+                    <?php endif; ?>
                 <?php elseif ($isOwner): ?>
                     <a href="routeur.php?action=edit_item&id=<?= $product['id'] ?>" class="btn-buy">Modifier l'article</a>
                 <?php endif; ?>
@@ -118,6 +131,91 @@
         currentIndex = (currentIndex + dir + total) % total;
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
+
+    function openContactModal(articleId) {
+        document.getElementById('modalArticleId').value = articleId;
+        document.getElementById('contactModal').style.display = 'block';
+    }
+
+    function closeContactModal() {
+        document.getElementById('contactModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('contactModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
 </script>
+
+<!-- Modal de contact -->
+<div id="contactModal" class="modal" style="display: none;">
+    <div class="modal-content" style="
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+    ">
+        <span onclick="closeContactModal()" style="
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        ">&times;</span>
+        <h2>Contacter le vendeur</h2>
+        <form id="contactForm" method="POST" action="/routeur.php?action=messages">
+            <input type="hidden" name="contact_vendeur" value="1">
+            <input type="hidden" name="article_id" id="modalArticleId" value="">
+            
+            <div style="margin-bottom: 15px;">
+                <label for="contenu" style="display: block; margin-bottom: 5px; font-weight: bold;">Votre message:</label>
+                <textarea id="contenu" name="contenu" rows="5" required style="
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                " placeholder="Écrivez votre message ici..."></textarea>
+            </div>
+            
+            <div style="text-align: right;">
+                <button type="button" onclick="closeContactModal()" style="
+                    margin-right: 10px;
+                    padding: 10px 20px;
+                    background-color: #ccc;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                ">Annuler</button>
+                <button type="submit" style="
+                    padding: 10px 20px;
+                    background-color: #6366f1;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                ">Envoyer le message</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .modal {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+</style>
 </body>
 </html>

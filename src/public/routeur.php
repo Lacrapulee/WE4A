@@ -56,6 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'avis':
             require_once __DIR__ . '/../includes/avis.php';
             break;
+        case 'messages':
+            require_once __DIR__ . '/../includes/messages/messages.php';
+            break;
+        case 'deconnexion':
+            session_destroy();
+            header('Location: /routeur.php?action=catalogue');
+            exit();
+            break;
         case 'valider_reception':
             $venteId = $_POST['vente_id'];
             $stmt = $pdo->prepare("UPDATE ventes SET statut = 'recu' WHERE id = ?");
@@ -138,12 +146,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             break;
         
         case 'post':
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: /routeur.php?action=auth');
+                exit();
+            }
             require_once __DIR__ . '/../templates/header.php'; // Ton header Tailwind
             require_once __DIR__ . '/../templates/post/index.php'; // Le contenu de la page de publication d'annonce
             require_once __DIR__ . '/../templates/footer.php';
             break;
 
         case 'paiement':
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: /routeur.php?action=auth');
+                exit();
+            }
             require_once __DIR__ . '/../includes/paiement/paiement.php';        
             
             // Logique de paiement (à implémenter)
@@ -166,6 +182,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             require_once __DIR__ . '/../includes/item/item.php'; // Récupère les données de l'article
             require_once __DIR__ . '/../templates/header.php'; // Ton header Tailwind
             require_once __DIR__ . '/../templates/edit_item/index.php'; // Le contenu de la page d'édition d'article
+            require_once __DIR__ . '/../templates/footer.php';
+            break;
+        case 'messages':
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: /routeur.php?action=connexion');
+                exit;
+            }
+            require_once __DIR__ . '/../templates/header.php';
+            require_once __DIR__ . '/../templates/messages/index.php';
             require_once __DIR__ . '/../templates/footer.php';
             break;
     }

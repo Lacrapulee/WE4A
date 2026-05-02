@@ -49,10 +49,10 @@
 
                         <!-- BOUTONS -->
                         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                            <a href="/routeur.php?action=messages&contact_id=<?= $cmd['vendeur_id'] ?>" 
-                               style="display: block; text-align: center; padding: 10px; background: #f0f0f0; color: #333; text-decoration: none; border-radius: 5px; font-size: 14px;">
+                                     <button onclick="openContactModal(<?= $cmd['article_id'] ?>)" 
+                                         style="display: block; width: 100%; padding: 10px; background: #f0f0f0; color: #333; text-decoration: none; border: none; border-radius: 5px; font-size: 14px; cursor: pointer;">
                                 Contacter le vendeur
-                            </a>
+                            </button>
 
                             <?php if (!$isRecu): ?>
                                 <form action="/routeur.php?action=valider_reception" method="POST">
@@ -62,10 +62,10 @@
                                     </button>
                                 </form>
                             <?php else: ?>
-                                <a href="/routeur.php?action=avis&vendeur_id=<?= $cmd['vendeur_id'] ?>&article_id=<?= $cmd['article_id'] ?>" 
-                                   style="display: block; text-align: center; padding: 12px; background: #28a745; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                                <button type="button" onclick="openReviewModal('<?= htmlspecialchars($cmd['vendeur_id'], ENT_QUOTES) ?>', '<?= htmlspecialchars($cmd['article_id'], ENT_QUOTES) ?>')" 
+                                   style="display: block; width: 100%; text-align: center; padding: 12px; background: #28a745; color: #fff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
                                     Laisser un avis
-                                </a>
+                                </button>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -75,3 +75,100 @@
 
     </div>
 </main>
+
+<script>
+    function openContactModal(articleId) {
+        document.getElementById('modalArticleId').value = articleId;
+        document.getElementById('contactModal').style.display = 'block';
+    }
+
+    function closeContactModal() {
+        document.getElementById('contactModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('contactModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+
+<?php
+$reviewModalId = 'reviewModalMesCommandes';
+$reviewTitle = 'Donner mon avis';
+$reviewButtonLabel = 'Envoyer l\'avis';
+$reviewTargetId = $_GET['vendeur_id'] ?? '';
+$reviewArticleId = $_GET['article_id'] ?? '';
+require __DIR__ . '/../avis/modal.php';
+?>
+
+<!-- Modal de contact -->
+<div id="contactModal" class="modal" style="display: none;">
+    <div class="modal-content" style="
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+    ">
+        <span onclick="closeContactModal()" style="
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        ">&times;</span>
+        <h2>Contacter le vendeur</h2>
+        <form id="contactForm" method="POST" action="/routeur.php?action=messages">
+            <input type="hidden" name="contact_vendeur" value="1">
+            <input type="hidden" name="article_id" id="modalArticleId" value="">
+            
+            <div style="margin-bottom: 15px;">
+                <label for="contenu" style="display: block; margin-bottom: 5px; font-weight: bold;">Votre message:</label>
+                <textarea id="contenu" name="contenu" rows="5" required style="
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    box-sizing: border-box;
+                " placeholder="Écrivez votre message ici..."></textarea>
+            </div>
+            
+            <div style="text-align: right;">
+                <button type="button" onclick="closeContactModal()" style="
+                    margin-right: 10px;
+                    padding: 10px 20px;
+                    background-color: #ccc;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                ">Annuler</button>
+                <button type="submit" style="
+                    padding: 10px 20px;
+                    background-color: #6366f1;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                ">Envoyer le message</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .modal {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+</style>

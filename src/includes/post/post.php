@@ -2,12 +2,9 @@
 require_once __DIR__ . '/../db.php';
 include_once __DIR__ . '/../tools.php';
 
-// Sécurité : On vérifie que l'utilisateur est bien connecté
 if (!isset($_SESSION['user_id'])) {
-    echo "<p><a href='/routeur.php?action=auth'>Se connecter</a></p>";
-    die("Vous devez être connecté pour publier un article.");
-
-    // Idéalement : header('Location: /login.php'); exit();
+    header('Location: /routeur.php?action=auth');
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
