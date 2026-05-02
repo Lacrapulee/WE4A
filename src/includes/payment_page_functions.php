@@ -16,6 +16,12 @@ function buildPaymentPageViewData($pdo, $articleId, $requestMethod, $postData) {
         'buyerEmail' => '',
     ];
 
+    if (!isset($_SESSION['user_id'])) {
+        $viewData['statusCode'] = 401;
+        $viewData['errorMessage'] = 'Vous devez être connecté pour acheter un article.';
+        return $viewData;
+    }
+
     if (!$articleId) {
         $viewData['statusCode'] = 400;
         $viewData['errorMessage'] = 'Aucun article selectionne pour le paiement.';

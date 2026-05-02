@@ -1,5 +1,5 @@
 
- <!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="fr">
     <head>
         <meta charset="UTF-8">
@@ -21,6 +21,26 @@
         <a href="<?= isset($_SESSION['user_id']) ? '/routeur.php?action=user&id=' . urlencode($_SESSION['user_id']) : '/routeur.php?action=auth' ?>">Mes annonces</a>
         <?php if (isset($_SESSION['user_id'])): ?>
             <a href="/routeur.php?action=mes_commandes">Mes commandes</a>
+            <?php
+            require_once __DIR__ . '/../includes/messages_functions.php';
+            $unread = countUnreadMessages($pdo, $_SESSION['user_id']);
+            ?>
+            <a href="/routeur.php?action=messages" style="position: relative;">
+                Messages
+                <?php if ($unread > 0): ?>
+                    <span style="
+                        position: absolute;
+                        top: -5px;
+                        right: -10px;
+                        background-color: #ff4444;
+                        color: white;
+                        border-radius: 50%;
+                        padding: 2px 6px;
+                        font-size: 12px;
+                        font-weight: bold;
+                    "><?php echo $unread; ?></span>
+                <?php endif; ?>
+            </a>
         <?php endif; ?>
 
     </div>
@@ -34,8 +54,14 @@
     </div>
 
     <nav class="header-actions">
-        <a href="/routeur.php?action=auth" class="btn-secondary">Connexion</a>
-        <a href="/routeur.php?action=inscription" class="btn-secondary">Inscription</a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <form action="/routeur.php?action=deconnexion" method="POST" style="display: inline;">
+                <button type="submit" class="btn-secondary">Déconnexion</button>
+            </form>
+        <?php else: ?>
+            <a href="/routeur.php?action=auth" class="btn-secondary">Connexion</a>
+            <a href="/routeur.php?action=inscription" class="btn-secondary">Inscription</a>
+        <?php endif; ?>
         <a href="<?= isset($_SESSION['user_id']) ? '/routeur.php?action=user&id=' . urlencode($_SESSION['user_id']) : '/routeur.php?action=auth' ?>" class="btn-cart"><i class="fa-solid fa-user"></i></a>
     </nav>
 </header>

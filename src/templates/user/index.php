@@ -53,7 +53,9 @@
                 <div class="reviews-header">
                     <h2 class="section-title">Avis clients</h2>
                     <?php if (!$is_owner && isset($_SESSION['user_id'])): ?>
-                        <a href="/routeur.php?action=avis&vendeur_id=<?= htmlspecialchars($profile_id) ?>" class="btn-add-review">+ Ajouter un avis</a>
+                        <button type="button" onclick="openReviewModal('<?= htmlspecialchars($profile_id, ENT_QUOTES) ?>')" class="btn-add-review" style="border:none; cursor:pointer; background:transparent; padding:0;">
+                            + Ajouter un avis
+                        </button>
                     <?php endif; ?>
                 </div>
                 <?php if (empty($reviews)): ?>
@@ -76,6 +78,15 @@
             </aside>
         </div>
     </div>
+
+    <?php
+    $reviewModalId = 'reviewModalUser';
+    $reviewTitle = 'Donner mon avis';
+    $reviewButtonLabel = 'Envoyer l\'avis';
+    $reviewTargetId = $profile_id;
+    $reviewArticleId = '';
+    require __DIR__ . '/../avis/modal.php';
+    ?>
 
     <?php include __DIR__ . '/../../templates/footer.php'; ?>
 </body>

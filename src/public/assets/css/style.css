@@ -94,6 +94,23 @@ main {
     color: var(--text-dark);
 }
 
+.btn-secondary {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    font-weight: 500;
+    color: var(--primary-blue);
+    cursor: pointer;
+    transition: color 0.2s;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: inherit;
+}
+
+.btn-secondary:hover {
+    color: var(--text-dark);
+}
+
 /* --- BOUTON CART / USER --- */
 .btn-cart {
     background-color: var(--primary-blue) !important;
@@ -110,7 +127,7 @@ main {
 .btn-cart:hover {
     background-color: var(--primary-blue-dark) !important;
     transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 95, 131, 0.2); /
+    box-shadow: 0 4px 10px rgba(0, 95, 131, 0.2); 
 }
 
 .btn-cart i {
@@ -122,7 +139,7 @@ footer.footer {
     color: var(--text-dark);
     padding: 4rem 0 2rem 0;
     width: 100%;
-    clear: both; /
+    clear: both; 
     position: relative;
     z-index: 10;
 }
