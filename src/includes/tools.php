@@ -52,3 +52,91 @@ function getCoordinates($adresse, $ville, $cp) {
     }
     return null; // Retourne null si rien n'est trouvé
 }
+
+/**
+ * Récupère les coordonnées d'une ville
+ */
+function getCoordinatesFromVille($ville) {
+    $query = urlencode($ville);
+    $url = "https://api-adresse.data.gouv.fr/search/?q=$query&limit=1&type=municipality";
+    
+    $response = @file_get_contents($url);
+    if ($response) {
+        $data = json_decode($response, true);
+        if (!empty($data['features'])) {
+            $coords = $data['features'][0]['geometry']['coordinates'];
+            return $coords[1] . ',' . $coords[0]; // On stocke "Lat,Long"
+        }
+    }
+    return null;
+}
+
+/**
+ * Calcule la distance en km entre deux coordonnées
+ * @param string $coords1 Format "lat,long" ex: "47.639,6.853"
+ * @param string $coords2 Format "lat,long"
+ * @return float Distance en kilomètres
+ */
+function calculateDistance($coords1, $coords2) {
+    if (!$coords1 || !$coords2) {
+        return null;
+    }
+    
+    // Extraire les coordonnées
+    $coords1 = extractLatLongFromWKT($coords1);
+    $coords2 = extractLatLongFromWKT($coords2);
+    
+    if (!$coords1 || !$coords2) {
+        return null;
+    }
+    
+    list($lat1, $lon1) = explode(',', $coords1);
+    list($lat2, $lon2) = explode(',', $coords2);
+    
+    $lat1 = (float)$lat1;
+    $lon1 = (float)$lon1;
+    $lat2 = (float)$lat2;
+    $lon2 = (float)$lon2;
+    
+    // Rayon terrestre en km
+    $earthRadius = 6371;
+    
+    // Convertir en radians
+    $latFrom = deg2rad($lat1);
+    $lonFrom = deg2rad($lon1);
+    $latTo = deg2rad($lat2);
+    $lonTo = deg2rad($lon2);
+    
+    // Formule de Haversine
+    $latDelta = $latTo - $latFrom;
+    $lonDelta = $lonTo - $lonFrom;
+    
+    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+    
+    return round($angle * $earthRadius, 2); // Distance en km
+}
+
+/**
+ * Extrait les coordonnées au format "lat,long" à partir d'une chaîne
+ */
+function extractLatLongFromWKT($coords) {
+    if (empty($coords)) {
+        return null;
+    }
+    
+    $coords = trim($coords);
+    
+    if (strpos($coords, 'POINT') !== false) {
+        // Format WKT : "POINT(lat lon)" - récupération directe
+        if (preg_match('/POINT\s*\(\s*([\d\.\-]+)\s+([\d\.\-]+)\s*\)/', $coords, $matches)) {
+            if (isset($matches[1]) && isset($matches[2])) {
+                return trim($matches[1]) . ',' . trim($matches[2]); // Retourner "lat,long"
+            }
+        }
+        return null;
+    } else if (strpos($coords, ',') !== false) {
+        // Format déjà "lat,long"
+        return $coords;
+    }
+    return null;
+}
