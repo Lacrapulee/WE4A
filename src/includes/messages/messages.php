@@ -47,30 +47,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_vendeur'])) {
     }
 
     $article_id = (int)($_POST['article_id'] ?? 0);
+    $vendor_id = $_POST['vendor_id'] ?? ''; // Contact direct au vendeur depuis son profil
     $contenu = trim($_POST['contenu'] ?? '');
 
-    if (!$article_id || empty($contenu)) {
-        $_SESSION['error'] = 'Erreur: article ou message invalide';
-        header('Location: /routeur.php?action=item&id=' . $article_id);
-        exit;
-    }
-
-    $stmt = $pdo->prepare("SELECT vendeur_id FROM articles WHERE id = ?");
-    $stmt->execute([$article_id]);
-    $article = $stmt->fetch();
-
-    if (!$article) {
-        $_SESSION['error'] = 'Article non trouvé';
+    if (empty($contenu)) {
+        $_SESSION['error'] = 'Erreur: message vide';
         header('Location: /routeur.php?action=catalogue');
         exit;
     }
 
-    $vendeur_id = $article['vendeur_id'];
+    // Déterminer le vendeur et l'article
+    if ($article_id) {
+        // Contact via un article
+        $stmt = $pdo->prepare("SELECT vendeur_id FROM articles WHERE id = ?");
+        $stmt->execute([$article_id]);
+        $article = $stmt->fetch();
+
+        if (!$article) {
+            $_SESSION['error'] = 'Article non trouvé';
+            header('Location: /routeur.php?action=catalogue');
+            exit;
+        }
+
+        $vendeur_id = $article['vendeur_id'];
+        $redirect_location = '/routeur.php?action=item&id=' . $article_id;
+    } elseif ($vendor_id) {
+        // Contact direct au vendeur
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE id = ?");
+        $stmt->execute([$vendor_id]);
+        $user = $stmt->fetch();
+
+        if (!$user) {
+            $_SESSION['error'] = 'Vendeur non trouvé';
+            header('Location: /routeur.php?action=catalogue');
+            exit;
+        }
+
+        $vendeur_id = $vendor_id;
+        $article_id = null;
+        $redirect_location = '/routeur.php?action=user&id=' . $vendor_id;
+    } else {
+        $_SESSION['error'] = 'Erreur: article ou vendeur invalide';
+        header('Location: /routeur.php?action=catalogue');
+        exit;
+    }
 
     // Ne pas permettre au vendeur de se contacter lui-même
     if ($vendeur_id === $_SESSION['user_id']) {
-        $_SESSION['error'] = 'Vous ne pouvez pas contacter votre propre article';
-        header('Location: /routeur.php?action=item&id=' . $article_id);
+        $_SESSION['error'] = 'Vous ne pouvez pas vous contacter vous-même';
+        header('Location: ' . $redirect_location);
         exit;
     }
 
@@ -82,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_vendeur'])) {
         header('Location: /routeur.php?action=messages&id=' . $conversation_id);
     } else {
         $_SESSION['error'] = 'Erreur lors de la création de la conversation';
-        header('Location: /routeur.php?action=item&id=' . $article_id);
+        header('Location: ' . $redirect_location);
     }
     exit;
 }

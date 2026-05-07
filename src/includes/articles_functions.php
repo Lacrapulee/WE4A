@@ -106,6 +106,9 @@ function getAnnonceRechercheAvancee($pdo, $filters = []) {
         $sql .= " ORDER BY " . $orderBy;
     }
     
+    // Limiter à 200 résultats max pour éviter de surcharger le serveur
+    $sql .= " LIMIT 200";
+    
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -144,6 +147,11 @@ function getAnnonceRechercheAvancee($pdo, $filters = []) {
                 });
             }
         }
+    }
+    
+    // Assurer qu'on ne retourne jamais plus de 200 résultats
+    if (count($results) > 200) {
+        $results = array_slice($results, 0, 200);
     }
     
     return $results;

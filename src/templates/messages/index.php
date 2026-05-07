@@ -51,8 +51,12 @@ if ($conversation_id) {
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h5 class="mb-1"><?php echo htmlspecialchars($autrePersonne); ?></h5>
-                                <p class="mb-0 small"><strong>Article:</strong> <?php echo htmlspecialchars($conversation['article_titre']); ?></p>
-                                <p class="mb-0 small"><strong>Prix:</strong> <?php echo number_format($conversation['article_prix'], 2, ',', ' '); ?>€</p>
+                                <?php if ($conversation['article_titre']): ?>
+                                    <p class="mb-0 small"><strong>Article:</strong> <?php echo htmlspecialchars($conversation['article_titre']); ?></p>
+                                    <p class="mb-0 small"><strong>Prix:</strong> <?php echo number_format($conversation['article_prix'], 2, ',', ' '); ?>€</p>
+                                <?php else: ?>
+                                    <p class="mb-0 small"><strong>Conversation:</strong> Contact direct avec le vendeur</p>
+                                <?php endif; ?>
                             </div>
                             <a href="/routeur.php?action=messages" class="btn btn-light btn-sm">← Retour</a>
                         </div>
@@ -131,7 +135,15 @@ if ($conversation_id) {
                                                 <span class="badge bg-primary"><?php echo $conversation['non_lus']; ?></span>
                                             <?php endif; ?>
                                         </h6>
-                                        <p class="mb-1"><strong><?php echo htmlspecialchars($conversation['article_titre']); ?></strong></p>
+                                        <p class="mb-1"><strong>
+                                            <?php 
+                                            if ($conversation['article_titre']) {
+                                                echo htmlspecialchars($conversation['article_titre']);
+                                            } else {
+                                                echo 'Contact direct';
+                                            }
+                                            ?>
+                                        </strong></p>
                                         <p class="mb-1 text-muted small">
                                             <?php 
                                             $dernier = htmlspecialchars(substr($conversation['dernier_message'], 0, 80));
