@@ -7,7 +7,10 @@ $filters = [
     'search'    => $_GET['search'] ?? '',
     'categorie' => $_GET['categorie'] ?? '',
     'ville'     => $_GET['ville'] ?? '',
-    'prix_max'  => $_GET['prix_max'] ?? ''
+    'prix_min'  => $_GET['prix_min'] ?? '',
+    'prix_max'  => $_GET['prix_max'] ?? '',
+    'distance'  => $_GET['distance'] ?? '',
+    'tri'       => $_GET['tri'] ?? 'date_recent'
 ];
 
 $results = getAnnonceRechercheAvancee($pdo, $filters);

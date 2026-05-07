@@ -14,41 +14,69 @@
     <main class="max-w-7xl mx-auto px-4 py-8 w-full flex-grow">
     <!-- SECTION FILTRES -->
     <section class="bg-white p-6 mb-10">
-        <form action="/routeur.php" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+        <form action="/routeur.php" method="GET" class="space-y-4">
             <input type="hidden" name="action" value="catalogue">
 
-            <div>
-                <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Que cherchez-vous ?</label>
-                <input type="text" name="search" value="<?= htmlspecialchars($filters['search'] ?? '') ?>"
-                       placeholder="Ex: Vélo, iPhone..." class="w-full rounded-lg p-2.5 outline-none">
+            <!-- Ligne 1 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Que cherchez-vous ?</label>
+                    <input type="text" name="search" value="<?= htmlspecialchars($filters['search'] ?? '') ?>"
+                           placeholder="Ex: Vélo, iPhone..." class="w-full rounded-lg p-2.5 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Catégorie</label>
+                    <select name="categorie" class="w-full rounded-lg p-2.5 outline-none">
+                        <option value="">Toutes les catégories</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= $cat['id'] ?>" <?= (isset($filters['categorie']) && $filters['categorie'] == $cat['id']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($cat['nom']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Ville</label>
+                    <input type="text" name="ville" value="<?= htmlspecialchars($filters['ville'] ?? '') ?>"
+                           placeholder="Ex: Paris" class="w-full rounded-lg p-2.5 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Distance (km)</label>
+                    <input type="number" name="distance" value="<?= htmlspecialchars($filters['distance'] ?? '') ?>"
+                           placeholder="Ex: 50" min="0" step="1" class="w-full rounded-lg p-2.5 outline-none">
+                </div>
             </div>
 
-            <div>
-                <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Catégorie</label>
-                <select name="categorie" class="w-full rounded-lg p-2.5 outline-none">
-                    <option value="">Toutes les catégories</option>
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?= $cat['id'] ?>" <?= (isset($filters['categorie']) && $filters['categorie'] == $cat['id']) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($cat['nom']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+            <!-- Ligne 2 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Prix Min</label>
+                    <input type="number" name="prix_min" value="<?= htmlspecialchars($filters['prix_min'] ?? '') ?>"
+                           placeholder="€" class="w-full rounded-lg p-2.5 outline-none">
+                </div>
 
-            <div>
-                <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Ville</label>
-                <input type="text" name="ville" value="<?= htmlspecialchars($filters['ville'] ?? '') ?>"
-                       placeholder="Ex: Paris" class="w-full rounded-lg p-2.5 outline-none">
-            </div>
-
-            <div class="flex items-end gap-3">
-                <div class="flex-grow">
+                <div>
                     <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Prix Max</label>
                     <input type="number" name="prix_max" value="<?= htmlspecialchars($filters['prix_max'] ?? '') ?>"
                            placeholder="€" class="w-full rounded-lg p-2.5 outline-none">
                 </div>
-                <button type="submit" class="px-6 py-2.5 font-bold transition-all">
-                    Filtrer
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Tri</label>
+                    <select name="tri" class="w-full rounded-lg p-2.5 outline-none">
+                        <option value="date_recent" <?= (($filters['tri'] ?? 'date_recent') === 'date_recent') ? 'selected' : '' ?>>Date</option>
+                        <option value="date_ancien" <?= (($filters['tri'] ?? '') === 'date_ancien') ? 'selected' : '' ?>>Date ancienne</option>
+                        <option value="prix_min" <?= (($filters['tri'] ?? '') === 'prix_min') ? 'selected' : '' ?>>Prix min</option>
+                        <option value="prix_max" <?= (($filters['tri'] ?? '') === 'prix_max') ? 'selected' : '' ?>>Prix max</option>
+                        <option value="distance" <?= (($filters['tri'] ?? '') === 'distance') ? 'selected' : '' ?>>Distance</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="px-6 py-2.5 font-bold transition-all rounded-lg bg-blue-500 text-white hover:bg-blue-600">
+                    Appliquer
                 </button>
             </div>
         </form>
@@ -66,7 +94,12 @@
                         <p class="text-blue-600"><?= number_format($item['prix'], 2, ',', ' ') ?> €</p>
 
                         <div class="flex justify-between items-center mt-4">
-                            <span class="text-gray-400 text-[10px] font-bold uppercase"><?= htmlspecialchars($item['ville_nom']) ?></span>
+                            <span class="text-gray-400 text-[10px] font-bold uppercase">
+                                <?= htmlspecialchars($item['ville_nom']) ?>
+                                <?php if (!empty($item['distance'])): ?>
+                                    <span class="text-blue-500 ml-1">(<?= htmlspecialchars($item['distance']) ?> km)</span>
+                                <?php endif; ?>
+                            </span>
                             <span class="text-gray-400 text-[10px] font-bold uppercase"><?= htmlspecialchars($item['categorie_nom']) ?></span>
                         </div>
                     </div>
