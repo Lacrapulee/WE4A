@@ -9,13 +9,11 @@ USE WE4ADB;
 
 -- Décocher si vous voulez supprimer les anciennes données
 -- SET FOREIGN_KEY_CHECKS = 0;
--- DELETE FROM `article_attributs_valeurs`;
 -- DELETE FROM `article_images`;
 -- DELETE FROM `messages`;
 -- DELETE FROM `conversations`;
 -- DELETE FROM `favoris`;
 -- DELETE FROM `avis`;
--- DELETE FROM `promotions`;
 -- DELETE FROM `articles`;
 -- DELETE FROM `categories`;
 -- DELETE FROM `users`;
@@ -52,7 +50,12 @@ INSERT INTO `categories` (`id`, `nom`, `description`) VALUES
 (2, 'Vehicules', 'Voitures, Velos, Trottinettes'),
 (3, 'Immobilier', 'Ventes et Locations'),
 (4, 'Maison', 'Meubles et Deco'),
-(5, 'Loisirs', 'Sport, Musique, Jeux');
+(5, 'Loisirs', 'Sport, Musique, Jeux'),
+(6, 'Vêtements', 'T-shirts, pantalons, vestes et tenues du quotidien'),
+(7, 'Chaussures', 'Baskets, chaussures de ville, bottes et sandales'),
+(8, 'Accessoires mode', 'Sacs, ceintures, lunettes et montres'),
+(9, 'Bijoux', 'Bagues, colliers, bracelets et accessoires précieux'),
+(10, 'Beauté', 'Cosmétiques, parfums et soins');
 
 -- 3. INSERTION DES ARTICLES
 INSERT INTO `articles` (`vendeur_id`, `categorie_id`, `titre`, `description`, `prix`, `statut`, `coordonnees`, `ville_nom`, `code_postal`) VALUES
@@ -80,6 +83,17 @@ INSERT INTO `articles` (`vendeur_id`, `categorie_id`, `titre`, `description`, `p
 (@u4, 5, 'Halteres 20kg', 'Lot de 2, fonte.', 40.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
 (@u4, 5, 'Velo de route Triban RC120', 'Cadre aluminium, ideal debutant.', 420.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
 (@u4, 5, 'Piano numerique Yamaha P45', '88 touches, support pedalier.', 380.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
+-- Un peu de contenu dans toutes les categories
+(@u1, 1, 'Ordinateur portable Lenovo ThinkPad', '16Go RAM, SSD 1To, parfait pour le travail.', 720.00, 'en_ligne', POINT(47.64, 6.85), 'Belfort', '90000'),
+(@u2, 2, 'Scooter 125 cm3 Yamaha', 'Bon etat, entretien suivi, pret a rouler.', 1450.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),
+(@u3, 3, 'Appartement T2 a louer', 'Lumineux, proche transports et commerces.', 620.00, 'en_ligne', POINT(47.58, 6.81), 'Sevenans', '90400'),
+(@u4, 4, 'Lot de lampes design', 'Deux lampes de chevet style contemporain.', 48.00, 'en_ligne', POINT(47.58, 6.79), 'Hericourt', '70400'),
+(@u5, 5, 'Raquette de tennis Babolat', 'Tres peu servie, avec housse.', 65.00, 'en_ligne', POINT(47.63, 6.86), 'Belfort', '90000'),
+(@u6, 6, 'Manteau long noir', 'Taille 40, elegant pour l hiver.', 70.00, 'en_ligne', POINT(48.8566, 2.3522), 'Paris', '75001'),
+(@u7, 7, 'Sandales femme cuir', 'Pointure 38, confortables et legeres.', 30.00, 'en_ligne', POINT(48.3905, -4.4860), 'Brest', '29200'),
+(@u8, 8, 'Ceinture en cuir', 'Marron fonce, boucle metal.', 18.00, 'en_ligne', POINT(43.6108, 3.8767), 'Montpellier', '34000'),
+(@u9, 9, 'Boucles d oreilles dorees', 'Paire delicate, jamais portee.', 26.00, 'en_ligne', POINT(45.7640, 4.8357), 'Lyon', '69000'),
+(@u10, 10, 'Creme hydratante visage', 'Pot neuf, peau sensible.', 14.00, 'en_ligne', POINT(43.2965, 5.3698), 'Marseille', '13000'),
 -- Immobilier (Admin @u5 - Belfort/Montbeliard)
 (@u5, 3, 'Studio Centre Belfort', 'Proche gare, 25m2.', 55000.00, 'en_ligne', POINT(47.63, 6.86), 'Belfort', '90000'),
 (@u5, 3, 'T3 Montbeliard', 'Vue sur le chateau, parking.', 125000.00, 'en_ligne', POINT(47.51, 6.79), 'Montbeliard', '25200'),

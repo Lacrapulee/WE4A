@@ -34,10 +34,9 @@
                 <div>
                     <label class="input-label">Catégorie</label>
                     <select name="categorie_id" class="form-input">
-                        <!-- Ici vous devriez boucler sur vos catégories réelles -->
-                        <option value="1" <?= $product['categorie_id'] == 1 ? 'selected' : '' ?>>Électronique</option>
-                        <option value="2" <?= $product['categorie_id'] == 2 ? 'selected' : '' ?>>Mode</option>
-                        <option value="3" <?= $product['categorie_id'] == 3 ? 'selected' : '' ?>>Maison</option>
+                        <?php foreach (($categories ?? []) as $categorie): ?>
+                            <option value="<?= $categorie['id'] ?>" <?= $product['categorie_id'] == $categorie['id'] ? 'selected' : '' ?>><?= htmlspecialchars($categorie['nom']) ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 

@@ -27,11 +27,9 @@
                     <label for="categorie">Catégorie</label>
                     <select id="categorie" name="categorie_id" required>
                         <option value="">-- Choisir --</option>
-                        <option value="1">Informatique (PC, Consoles, Accessoires)</option>
-                        <option value="2">Vehicules (Voitures, Velos, Trottinettes)</option>
-                        <option value="3">Immobilier (Ventes et Locations)</option>
-                        <option value="4">Maison (Meubles et Deco)</option>
-                        <option value="5">Loisirs (Sport, Musique, Jeux)</option>
+                        <?php foreach (($categories ?? []) as $categorie): ?>
+                            <option value="<?= $categorie['id'] ?>"><?= htmlspecialchars($categorie['nom']) ?><?= !empty($categorie['description']) ? ' (' . htmlspecialchars($categorie['description']) . ')' : '' ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
