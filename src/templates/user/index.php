@@ -8,7 +8,6 @@
 </head>
 <body>
     <?php include __DIR__ . '/../../templates/header.php'; ?>
-
     <div class="profile-container">
         <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
             <div class="alert alert-success" style="margin-bottom: 2rem; padding: 1rem; background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; color: #166534; font-weight: 600;">
@@ -22,9 +21,10 @@
                 <p>Membre depuis le <?= date('d/m/Y', strtotime($user['created_at'])) ?></p>
                 <p> Téléphone: <?= htmlspecialchars($telephone) ?></p>
                 <p> Adresse postale: <?= htmlspecialchars($adresse_postale ?? 'Non renseignée') ?></p>
-                <?php if ($is_owner): ?>
-                    <a href="../routeur.php?action=edit_profile" class="btn-edit"> Modifier mon profil</a>
-                <?php else: ?>
+                <?php if ($is_owner || $isAdmin): ?>
+                    <a href="../routeur.php?action=edit_profile&id=<?= $_GET['id'] ?>" class="btn-edit"> Modifier mon profil</a>
+                <?php endif; ?>
+                <?php if (!$is_owner): ?>
                     <a href="mailto:<?= htmlspecialchars($email) ?>" class="btn-edit">✉️ Contacter le vendeur</a>
                 <?php endif; ?>
             </div>
@@ -87,6 +87,7 @@
     $reviewArticleId = '';
     require __DIR__ . '/../avis/modal.php';
     ?>
+
 
     <?php include __DIR__ . '/../../templates/footer.php'; ?>
 </body>

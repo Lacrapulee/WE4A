@@ -17,7 +17,9 @@
     </div>
 
     <div class="nav-links">
+        <?php if (isset($_SESSION['user_id'])): ?>
         <a href="/routeur.php?action=post">Vendre</a>
+        <?php endif; ?>
         <a href="<?= isset($_SESSION['user_id']) ? '/routeur.php?action=user&id=' . urlencode($_SESSION['user_id']) : '/routeur.php?action=auth' ?>">Mes annonces</a>
         <?php if (isset($_SESSION['user_id'])): ?>
             <a href="/routeur.php?action=mes_commandes">Mes commandes</a>

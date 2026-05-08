@@ -31,6 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'connexion':
             require_once __DIR__ . '/../includes/connexion/connexion.php';
             break;
+        case 'delete_item':
+            require_once __DIR__ . '/../includes/delete_item/delete_item.php';
+            header('Location: /routeur.php?action=catalogue');
+            break;
+        case 'delete_user':
+            require_once __DIR__ . '/../includes/delete_user/delete_user.php';
+            header('Location: /routeur.php?action=catalogue');
+            break;
         case 'inscription':
             require_once __DIR__ . '/../includes/inscription/inscription.php';
             break;
@@ -40,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         case 'edit_profile':
             require_once __DIR__ . '/../includes/edit_profile/edit_profile.php';
-            header('Location: /routeur.php?action=user&id=' . $_SESSION['user_id']);
+            header('Location: /routeur.php?action=user&id=' . $user_id); // Redirige vers la page de profil après modification
             break;
         case 'paiement':
             // Traite le paiement puis affiche le résultat sur la page de paiement

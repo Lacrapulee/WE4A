@@ -11,8 +11,9 @@ $user = $stmt->fetch();
 
 if (!$user) { die("Ce profil n'existe pas."); }
 
-// Vérifier si c'est le propriétaire qui regarde
+// Vérifier si c'est le propriétaire ou admin qui regarde
 $is_owner = (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $profile_id);
+$isAdmin = (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1);
 
 $stmt = $pdo->prepare("SELECT * FROM articles WHERE vendeur_id = ? ORDER BY created_at DESC");
 $stmt->execute([$profile_id]);

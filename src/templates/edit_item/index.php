@@ -60,7 +60,13 @@
                 </div>
             </div>
         </form>
-        
+        <!-- Formulaire de suppression (séparé pour la sécurité) -->
+        <div class="delete-section">
+            <h3>Supprimer l'annonce</h3>
+            <form action="routeur.php?action=delete_item&id=<?= $product['id'] ?>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est irréversible.');">
+                <button type="submit" class="btn-delete">Supprimer l'annonce</button>
+            </form>
+        </div>
         <!-- Optionnel : Gestion des images (simplifié) -->
         <div class="mt-8 p-6 bg-blue-50 rounded-2xl border border-blue-100">
             <h3 class="font-bold text-blue-800 mb-2">Gestion des images</h3>

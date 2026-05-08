@@ -90,7 +90,8 @@
                             <a href="routeur.php?action=auth" class="btn-buy" style="background-color: #005F83;">Se connecter pour acheter</a>
                             <a href="routeur.php?action=auth" class="btn-buy" style="background-color: #004a66;">Contacter le vendeur</a>
                         <?php endif; ?>
-                    <?php elseif ($isOwner): ?>
+                    <?php endif; ?>
+                    <?php if ($isOwner || $isAdmin): ?>
                         <a href="routeur.php?action=edit_item&id=<?= $product['id'] ?>" class="btn-buy">Modifier mon annonce</a>
                     <?php endif; ?>
                 </div>

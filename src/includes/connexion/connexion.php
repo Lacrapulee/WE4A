@@ -15,7 +15,7 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT id, email, password FROM users WHERE email = :email");
+    $stmt = $pdo->prepare("SELECT id, email, password, is_admin FROM users WHERE email = :email");
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -29,6 +29,7 @@ try {
 
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['email'] = $user['email'];
+    $_SESSION['is_admin'] = $user['is_admin'];
 
     header("Location: /index.php");
     exit;

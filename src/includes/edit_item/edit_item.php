@@ -18,7 +18,7 @@ if (!$product) {
 
 // 2. VÉRIFICATION DE SÉCURITÉ (Owner ou Admin)
 $isOwner = ($_SESSION['user_id'] == $product['vendeur_id']);
-$isAdmin = (isset($_SESSION['admin']) && $_SESSION['admin'] == true);
+$isAdmin = (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1);
 
 if (!$isOwner && !$isAdmin) {
     // Redirection si l'utilisateur n'a pas le droit d'être ici

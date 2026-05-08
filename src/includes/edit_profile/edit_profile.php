@@ -7,18 +7,30 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
+// 2. VÉRIFICATION DE SÉCURITÉ (Owner ou Admin)
+$isOwner = ($_SESSION['user_id'] == $_GET['id']);
+$isAdmin = (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1);
+$user_id = $_GET['id'];
 $success = false;
 $error = null;
+
+if (!$isOwner && !$isAdmin) {
+    // Redirection si l'utilisateur n'a pas le droit d'être ici
+    header('Location: /routeur.php?action=user&id=' . $_SESSION['user_id']);
+    exit();
+}
 
 // --- PARTIE 1 : TRAITEMENT DE LA MISE À JOUR ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = trim($_POST['nom'] ?? '');
     $prenom = trim($_POST['prenom'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $telephone = trim($_POST['telephone'] ?? '');
+    $adresse_postale = trim($_POST['adresse_postale'] ?? '');
 
     if (!empty($nom) && !empty($prenom)) {
-        $stmt = $pdo->prepare("UPDATE users SET nom = ?, prenom = ? WHERE id = ?");
-        if ($stmt->execute([$nom, $prenom, $user_id])) {
+        $stmt = $pdo->prepare("UPDATE users SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse_postale = ? WHERE id = ?");
+        if ($stmt->execute([$nom, $prenom, $email, $telephone, $adresse_postale, $user_id])) {
             $success = true;
         } else {
             $error = "Erreur lors de la mise à jour.";
@@ -30,6 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // --- PARTIE 2 : RÉCUPÉRATION DES INFOS ACTUELLES ---
-$stmt = $pdo->prepare("SELECT nom, prenom, email FROM users WHERE id = ?");
+$stmt = $pdo->prepare("SELECT nom, prenom, email, telephone, adresse_postale FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch();
