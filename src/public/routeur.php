@@ -207,6 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 header('Location: /routeur.php?action=auth');
                 exit();
             }
+            require_once __DIR__ . '/../includes/post/post.php';
             require_once __DIR__ . '/../templates/header.php'; // Ton header Tailwind
             require_once __DIR__ . '/../templates/post/index.php'; // Le contenu de la page de publication d'annonce
             require_once __DIR__ . '/../templates/footer.php';
@@ -237,6 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             break;
         case 'edit_item':
             require_once __DIR__ . '/../includes/item/item.php'; // Récupère les données de l'article
+            require_once __DIR__ . '/../includes/edit_item/edit_item.php';
             require_once __DIR__ . '/../templates/header.php'; // Ton header Tailwind
             require_once __DIR__ . '/../templates/edit_item/index.php'; // Le contenu de la page d'édition d'article
             require_once __DIR__ . '/../templates/footer.php';

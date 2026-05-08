@@ -3,6 +3,8 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../articles_functions.php';
 
+$categories = getCategories($pdo);
+
 // 1. Vérification de base : l'utilisateur est-il connecté ?
 if (!isset($_SESSION['user_id'])) {
     header('Location: /routeur.php?action=auth');

@@ -48,6 +48,18 @@ CREATE TABLE `categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO `categories` (`id`, `nom`, `description`) VALUES
+(1, 'Informatique', 'PC, consoles, accessoires'),
+(2, 'Vehicules', 'Voitures, velos, trottinettes'),
+(3, 'Immobilier', 'Ventes et locations'),
+(4, 'Maison', 'Meubles et deco'),
+(5, 'Loisirs', 'Sport, musique, jeux'),
+(6, 'Vêtements', 'T-shirts, pantalons, vestes et tenues du quotidien'),
+(7, 'Chaussures', 'Baskets, chaussures de ville, bottes et sandales'),
+(8, 'Accessoires mode', 'Sacs, ceintures, lunettes et montres'),
+(9, 'Bijoux', 'Bagues, colliers, bracelets et accessoires précieux'),
+(10, 'Beauté', 'Cosmétiques, parfums et soins');
+
 -- Structure de la table `articles`
 CREATE TABLE `articles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
