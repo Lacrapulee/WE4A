@@ -55,10 +55,10 @@ function getImagesByAnnonceIds($pdo, $articleIds) {
 
 
 /**
- * Recherche avancée d'annonces
+ * Recherche avancée d'annonces avec support du filtre de distance et tri par distance
  */
 function getAnnonceRechercheAvancee($pdo, $filters = []) {
-    $sql = "SELECT a.*, c.nom as categorie_nom 
+    $sql = "SELECT a.*, ST_AsText(a.coordonnees) as coordonnees, c.nom as categorie_nom 
             FROM articles a
             LEFT JOIN categories c ON a.categorie_id = c.id
             WHERE a.statut = 'en_ligne'";
@@ -72,19 +72,89 @@ function getAnnonceRechercheAvancee($pdo, $filters = []) {
         $sql .= " AND a.categorie_id = :cat";
         $params['cat'] = $filters['categorie'];
     }
-    if (!empty($filters['ville'])) {
+    
+    // Si on cherche par distance, on ne filtre pas par ville_nom (on fera un filtre de distance en PHP)
+    if (empty($filters['distance']) && empty($filters['tri']) && !empty($filters['ville'])) {
         $sql .= " AND a.ville_nom LIKE :ville";
         $params['ville'] = '%' . $filters['ville'] . '%';
+    } elseif (empty($filters['distance']) && ($filters['tri'] ?? '') !== 'distance' && !empty($filters['ville'])) {
+        $sql .= " AND a.ville_nom LIKE :ville";
+        $params['ville'] = '%' . $filters['ville'] . '%';
+    }
+    
+    if (!empty($filters['prix_min'])) {
+        $sql .= " AND a.prix >= :prix_min";
+        $params['prix_min'] = $filters['prix_min'];
     }
     if (!empty($filters['prix_max'])) {
         $sql .= " AND a.prix <= :prix_max";
         $params['prix_max'] = $filters['prix_max'];
     }
 
-    $sql .= " ORDER BY a.created_at DESC";
+    // Déterminer le tri
+    $tri = $filters['tri'] ?? 'date_recent';
+    $sortMap = [
+        'prix_max' => 'a.prix DESC',
+        'prix_min' => 'a.prix ASC',
+        'date_ancien' => 'a.created_at ASC',
+        'date_recent' => 'a.created_at DESC'
+    ];
+    
+    // Si tri par distance, on va trier en PHP (pas en SQL)
+    if ($tri !== 'distance') {
+        $orderBy = $sortMap[$tri] ?? $sortMap['date_recent'];
+        $sql .= " ORDER BY " . $orderBy;
+    }
+    
+    // Limiter à 200 résultats max pour éviter de surcharger le serveur
+    $sql .= " LIMIT 200";
+    
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Gestion de la distance (filtrage et/ou tri)
+    if ((!empty($filters['distance']) || $tri === 'distance') && !empty($filters['ville'])) {
+        require_once '../includes/tools.php';
+        
+        // Récupérer les coordonnées de la ville de recherche
+        $villeCoords = getCoordinatesFromVille($filters['ville']);
+        
+        if ($villeCoords) {
+            $filteredResults = [];
+            $maxDistance = !empty($filters['distance']) ? (float)$filters['distance'] : null;
+            
+            // Calculer les distances pour tous les articles
+            foreach ($results as $article) {
+                if ($article['coordonnees']) {
+                    $distance = calculateDistance($article['coordonnees'], $villeCoords);
+                    if ($distance !== null) {
+                        $article['distance'] = $distance;
+                        
+                        // Filtrer si on a un filtre de distance
+                        if ($maxDistance === null || $distance <= $maxDistance) {
+                            $filteredResults[] = $article;
+                        }
+                    }
+                }
+            }
+            $results = $filteredResults;
+            
+            // Trier par distance si demandé
+            if ($tri === 'distance') {
+                usort($results, function($a, $b) {
+                    return ($a['distance'] ?? PHP_INT_MAX) <=> ($b['distance'] ?? PHP_INT_MAX);
+                });
+            }
+        }
+    }
+    
+    // Assurer qu'on ne retourne jamais plus de 200 résultats
+    if (count($results) > 200) {
+        $results = array_slice($results, 0, 200);
+    }
+    
+    return $results;
 }
 
 /**

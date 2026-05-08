@@ -1,21 +1,29 @@
 <?php
 
 /**
- * Récupère ou crée une conversation entre deux utilisateurs pour un article
+ * Récupère ou crée une conversation entre deux utilisateurs pour un article (optionnel)
  * @param PDO $pdo
- * @param int $article_id
+ * @param int|null $article_id (null si contact direct au vendeur)
  * @param string $acheteur_id
  * @param string $vendeur_id
  * @return string ID de la conversation
  */
-function getOrCreateConversation(PDO $pdo, int $article_id, string $acheteur_id, string $vendeur_id): string {
+function getOrCreateConversation(PDO $pdo, ?int $article_id, string $acheteur_id, string $vendeur_id): string {
     try {
         // Chercher une conversation existante
-        $stmt = $pdo->prepare("
-            SELECT id FROM conversations 
-            WHERE article_id = ? AND acheteur_id = ? AND vendeur_id = ?
-        ");
-        $stmt->execute([$article_id, $acheteur_id, $vendeur_id]);
+        if ($article_id) {
+            $stmt = $pdo->prepare("
+                SELECT id FROM conversations 
+                WHERE article_id = ? AND acheteur_id = ? AND vendeur_id = ?
+            ");
+            $stmt->execute([$article_id, $acheteur_id, $vendeur_id]);
+        } else {
+            $stmt = $pdo->prepare("
+                SELECT id FROM conversations 
+                WHERE article_id IS NULL AND acheteur_id = ? AND vendeur_id = ?
+            ");
+            $stmt->execute([$acheteur_id, $vendeur_id]);
+        }
         $conversation = $stmt->fetch();
 
         if ($conversation) {
@@ -119,7 +127,7 @@ function getUserConversations(PDO $pdo, string $user_id): array {
                 (SELECT contenu FROM messages WHERE conversation_id = c.id ORDER BY date_envoi DESC LIMIT 1) as dernier_message,
                 (SELECT date_envoi FROM messages WHERE conversation_id = c.id ORDER BY date_envoi DESC LIMIT 1) as date_dernier_message
             FROM conversations c
-            JOIN articles a ON c.article_id = a.id
+            LEFT JOIN articles a ON c.article_id = a.id
             JOIN users u_v ON c.vendeur_id = u_v.id
             JOIN users u_a ON c.acheteur_id = u_a.id
             WHERE c.acheteur_id = ? OR c.vendeur_id = ?
@@ -154,13 +162,14 @@ function getConversationDetails(PDO $pdo, string $conversation_id): ?array {
                 u_a.nom as acheteur_nom,
                 u_a.email as acheteur_email
             FROM conversations c
-            JOIN articles a ON c.article_id = a.id
+            LEFT JOIN articles a ON c.article_id = a.id
             JOIN users u_v ON c.vendeur_id = u_v.id
             JOIN users u_a ON c.acheteur_id = u_a.id
             WHERE c.id = ?
         ");
         $stmt->execute([$conversation_id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result === false ? null : $result;
     } catch (Exception $e) {
         error_log('getConversationDetails error: ' . $e->getMessage());
         return null;
