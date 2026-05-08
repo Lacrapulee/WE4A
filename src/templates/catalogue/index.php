@@ -107,7 +107,7 @@
                     </a>
 
                     <!-- BOUTON FAVORIS -->
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != $item['vendeur_id']): ?>
                         <button class="favoris-btn absolute top-2 right-2 text-2xl opacity-80 hover:opacity-100 transition-opacity" 
                                 data-article-id="<?= $item['id'] ?>"
                                 title="Ajouter aux favoris"

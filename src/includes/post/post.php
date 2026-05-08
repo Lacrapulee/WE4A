@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../articles_functions.php';
 include_once __DIR__ . '/../tools.php';
+
+$categories = getCategories($pdo);
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: /routeur.php?action=auth');

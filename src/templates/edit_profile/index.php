@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="../assets/css/edit_profile.css">
+
 <div class="edit-container">
     <h2>Modifier le profil</h2>
 

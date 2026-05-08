@@ -49,7 +49,12 @@
         <?php else: ?>
             <div class="text-center py-20" id="empty-message">
                 <p class="text-lg text-gray-600 mb-4">Vous n'avez pas encore d'articles en favoris.</p>
-                <a href="/routeur.php?action=catalogue" class="inline-block px-6 py-3 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 transition-colors">
+                <a href="/routeur.php?action=catalogue"
+                   class="inline-block px-6 py-3 text-white font-bold rounded-lg transition-all"
+                   style="background-color: #005F83; border: none;"
+                   onmouseover="this.style.backgroundColor='#004a66'; this.style.transform='translateY(-2px)';"
+                   onmouseout="this.style.backgroundColor='#005F83'; this.style.transform='translateY(0)';"
+                >
                     Consulter le catalogue
                 </a>
             </div>
