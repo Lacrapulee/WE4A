@@ -95,6 +95,16 @@
                     <?php endif; ?>
                 </div>
 
+                <!-- BOUTON FAVORIS -->
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <button id="item-favoris-btn" class="w-full px-4 py-3 border-2 border-red-500 text-red-500 font-bold rounded-lg transition-all hover:bg-red-50" 
+                            onclick="toggleItemFavoris(<?= $product['id'] ?>, this)"
+                            style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span id="item-favoris-icon" style="font-size: 20px;">♡</span>
+                        <span id="item-favoris-text">Ajouter aux favoris</span>
+                    </button>
+                <?php endif; ?>
+
                 <!-- SIMILAIRES -->
                 <section class="aside-card">
                     <p class="meta-label">Annonces similaires</p>
@@ -140,6 +150,72 @@
         const modal = document.getElementById('contactModal');
         if (event.target == modal) {
             modal.style.display = 'none';
+        }
+    }
+
+    // Initialiser l'état du bouton favoris
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('item-favoris-btn');
+        if (!btn) return;
+
+        const articleId = <?= $product['id'] ?? 0 ?>;
+        
+        // Vérifier l'état initial
+        fetch('/routeur.php?action=favoris_ajax', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=check&article_id=' + articleId
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.is_favoris) {
+                updateItemFavorisButton(true);
+            }
+        })
+        .catch(error => console.error('Error checking favoris:', error));
+    });
+
+    function toggleItemFavoris(articleId, button) {
+        const isFavoris = button.classList.contains('filled');
+        const action = isFavoris ? 'remove' : 'add';
+
+        fetch('/routeur.php?action=favoris_ajax', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=' + action + '&article_id=' + articleId
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateItemFavorisButton(!isFavoris);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function updateItemFavorisButton(isFavoris) {
+        const btn = document.getElementById('item-favoris-btn');
+        const icon = document.getElementById('item-favoris-icon');
+        const text = document.getElementById('item-favoris-text');
+
+        if (isFavoris) {
+            btn.classList.add('filled');
+            btn.style.backgroundColor = '#fef2f2';
+            btn.style.borderColor = '#ef4444';
+            btn.style.color = '#ef4444';
+            icon.textContent = '♥';
+            text.textContent = 'Retirer des favoris';
+        } else {
+            btn.classList.remove('filled');
+            btn.style.backgroundColor = 'white';
+            btn.style.borderColor = '#ef4444';
+            btn.style.color = '#ef4444';
+            icon.textContent = '♡';
+            text.textContent = 'Ajouter aux favoris';
         }
     }
 </script>

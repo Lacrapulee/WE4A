@@ -2,6 +2,7 @@
 
 session_start(); 
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/favoris_functions.php';
 
 function ensureVentesSchema(PDO $pdo): void {
     try {
@@ -28,6 +29,47 @@ $action = $_GET['action'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($action) {
+        case 'favoris_ajax':
+            if (!isset($_SESSION['user_id'])) {
+                http_response_code(401);
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Unauthorized']);
+                exit();
+            }
+
+            $articleId = (int) ($_POST['article_id'] ?? 0);
+            $favorisAction = $_POST['action'] ?? '';
+
+            if (!$articleId) {
+                http_response_code(400);
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'Invalid article_id']);
+                exit();
+            }
+
+            header('Content-Type: application/json');
+
+            switch ($favorisAction) {
+                case 'add':
+                    addFavoris($pdo, $_SESSION['user_id'], $articleId);
+                    echo json_encode(['success' => true, 'message' => 'Article ajouté aux favoris']);
+                    break;
+
+                case 'remove':
+                    removeFavoris($pdo, $_SESSION['user_id'], $articleId);
+                    echo json_encode(['success' => true, 'message' => 'Article retiré des favoris']);
+                    break;
+
+                case 'check':
+                    $isFavoris = isFavoris($pdo, $_SESSION['user_id'], $articleId);
+                    echo json_encode(['is_favoris' => $isFavoris]);
+                    break;
+
+                default:
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Invalid action']);
+            }
+            exit();
         case 'connexion':
             require_once __DIR__ . '/../includes/connexion/connexion.php';
             break;
@@ -109,6 +151,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         case 'catalogue':
             require_once __DIR__ . '/../includes/catalogue/catalogue.php';
             require_once __DIR__ . '/../templates/catalogue/index.php';
+            break;
+
+        case 'favoris':
+            require_once __DIR__ . '/../includes/favoris/favoris.php';
+            require_once __DIR__ . '/../templates/favoris/index.php';
             break;
 
         case 'deconnexion':
