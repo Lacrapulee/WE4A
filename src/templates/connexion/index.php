@@ -29,7 +29,7 @@
                 <button type="submit" class="btn-auth">Se connecter</button>
 
                 <div style="margin-top: 1.5rem; text-align: center;">
-                    <p class="form-help">Pas encore de compte ? <a href="../inscription/index.php" style="color: #005F83; text-decoration: none; font-weight: 600;">Inscris-toi</a></p>
+                    <p class="form-help">Pas encore de compte ? <a href="/routeur.php?action=inscription" style="color: #005F83; text-decoration: none; font-weight: 600;">Inscris-toi</a></p>
                 </div>
             </form>
         </div>

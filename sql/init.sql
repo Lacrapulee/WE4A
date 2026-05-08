@@ -45,9 +45,7 @@ CREATE TABLE `categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(100) NOT NULL,
   `description` text DEFAULT NULL,
-  `parent_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_categories_parent` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Structure de la table `articles`
@@ -71,23 +69,6 @@ CREATE TABLE `articles` (
 
 -- Index spatial pour les articles
 ALTER TABLE `articles` ADD SPATIAL KEY `idx_coords` (`coordonnees`);
-
--- Structure de la table `attributs_definition`
-CREATE TABLE `attributs_definition` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nom` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Structure de la table `article_attributs_valeurs`
-CREATE TABLE `article_attributs_valeurs` (
-  `article_id` int(11) NOT NULL,
-  `attribut_id` int(11) NOT NULL,
-  `valeur` text NOT NULL,
-  PRIMARY KEY (`article_id`,`attribut_id`),
-  CONSTRAINT `fk_attr_article` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_attr_def` FOREIGN KEY (`attribut_id`) REFERENCES `attributs_definition` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Structure de la table `article_images`
 CREATE TABLE `article_images` (
@@ -150,18 +131,6 @@ CREATE TABLE `favoris` (
   PRIMARY KEY (`user_id`,`article_id`),
   CONSTRAINT `fk_fav_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_fav_art` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Structure de la table `promotions`
-CREATE TABLE `promotions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `article_id` int(11) NOT NULL,
-  `type_promo` enum('urgent','accueil','boost_7j','boost_30j') NOT NULL,
-  `date_debut` timestamp NOT NULL DEFAULT current_timestamp(),
-  `date_fin` timestamp NULL DEFAULT NULL,
-  `est_actif` tinyint(1) DEFAULT 1,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_promo_art` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Structure de la table `ventes`

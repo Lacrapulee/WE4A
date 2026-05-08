@@ -97,7 +97,7 @@
                 </div>
 
                 <!-- BOUTON FAVORIS -->
-                <?php if (isset($_SESSION['user_id'])): ?>
+                <?php if (isset($_SESSION['user_id']) && !$isOwner): ?>
                     <button id="item-favoris-btn" class="w-full px-4 py-3 border-2 border-red-500 text-red-500 font-bold rounded-lg transition-all hover:bg-red-50" 
                             onclick="toggleItemFavoris(<?= $product['id'] ?>, this)"
                             style="display: flex; align-items: center; justify-content: center; gap: 8px;">

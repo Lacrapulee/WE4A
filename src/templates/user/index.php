@@ -22,17 +22,12 @@
                 <p> Téléphone: <?= htmlspecialchars($telephone) ?></p>
                 <p> Adresse postale: <?= htmlspecialchars($adresse_postale ?? 'Non renseignée') ?></p>
                 <?php if ($is_owner || $isAdmin): ?>
-                    <a href="../routeur.php?action=edit_profile&id=<?= $_GET['id'] ?>" class="btn-edit"> Modifier mon profil</a>
-                <?php endif; ?>
-                <?php if (!$is_owner): ?>
-                    <a href="mailto:<?= htmlspecialchars($email) ?>" class="btn-edit">✉️ Contacter le vendeur</a>
-                <?php if ($is_owner): ?>
-                    <a href="../routeur.php?action=edit_profile" class="btn-edit"> Modifier mon profil</a>
+                    <a href="/routeur.php?action=edit_profile&id=<?= $_GET['id'] ?>" class="btn-edit"> Modifier mon profil</a>
                 <?php else: ?>
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <button onclick="openContactModal('<?= htmlspecialchars($profile_id, ENT_QUOTES) ?>')" class="btn-edit" style="border:none; cursor:pointer;">✉️ Contacter le vendeur</button>
                     <?php else: ?>
-                        <a href="/routeur.php?action=connexion" class="btn-edit">✉️ Se connecter pour contacter</a>
+                        <a href="/routeur.php?action=auth" class="btn-edit">✉️ Se connecter pour contacter</a>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
