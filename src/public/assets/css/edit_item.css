@@ -1,0 +1,151 @@
+
+.main-container {
+    padding: 40px 20px;
+    background-color: #EDFCFD;
+    min-height: 100vh;
+}
+
+.max-w-3xl {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.edit-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 {
+    color: #111827;
+    font-size: 2rem;
+    font-weight: 850;
+    letter-spacing: -0.03em;
+}
+
+
+.input-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background-color: #f9fafb;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #005F83;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 95, 131, 0.1);
+}
+
+textarea.form-input {
+    min-height: 150px;
+    resize: vertical;
+}
+
+
+.btn-save {
+    width: 100%;
+    background-color: #005F83;
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+}
+
+.btn-save:hover {
+    background-color: #004a66;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 95, 131, 0.2);
+}
+
+
+.delete-section {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 24px;
+    border: 1px solid #fee2e2;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.delete-section h3 {
+    color: #991b1b;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.btn-delete {
+    background-color: transparent;
+    color: #dc2626;
+    border: 1.5px solid #fecaca;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+    background-color: #fef2f2;
+    border-color: #dc2626;
+}
+
+
+.bg-blue-50 {
+    background-color: #EDFCFD !important;
+    border: 2px dashed #005F8322 !important;
+}
+
+.bg-blue-50 h3 {
+    color: #005F83;
+}
+
+
+.w-20.h-20 {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+.text-gray-500 {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.text-gray-500:hover {
+    color: #111827;
+    text-decoration: underline;
+}
+
+
+.space-y-6 > * + * {
+    margin-top: 1.5rem;
+}

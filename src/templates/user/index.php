@@ -39,7 +39,6 @@
                 <div class="items-grid">
                     <?php foreach ($articles as $article): ?>
                         <div class="item-card">
-                            <!-- Ici, il faudrait une jointure pour avoir l'image principale -->
                             <a href="/routeur.php?action=item&id=<?= $article['id'] ?>"> 
                                 <img src="../assets/img/<?= htmlspecialchars($article['image']) ?>" alt="Item">
                             </a>
@@ -155,7 +154,7 @@
                     ">Annuler</button>
                     <button type="submit" style="
                         padding: 10px 20px;
-                        background-color: #6366f1;
+                        background-color: #005f83;
                         color: white;
                         border: none;
                         border-radius: 4px;

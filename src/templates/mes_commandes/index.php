@@ -1,8 +1,8 @@
 <?php require_once __DIR__ . '/../../includes/mes_commandes/mes_commandes.php'; ?>
-
+<script src="https://cdn.tailwindcss.com"></script>
 <main style="max-width: 1200px; margin: 0 auto; padding: 20px; font-family: sans-serif;">
-    
-    <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 20px;">Mes commandes</h1>
+
+    <h1 class="text-4xl font-extrabold text-gray-900">Mes Commandes</h1>
 
     <!-- RÉSUMÉ RAPIDE -->
     <div style="display: flex; gap: 20px; margin-bottom: 30px; padding: 15px; background: #eee; border-radius: 8px;">
