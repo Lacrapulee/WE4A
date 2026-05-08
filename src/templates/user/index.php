@@ -21,15 +21,35 @@
                 <p>Membre depuis le <?= date('d/m/Y', strtotime($user['created_at'])) ?></p>
                 <p> Téléphone: <?= htmlspecialchars($telephone) ?></p>
                 <p> Adresse postale: <?= htmlspecialchars($adresse_postale ?? 'Non renseignée') ?></p>
-                <?php if ($is_owner || $isAdmin): ?>
-                    <a href="/routeur.php?action=edit_profile&id=<?= $_GET['id'] ?>" class="btn-edit"> Modifier mon profil</a>
+                <?php 
+            // 1. Logique d'ÉDITION (Si c'est mon profil ou si je suis admin)
+            if ($is_owner || $isAdmin): 
+                // On récupère l'ID soit dans l'URL, soit en session pour éviter les liens vides
+                $edit_id = $_GET['id'] ?? $_SESSION['user_id'] ?? '';
+            ?>
+                <a href="../routeur.php?action=edit_profile&id=<?= htmlspecialchars($edit_id) ?>" class="btn-edit">
+                    Modifier le profil
+                </a>
+
+            <?php 
+            // 2. Logique de CONTACT (Si je ne suis PAS le propriétaire)
+            elseif (!$is_owner): ?>
+                
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <!-- Connecté : On ouvre la modal de contact -->
+                    <button onclick="openContactModal('<?= htmlspecialchars($profile_id, ENT_QUOTES) ?>')" 
+                            class="btn-edit" 
+                            style="border:none; cursor:pointer;">
+                        ✉️ Contacter le vendeur
+                    </button>
                 <?php else: ?>
-                    <?php if (isset($_SESSION['user_id'])): ?>
-                        <button onclick="openContactModal('<?= htmlspecialchars($profile_id, ENT_QUOTES) ?>')" class="btn-edit" style="border:none; cursor:pointer;">✉️ Contacter le vendeur</button>
-                    <?php else: ?>
-                        <a href="/routeur.php?action=auth" class="btn-edit">✉️ Se connecter pour contacter</a>
-                    <?php endif; ?>
+                    <!-- Non connecté : On renvoie vers la page de connexion -->
+                    <a href="/routeur.php?action=connexion" class="btn-edit">
+                        ✉️ Se connecter pour contacter
+                    </a>
                 <?php endif; ?>
+
+            <?php endif; ?>
             </div>
         </header>
 
