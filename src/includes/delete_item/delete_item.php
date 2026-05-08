@@ -21,7 +21,7 @@ if ($itemIdToDelete) {
     try {
         $stmt = $pdo->prepare("DELETE FROM articles WHERE id = ?");
         $stmt->execute([$itemIdToDelete]);
-        exit();
+
 
     } catch (PDOException $e) {
         die("Erreur lors de la suppression de l'annonce : " . $e->getMessage());
