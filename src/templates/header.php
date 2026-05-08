@@ -21,6 +21,7 @@
             <a href="/routeur.php?action=post">Vendre</a>
             <a href="/routeur.php?action=user&id=<?= urlencode($_SESSION['user_id']) ?>">Mes annonces</a>
             <a href="/routeur.php?action=mes_commandes">Mes commandes</a>
+            <a href="/routeur.php?action=favoris">Favoris</a>
             <?php
             require_once __DIR__ . '/../includes/messages_functions.php';
             $unread = countUnreadMessages($pdo, $_SESSION['user_id']);

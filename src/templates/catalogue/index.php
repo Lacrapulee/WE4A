@@ -87,23 +87,35 @@
         <?php if (!empty($results)): ?>
             <?php foreach ($results as $item): ?>
                 <?php $img = getImageByAnnonceId($pdo, $item['id']) ?: 'default.png'; ?>
-                <a href="/routeur.php?action=item&id=<?= $item['id'] ?>" class="group">
-                    <img src="/assets/img/<?= htmlspecialchars($img) ?>" alt="Produit">
-                    <div class="p-4">
-                        <h3 class="font-bold truncate"><?= htmlspecialchars($item['titre']) ?></h3>
-                        <p class="text-blue-600"><?= number_format($item['prix'], 2, ',', ' ') ?> €</p>
+                <div class="group relative bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
+                    <a href="/routeur.php?action=item&id=<?= $item['id'] ?>" class="block">
+                        <img src="/assets/img/<?= htmlspecialchars($img) ?>" alt="Produit" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold truncate"><?= htmlspecialchars($item['titre']) ?></h3>
+                            <p class="text-blue-600"><?= number_format($item['prix'], 2, ',', ' ') ?> €</p>
 
-                        <div class="flex justify-between items-center mt-4">
-                            <span class="text-gray-400 text-[10px] font-bold uppercase">
-                                <?= htmlspecialchars($item['ville_nom']) ?>
-                                <?php if (!empty($item['distance'])): ?>
-                                    <span class="text-blue-500 ml-1">(<?= htmlspecialchars($item['distance']) ?> km)</span>
-                                <?php endif; ?>
-                            </span>
-                            <span class="text-gray-400 text-[10px] font-bold uppercase"><?= htmlspecialchars($item['categorie_nom']) ?></span>
+                            <div class="flex justify-between items-center mt-4">
+                                <span class="text-gray-400 text-[10px] font-bold uppercase">
+                                    <?= htmlspecialchars($item['ville_nom']) ?>
+                                    <?php if (!empty($item['distance'])): ?>
+                                        <span class="text-blue-500 ml-1">(<?= htmlspecialchars($item['distance']) ?> km)</span>
+                                    <?php endif; ?>
+                                </span>
+                                <span class="text-gray-400 text-[10px] font-bold uppercase"><?= htmlspecialchars($item['categorie_nom']) ?></span>
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+
+                    <!-- BOUTON FAVORIS -->
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <button class="favoris-btn absolute top-2 right-2 text-2xl opacity-80 hover:opacity-100 transition-opacity" 
+                                data-article-id="<?= $item['id'] ?>"
+                                title="Ajouter aux favoris"
+                                style="background: rgba(255, 255, 255, 0.9); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #ef4444; padding: 0;">
+                            <span class="favoris-icon">♡</span>
+                        </button>
+                    <?php endif; ?>
+                </div>
             <?php endforeach; ?>
         <?php else: ?>
             <div class="col-span-full text-center py-20 text-gray-400">
@@ -114,5 +126,74 @@
 </main>
 
 <?php include '../templates/footer.php'; ?>
+
+<script>
+    
+document.addEventListener('DOMContentLoaded', function() {
+    const favorisButtons = document.querySelectorAll('.favoris-btn');
+    
+    // Ajouter les écouteurs d'événements
+    favorisButtons.forEach(button => {
+        const articleId = button.dataset.articleId;
+        
+        // Vérifier l'état initial
+        fetch('/routeur.php?action=favoris_ajax', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=check&article_id=' + articleId
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.is_favoris) {
+                button.classList.add('filled');
+                button.style.color = '#ef4444';
+                button.querySelector('.favoris-icon').textContent = '♥';
+            }
+        })
+        .catch(error => console.error('Error checking favoris:', error));
+        
+        // Ajouter le clic
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleFavoris(articleId, this);
+        });
+    });
+});
+
+function toggleFavoris(articleId, button) {
+    const isFilled = button.classList.contains('filled');
+    const action = isFilled ? 'remove' : 'add';
+
+    fetch('/routeur.php?action=favoris_ajax', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'action=' + action + '&article_id=' + articleId
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (isFilled) {
+                button.classList.remove('filled');
+                button.style.color = '#ef4444';
+                const icon = button.querySelector('.favoris-icon');
+                icon.textContent = '♡';
+            } else {
+                button.classList.add('filled');
+                button.style.color = '#ef4444';
+                const icon = button.querySelector('.favoris-icon');
+                icon.textContent = '♥';
+            }
+        } else {
+            console.error('Error:', data.error);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
 </body>
 </html>
