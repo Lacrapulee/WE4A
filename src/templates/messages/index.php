@@ -12,7 +12,7 @@ if (!$user_id) {
 <link rel="stylesheet" href="/assets/css/style.css">
 <link rel="stylesheet" href="/assets/css/message.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<script src="https://cdn.tailwindcss.com"></script>
 
 <?php
 $conversation_id = $_GET['id'] ?? null;
@@ -111,7 +111,7 @@ if ($conversation_id) {
         <div class="row">
             <div class="col-md-10 offset-md-1">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Mes Messages</h2>
+                    <h1 class="text-4xl font-extrabold text-gray-900">Mes Messages</h1>
                     <span class="badge bg-primary"><?php echo count($conversations); ?> conversation(s)</span>
                 </div>
 
