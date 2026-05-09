@@ -4,7 +4,7 @@
 
     <h1 class="text-4xl font-extrabold text-gray-900">Mes Commandes</h1>
 
-    <!-- RÉSUMÉ RAPIDE -->
+    <!-- resume -->
     <div style="display: flex; gap: 20px; margin-bottom: 30px; padding: 15px; background: #eee; border-radius: 8px;">
         <div>
             <strong>Nombre de commandes :</strong> <?= count($commandes) ?>
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <!-- GRILLE DE PRODUITS -->
+    <!-- affichage commandes -->
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
         
         <?php if (empty($commandes)): ?>
@@ -27,14 +27,13 @@
                 ?>
                 
                 <article style="border: 1px solid #ccc; border-radius: 10px; overflow: hidden; background: #fff;">
-                    <!-- IMAGE -->
                     <div style="width: 100%; height: 200px; background: #f9f9f9;">
                         <img src="/assets/img/<?= htmlspecialchars($image) ?>" 
                              style="width: 100%; height: 100%; object-fit: cover;" 
                              alt="Produit">
                     </div>
 
-                    <!-- INFOS -->
+                   
                     <div style="padding: 15px;">
                         <span style="font-size: 10px; color: #888;">Réf: <?= htmlspecialchars($cmd['reference']) ?></span>
                         <h2 style="font-size: 18px; margin: 5px 0;"><?= htmlspecialchars($cmd['titre']) ?></h2>
@@ -47,7 +46,7 @@
                             </span>
                         </p>
 
-                        <!-- BOUTONS -->
+                        
                         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
                                      <button onclick="openContactModal(<?= $cmd['article_id'] ?>)" 
                                          style="display: block; width: 100%; padding: 10px; background: #f0f0f0; color: #333; text-decoration: none; border: none; border-radius: 5px; font-size: 14px; cursor: pointer;">

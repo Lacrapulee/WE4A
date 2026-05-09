@@ -10,8 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dest_id       = $_POST['destinataire_id'] ?? null;
     $note          = isset($_POST['note']) ? intval($_POST['note']) : 0;
     $commentaire   = isset($_POST['commentaire']) ? trim($_POST['commentaire']) : '';
-
-    // --- SÉCURITÉ ---
     
     if (!$expediteur_id) {
         header("Location: /routeur.php?action=auth&error=login_required");
@@ -56,8 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: /routeur.php?action=avis&vendeur_id=$dest_id&error=already_reviewed");
         exit();
     }
-
-    // --- INSERTION EN BASE DE DONNÉES ---
 
     try {
         $pdo->exec("SET NAMES utf8mb4 COLLATE utf8mb4_general_ci");

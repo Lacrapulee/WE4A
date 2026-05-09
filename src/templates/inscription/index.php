@@ -64,7 +64,7 @@
         const submitBtn = form.querySelector('.btn-auth');
         const formData = new FormData(form);
 
-        // UI : On désactive le bouton pendant le chargement
+        // On désactive le bouton pendant le chargement
         submitBtn.disabled = true;
         submitBtn.innerText = "Vérification...";
 
@@ -76,7 +76,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Succès : Petit message vert et redirection
+                    // Succès message et redirection
                     responseDiv.style.display = "block";
                     responseDiv.style.backgroundColor = "#dcfce7";
                     responseDiv.style.color = "#166534";
@@ -86,7 +86,7 @@
                         window.location.href = "/index.php";
                     }, 1500);
                 } else {
-                    // Erreur : Message rouge et on réactive le bouton
+                    // Erreur : Message désactivation du bouton
                     responseDiv.style.display = "block";
                     responseDiv.style.backgroundColor = "#fee2e2";
                     responseDiv.style.color = "#991b1b";

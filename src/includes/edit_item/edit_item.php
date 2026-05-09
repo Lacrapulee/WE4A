@@ -5,7 +5,6 @@ require_once __DIR__ . '/../articles_functions.php';
 
 $categories = getCategories($pdo);
 
-// 1. Vérification de base : l'utilisateur est-il connecté ?
 if (!isset($_SESSION['user_id'])) {
     header('Location: /routeur.php?action=auth');
     exit();
@@ -18,7 +17,6 @@ if (!$product) {
     die("Article introuvable.");
 }
 
-// 2. VÉRIFICATION DE SÉCURITÉ (Owner ou Admin)
 $isOwner = ($_SESSION['user_id'] == $product['vendeur_id']);
 $isAdmin = (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1);
 
@@ -28,17 +26,13 @@ if (!$isOwner && !$isAdmin) {
     exit();
 }
 
-// 3. TRAITEMENT DU FORMULAIRE (POST)
+// traitement fu form
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_article'])) {
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $prix = $_POST['prix'];
     $categorie_id = $_POST['categorie_id'];
-
-    // Ici, vous devriez appeler une fonction de mise à jour dans articles_functions.php
-    // Exemple : updateAnnonce($pdo, $productId, $titre, $description, $prix, $categorie_id);
     
-    // Pour cet exemple, on simule la mise à jour :
     $stmt = $pdo->prepare("UPDATE articles SET titre = ?, description = ?, prix = ?, categorie_id = ? WHERE id = ?");
     $stmt->execute([$titre, $description, $prix, $categorie_id, $productId]);
 

@@ -132,7 +132,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const favorisButtons = document.querySelectorAll('.favoris-btn');
     
-    // Ajouter les écouteurs d'événements
     favorisButtons.forEach(button => {
         const articleId = button.dataset.articleId;
         

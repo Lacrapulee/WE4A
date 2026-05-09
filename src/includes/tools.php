@@ -2,11 +2,9 @@
 
 
 function addItem($pdo, $vendeur_id, $categorie_id, $titre, $description, $prix, $coordonnees, $ville_nom, $code_postal) {
-    // On sépare la chaîne "47.639,6.853" en deux variables
     list($lat, $long) = explode(',', $coordonnees);
 
-    // On prépare la requête avec la fonction ST_PointFromText
-    // Note : On utilise POINT($long $lat) sans virgule entre les deux à l'intérieur du point
+    // prépare la requête avec la fonction ST_PointFromText
     $sql = "INSERT INTO articles (vendeur_id, categorie_id, titre, description, prix, statut, coordonnees, ville_nom, code_postal) 
             VALUES (?, ?, ?, ?, ?, 'en_ligne', ST_PointFromText(?), ?, ?)";
             
@@ -19,7 +17,7 @@ function addItem($pdo, $vendeur_id, $categorie_id, $titre, $description, $prix, 
         $titre, 
         $description, 
         $prix, 
-        $point, // On envoie le point formaté
+        $point,
         $ville_nom, 
         $code_postal
     ]);
@@ -127,7 +125,7 @@ function extractLatLongFromWKT($coords) {
     $coords = trim($coords);
     
     if (strpos($coords, 'POINT') !== false) {
-        // Format WKT : "POINT(lat lon)" - récupération directe
+        // Format WKT : "POINT(lat lon)"
         if (preg_match('/POINT\s*\(\s*([\d\.\-]+)\s+([\d\.\-]+)\s*\)/', $coords, $matches)) {
             if (isset($matches[1]) && isset($matches[2])) {
                 return trim($matches[1]) . ',' . trim($matches[2]); // Retourner "lat,long"

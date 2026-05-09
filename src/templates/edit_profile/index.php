@@ -56,7 +56,7 @@
 
     <hr>
 
-    <!-- Formulaire de suppression (séparé pour la sécurité) -->
+    <!-- Formulaire de suppression -->
     <div class="delete-section">
         <h3>Supprimer le compte</h3>
         <form action="routeur.php?action=delete_user&id=<?= $user_id ?>" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce compte ? Cette action est irréversible.');">

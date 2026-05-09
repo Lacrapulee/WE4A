@@ -20,10 +20,9 @@
     <?php else: ?>
 
         <div class="product-grid">
-            <!-- COLONNE GAUCHE -->
+            <!-- partie gauche -->
             <div class="lg:col-span-2 space-y-6">
 
-                <!-- CARROUSEL -->
                 <div class="carousel-card">
                     <div class="carousel-viewport">
                         <div id="carousel-track" class="carousel-track">
@@ -39,13 +38,13 @@
                     </div>
                 </div>
 
-                <!-- TITRE & PRIX -->
+                <!-- titre et prix -->
                 <div class="flex justify-between items-center px-4">
                     <h1 class="text-3xl font-extrabold tracking-tight text-gray-900"><?= htmlspecialchars($product['titre']) ?></h1>
                     <p class="product-price"><?= number_format($product['prix'], 2, ',', ' ') ?> €</p>
                 </div>
 
-                <!-- INFORMATIONS -->
+                <!-- infos -->
                 <div class="content-section">
                     <div class="info-block">
                         <h2>Description</h2>
@@ -71,7 +70,7 @@
                 </div>
             </div>
 
-            <!-- COLONNE DROITE -->
+            <!-- partie droite -->
             <aside class="space-y-6">
                 <section class="aside-card">
                     <p class="meta-label">Vendeur</p>
@@ -96,7 +95,7 @@
                     <?php endif; ?>
                 </div>
 
-                <!-- BOUTON FAVORIS -->
+                <!-- favoris -->
                 <?php if (isset($_SESSION['user_id']) && !$isOwner): ?>
                     <button id="item-favoris-btn" class="w-full px-4 py-3 border-2 border-red-500 text-red-500 font-bold rounded-lg transition-all hover:bg-red-50" 
                             onclick="toggleItemFavoris(<?= $product['id'] ?>, this)"
@@ -106,7 +105,7 @@
                     </button>
                 <?php endif; ?>
 
-                <!-- SIMILAIRES -->
+                <!-- similaires -->
                 <section class="aside-card">
                     <p class="meta-label">Annonces similaires</p>
                     <div class="space-y-2">

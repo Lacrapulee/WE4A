@@ -5,8 +5,6 @@ $userIdToDelete = $_GET['id'] ?? null;
 if ($userIdToDelete && ((isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) || (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $userIdToDelete))) {
     
     try {
-        // Au lieu de DELETE, on UPDATE avec des données bidons.
-        // On génère un faux email unique car ta colonne email est UNIQUE
         $fakeEmail = 'supprime_' . uniqid() . '@anonyme.fr';
         
         $stmt = $pdo->prepare("

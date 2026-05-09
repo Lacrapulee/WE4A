@@ -11,7 +11,6 @@ $user = $stmt->fetch();
 
 if (!$user) { die("Ce profil n'existe pas."); }
 
-// Vérifier si c'est le propriétaire ou admin qui regarde
 $is_owner = (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $profile_id);
 $isAdmin = (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1);
 
@@ -43,7 +42,6 @@ $stmt = $pdo->prepare("
 $stmt->execute([$profile_id]);
 $reviews = $stmt->fetchAll();
 
-// Variables pour la vue
 $nom = $user['nom'];
 $prenom = $user['prenom'];
 $telephone = $user['telephone'];

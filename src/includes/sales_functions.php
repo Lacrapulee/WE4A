@@ -21,7 +21,7 @@ function processDirectSale($pdo, $article, $buyerId, $buyerName, $buyerEmail) {
     try {
         $pdo->beginTransaction();
 
-        // 1. Marquer l'article comme vendu
+        // Marquer l'article comme vendu
         $update = $pdo->prepare("UPDATE articles SET statut = 'vendu' WHERE id = ? AND statut = 'en_ligne'");
         $update->execute([$articleId]);
 
@@ -31,8 +31,7 @@ function processDirectSale($pdo, $article, $buyerId, $buyerName, $buyerEmail) {
             return $result;
         }
 
-        // 2. Insérer la vente avec l'ID de l'acheteur et le statut 'paye'
-        // Vérifie bien que tes colonnes acheteur_id et statut existent en DB
+        // Insérer la vente avec l'ID de l'acheteur et le statut 'paye'
         $insert = $pdo->prepare(
             "INSERT INTO ventes (reference, article_id, vendeur_id, acheteur_id, acheteur_nom, acheteur_email, montant, statut, statut_paiement)
              VALUES (?, ?, ?, ?, ?, ?, ?, 'paye', 'valide')"
@@ -42,7 +41,7 @@ function processDirectSale($pdo, $article, $buyerId, $buyerName, $buyerEmail) {
             $reference, 
             $articleId, 
             $sellerId, 
-            $buyerId, // L'ID de l'utilisateur connecté
+            $buyerId,
             $buyerName, 
             $buyerEmail, 
             $amount
