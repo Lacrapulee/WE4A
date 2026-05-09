@@ -12,7 +12,7 @@
 
 <main class="payment-main">
     <?php if ($viewData['errorMessage'] && !$product): ?>
-        <!-- État Erreur (Article introuvable) -->
+        /* article introuvable * /
         <section class="payment-card text-center max-w-2xl mx-auto mt-10">
             <h1 class="text-3xl font-black mb-4">Oups !</h1>
             <p class="text-gray-600 mb-8"><?php echo htmlspecialchars($viewData['errorMessage']); ?></p>
@@ -22,7 +22,7 @@
     <?php elseif ($product): ?>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
-            <!-- RÉCAPITULATIF ARTICLE -->
+            <!-- recap article -->
             <article class="payment-card">
                 <span class="payment-label">Récapitulatif de l'article</span>
                 <img src="/assets/img/<?php echo htmlspecialchars($viewData['imageName']); ?>" class="product-preview-img">
@@ -33,7 +33,7 @@
                 </p>
             </article>
 
-            <!-- FORMULAIRE DE PAIEMENT -->
+            <!-- form paiement-->
             <article class="payment-card">
                 <span class="payment-label">Validation du paiement</span>
 

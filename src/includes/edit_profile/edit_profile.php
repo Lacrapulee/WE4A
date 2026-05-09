@@ -1,13 +1,12 @@
 <?php
 require_once __DIR__ . '/../db.php';
 
-// Sécurité : Vérifier si l'utilisateur est connecté
+// Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../connexion');
     exit;
 }
 
-// 2. VÉRIFICATION DE SÉCURITÉ (Owner ou Admin)
 $isOwner = ($_SESSION['user_id'] == $_GET['id']);
 $isAdmin = (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1);
 $user_id = $_GET['id'];
@@ -20,7 +19,7 @@ if (!$isOwner && !$isAdmin) {
     exit();
 }
 
-// --- PARTIE 1 : TRAITEMENT DE LA MISE À JOUR ---
+// ---  traitement maj ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = trim($_POST['nom'] ?? '');
     $prenom = trim($_POST['prenom'] ?? '');
@@ -41,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
 }
 
-// --- PARTIE 2 : RÉCUPÉRATION DES INFOS ACTUELLES ---
+// --- recup infos actuelles ---
 $stmt = $pdo->prepare("SELECT nom, prenom, email, telephone, adresse_postale FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch();

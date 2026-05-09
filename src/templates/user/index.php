@@ -22,9 +22,8 @@
                 <p> Téléphone: <?= htmlspecialchars($telephone) ?></p>
                 <p> Adresse postale: <?= htmlspecialchars($adresse_postale ?? 'Non renseignée') ?></p>
                 <?php 
-            // 1. Logique d'ÉDITION (Si c'est mon profil ou si je suis admin)
             if ($is_owner || $isAdmin): 
-                // On récupère l'ID soit dans l'URL, soit en session pour éviter les liens vides
+                // On récupère ID dans l'URL ou en session pour éviter les liens vides
                 $edit_id = $_GET['id'] ?? $_SESSION['user_id'] ?? '';
             ?>
                 <a href="../routeur.php?action=edit_profile&id=<?= htmlspecialchars($edit_id) ?>" class="btn-edit">
@@ -32,7 +31,6 @@
                 </a>
 
             <?php 
-            // 2. Logique de CONTACT (Si je ne suis PAS le propriétaire)
             elseif (!$is_owner): ?>
                 
                 <?php if (isset($_SESSION['user_id'])): ?>

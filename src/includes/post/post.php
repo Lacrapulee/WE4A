@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
     $succes = [];
     $erreurs = [];
 
-    // --- TRAITEMENT DES IMAGES ---
+    // --- traitement images ---
     for ($i = 0; $i < $nombreDeFichiers; $i++) {
         if ($_FILES['ma_super_image']['error'][$i] === UPLOAD_ERR_OK) {
             $nomFichierOriginal = $_FILES['ma_super_image']['name'][$i];
@@ -54,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['ma_super_image'])) {
         }
     }
 
-    // --- INSERTION EN BASE DE DONNÉES ---
     if (empty($erreurs) && !empty($succes)) {
         
     $coordonnees = getCoordinates($addresse, $ville_nom, $code_postal);

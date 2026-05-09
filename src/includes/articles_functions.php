@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Récupère la liste des annonces en ligne (Utilisé par catalogue.php par défaut)
+ * Récupère la liste des annonces en ligne
  */
 function getAnnoncesEnLigne($pdo) {
     $stmt = $pdo->query("SELECT * FROM articles WHERE statut = 'en_ligne' ORDER BY created_at DESC");
@@ -9,7 +9,7 @@ function getAnnoncesEnLigne($pdo) {
 }
 
 /**
- * Recherche des annonces par mot-clé (Utilisé par la barre de recherche)
+ * Recherche des annonces par mot-clé
  */
 function getAnnonceRecherche($pdo, $search) {
     $stmt = $pdo->prepare(
@@ -24,7 +24,7 @@ function getAnnonceRecherche($pdo, $search) {
 }
 
 /**
- * Récupère les images pour une liste d'IDs (Optimisation)
+ * Récupère les images pour une liste d'IDs
  */
 function getImagesByAnnonceIds($pdo, $articleIds) {
     if (empty($articleIds)) return [];
@@ -52,8 +52,6 @@ function getImagesByAnnonceIds($pdo, $articleIds) {
 }
 
 
-
-
 /**
  * Recherche avancée d'annonces avec support du filtre de distance et tri par distance
  */
@@ -73,7 +71,6 @@ function getAnnonceRechercheAvancee($pdo, $filters = []) {
         $params['cat'] = $filters['categorie'];
     }
     
-    // Si on cherche par distance, on ne filtre pas par ville_nom (on fera un filtre de distance en PHP)
     if (empty($filters['distance']) && empty($filters['tri']) && !empty($filters['ville'])) {
         $sql .= " AND a.ville_nom LIKE :ville";
         $params['ville'] = '%' . $filters['ville'] . '%';
@@ -100,7 +97,6 @@ function getAnnonceRechercheAvancee($pdo, $filters = []) {
         'date_recent' => 'a.created_at DESC'
     ];
     
-    // Si tri par distance, on va trier en PHP (pas en SQL)
     if ($tri !== 'distance') {
         $orderBy = $sortMap[$tri] ?? $sortMap['date_recent'];
         $sql .= " ORDER BY " . $orderBy;
@@ -113,7 +109,7 @@ function getAnnonceRechercheAvancee($pdo, $filters = []) {
     $stmt->execute($params);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Gestion de la distance (filtrage et/ou tri)
+    // Gestion de la distance
     if ((!empty($filters['distance']) || $tri === 'distance') && !empty($filters['ville'])) {
         require_once '../includes/tools.php';
         
@@ -140,7 +136,6 @@ function getAnnonceRechercheAvancee($pdo, $filters = []) {
             }
             $results = $filteredResults;
             
-            // Trier par distance si demandé
             if ($tri === 'distance') {
                 usort($results, function($a, $b) {
                     return ($a['distance'] ?? PHP_INT_MAX) <=> ($b['distance'] ?? PHP_INT_MAX);
@@ -173,7 +168,7 @@ function getAnnonceById($pdo, $id) {
 }
 
 /**
- * Récupère TOUTES les images d'un article (pour le carrousel)
+ * Récupère toutes les images d'un article
  */
 function getAllImagesByAnnonceId($pdo, $id) {
     $stmt = $pdo->prepare("SELECT url_image FROM article_images WHERE article_id = ? ORDER BY ordre ASC");
@@ -182,7 +177,7 @@ function getAllImagesByAnnonceId($pdo, $id) {
 }
 
 /**
- * Récupère l'image principale uniquement (pour le catalogue)
+ * Récupère l'image principale uniquement
  */
 function getImageByAnnonceId($pdo, $id) {
     $stmt = $pdo->prepare("SELECT url_image FROM article_images WHERE article_id = ? ORDER BY ordre ASC LIMIT 1");

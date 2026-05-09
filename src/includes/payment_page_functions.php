@@ -35,7 +35,6 @@ function buildPaymentPageViewData($pdo, $articleId, $requestMethod, $postData) {
         return $viewData;
     }
 
-    // If the article exists but is not available for sale, return a clearer message
     $currentStatut = $product['statut'] ?? '';
     if ($currentStatut !== 'en_ligne') {
         $viewData['statusCode'] = 409; // Conflict

@@ -2,7 +2,6 @@
 $vendeur_id = $_GET['vendeur_id'] ?? null;
 $article_id = $_GET['article_id'] ?? null;
 
-// Si pas de vendeur_id, on redirige
 if (!$vendeur_id) {
     header('Location: /');
     exit();

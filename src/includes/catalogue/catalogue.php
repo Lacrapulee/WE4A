@@ -3,7 +3,7 @@ include '../includes/db.php';
 require_once '../includes/articles_functions.php';
 require_once '../includes/favoris_functions.php';
 
-// On récupère tous les filtres depuis l'URL (GET)
+// On récupère tous les filtres depuis l'URL
 $filters = [
     'search'    => $_GET['search'] ?? '',
     'categorie' => $_GET['categorie'] ?? '',

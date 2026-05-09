@@ -3,13 +3,13 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../articles_functions.php';
 
-// 1. Récupération des données
+// Récupération des données
 $productId = $_GET['id'] ?? null;
 $product = getAnnonceById($pdo, $productId);
 
 $isAdmin = (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1);
 
-// 2. Traitement des erreurs et données liées
+// Traitement des erreurs et données liées
 if (!$product || $product['statut'] !== 'en_ligne') {
     $errorMessage = "Cet article n'existe pas ou n'est plus disponible.";
 } else {
