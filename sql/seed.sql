@@ -30,7 +30,8 @@ INSERT INTO `users` (`id`, `email`, `password`, `nom`, `prenom`, `telephone`) VA
 ('u7-brest-uuid', 'isabelle.brest@gmail.com', 'hash123', 'Lefevre', 'Isabelle', '0698765432'),
 ('u8-montpellier-uuid', 'sebastien.mtp@gmail.com', 'hash123', 'Moreau', 'Sebastien', '0687654321'),
 ('u9-lyon-uuid', 'anne.lyon@gmail.com', 'hash123', 'Garneau', 'Anne', '0676543210'),
-('u10-marseille-uuid', 'pierre.marseille@gmail.com', 'hash123', 'Blanc', 'Pierre', '0665432109');
+('u10-marseille-uuid', 'pierre.marseille@gmail.com', 'hash123', 'Blanc', 'Pierre', '0665432109'),
+('u11-admin-uuid', 'admin@admin.fr', '$2y$10$f0J60DZ35KP0.RHw6Bz/6eiSMQs8ej7MF9v/hiMCX0eloUfGGv7U6', 'Admin', 'User', '0011223344');
 
 -- Variables pour les IDs utilisateurs (forcées en general_ci)
 SET @u1 = 'u1-uuid-placeholder' COLLATE utf8mb4_general_ci;
